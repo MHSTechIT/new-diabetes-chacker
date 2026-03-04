@@ -63,14 +63,15 @@ export default async function handler(req, res) {
         profile = await getProfile(userId)
       } catch (e) {
         console.error('analyze-report getProfile:', e?.message)
-        return res.status(400).json({ error: 'Could not load your profile. Please try again.' })
+        // Don't fail - profile is optional for image analysis
       }
     }
-    if (!profile || !profile.gender) {
-      return res.status(400).json({ error: 'Profile required. Send profile or userId.' })
-    }
+    // Profile is optional - we can analyze the image without it
+    // If profile is provided and has gender, we'll compute risk score with the extracted labs
 
-    profile = normalizeProfileForScoring(profile)
+    if (profile) {
+      profile = normalizeProfileForScoring(profile)
+    }
 
     const mimeType = imageMimeType === 'image/png' ? 'image/png' : 'image/jpeg'
     let extractedLabs = { hba1c: null, fastingGlucose: null }
@@ -121,10 +122,15 @@ export default async function handler(req, res) {
         quotaExceeded = oldLabs.quotaExceeded === true
         quotaReason = oldLabs.quotaReason
         try {
-          result = quotaExceeded
-            ? calculateRisk(profile)
-            : calculateRiskWithLabs(profile, extractedLabs)
-          riskExplanation = buildRiskExplanation(result)
+          if (!profile) {
+            // No profile available - return extracted labs without risk scoring
+            result = { totalScore: 0, riskLevel: 'LOW', riskyFactors: [] }
+          } else {
+              result = quotaExceeded
+              ? calculateRisk(profile)
+              : calculateRiskWithLabs(profile, extractedLabs)
+          }
+          riskExplanation = profile ? buildRiskExplanation(result) : 'Labs extracted from your blood report. Share your results with your doctor.'
         } catch (scoreErr) {
           console.error('analyze-report scoring:', scoreErr)
           return res.status(500).json({ error: 'Could not compute your result. Please try again.' })
@@ -141,8 +147,8 @@ export default async function handler(req, res) {
       }
     }
 
-    // Persist extracted labs to profile
-    const profileId = profile.id || userId
+    // Persist extracted labs to profile (if profile exists)
+    const profileId = profile?.id || userId
     if (profileId && !quotaExceeded && (extractedLabs.hba1c != null || extractedLabs.fastingGlucose != null)) {
       try {
         await updateProfile(profileId, {
