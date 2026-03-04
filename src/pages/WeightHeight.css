@@ -1,0 +1,543 @@
+/* ── Page shell: scrollable body, NEXT fixed at bottom ───────────── */
+.wh-page {
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #0D0D1A;
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.wh-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  flex-shrink: 0;
+  background: #0D0D1A;
+}
+
+.wh-back-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6666AA;
+  cursor: pointer;
+  padding: 4px 8px;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+.wh-back-btn:hover { color: #CCAAFF; }
+
+.wh-progress-track {
+  flex: 1;
+  height: 5px;
+  background: #2A2A3E;
+  border-radius: 3px;
+  margin: 0 16px;
+  overflow: hidden;
+}
+
+/* Fill hidden – keep straight-line track only (no purple thumb) */
+.wh-progress-fill {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.wh-skip-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6666AA;
+  cursor: pointer;
+  padding: 4px 8px;
+  letter-spacing: 0.3px;
+  transition: color 0.2s ease;
+}
+.wh-skip-btn:hover { color: #A0A0CC; }
+
+/* ── Scrollable body (header + content + BMI); NEXT stays below ─── */
+.wh-scroll-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Content: weight + height sections ─────────────────────────── */
+.wh-content {
+  flex: 0 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wh-title {
+  font-size: clamp(17px, 3.5vw, 20px);
+  font-weight: 800;
+  color: #FFFFFF;
+  text-align: center;
+  margin: 2px 0 0px;
+  letter-spacing: -0.4px;
+  flex-shrink: 0;
+}
+
+.wh-subtitle {
+  font-size: 11px;
+  color: #6666AA;
+  text-align: center;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+/* ── Section card ────────────────────────────────────────────── */
+.wh-section {
+  flex: 0 1 auto;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  background: #161625;
+  border-radius: 16px;
+  padding: 8px 0 6px;
+  border: 1px solid #2A2A3E;
+  overflow: hidden;
+}
+
+.wh-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 3px;
+  flex-shrink: 0;
+}
+
+.wh-section-label {
+  font-size: clamp(16px, 3.5vw, 20px);
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.3px;
+}
+
+/* ── kg / lbs / cm / ft toggle ──────────────────────────────── */
+.wh-toggle {
+  display: flex;
+  background: #0D0D1A;
+  border-radius: 50px;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid #2A2A3E;
+}
+
+.wh-toggle-btn {
+  padding: 6px 18px;
+  border-radius: 50px;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  color: #6666AA;
+  letter-spacing: 0.3px;
+}
+
+.wh-toggle-btn.active {
+  background: linear-gradient(135deg, #7B2FFF, #E040FB);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(123, 47, 255, 0.4);
+}
+
+/* ── Value display ───────────────────────────────────────────── */
+.wh-value-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 4px;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.wh-value-number {
+  font-size: clamp(40px, 10vw, 56px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #A855F7, #E040FB);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.wh-value-unit {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6666AA;
+  margin-left: 6px;
+  margin-bottom: 6px;
+}
+
+.wh-value-unit-sm {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6666AA;
+  margin-left: 2px;
+  margin-bottom: 10px;
+  margin-right: 6px;
+}
+
+/* ── Value input (double-tap to edit) ────────────────────────── */
+.wh-value-input {
+  font-size: 40px;
+  font-weight: 800;
+  background: #0D0D1A;
+  color: #A855F7;
+  border: 2px solid #7B2FFF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-align: center;
+  width: 200px;
+  max-width: 80%;
+  font-family: inherit;
+  outline: none;
+}
+
+.wh-value-input::placeholder {
+  color: #44447A;
+}
+
+.wh-value-input:focus {
+  border-color: #E040FB;
+  box-shadow: 0 0 12px rgba(224, 64, 251, 0.3);
+}
+
+/* ── BMI Card ───────────────────────────────────────────────────── */
+.wh-bmi-card {
+  flex-shrink: 0;
+  background: #161625;
+  border: 1px solid #2A2A3E;
+  border-radius: 12px;
+  padding: 10px;
+  margin: 6px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.wh-bmi-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.wh-bmi-label {
+  font-size: 11px;
+  color: #6666AA;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wh-bmi-status {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ── Ruler ───────────────────────────────────────────────────── */
+.ruler-outer {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 72px;
+  overflow: hidden;
+}
+
+/* Purple centre line */
+.ruler-indicator {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 44px;
+  background: linear-gradient(180deg, #7B2FFF, #E040FB);
+  z-index: 2;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.ruler-scroll {
+  display: flex;
+  align-items: flex-start;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #7B2FFF #2A2A3E;
+  cursor: grab;
+  height: 100%;
+  min-height: 72px;
+  padding-top: 6px;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.ruler-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+.ruler-scroll::-webkit-scrollbar-track {
+  background: #2A2A3E;
+  border-radius: 4px;
+}
+.ruler-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #7B2FFF, #E040FB);
+  border-radius: 4px;
+}
+.ruler-scroll::-webkit-scrollbar-thumb:hover {
+  background: #A855F7;
+}
+.ruler-scroll:active { cursor: grabbing; }
+
+.ruler-spacer {
+  flex-shrink: 0;
+  height: 1px;
+}
+
+/* Tick marks */
+.rtick {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rtick-minor::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: #3A3A5E;
+  border-radius: 1px;
+}
+
+.rtick-major::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 34px;
+  background: #7744BB;
+  border-radius: 1px;
+}
+
+.rtick-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6666AA;
+  margin-top: 4px;
+  white-space: nowrap;
+  user-select: none;
+  transform: translateX(-50%);
+  display: block;
+}
+
+/* ── NEXT button: fixed at bottom, always visible ─────────────── */
+.wh-next-wrap {
+  flex-shrink: 0;
+  padding: 12px 16px 20px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  background: #0D0D1A;
+  border-top: 1px solid #1E1E30;
+}
+
+.wh-next-btn {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  display: block;
+  background: linear-gradient(135deg, #7B2FFF, #E040FB);
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(123, 47, 255, 0.5);
+}
+
+.wh-next-btn:hover {
+  box-shadow: 0 10px 34px rgba(123, 47, 255, 0.65);
+  transform: translateY(-1px);
+}
+
+.wh-next-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── Responsive: small phones ─────────────────────────────────── */
+@media (max-width: 380px) {
+  .wh-value-number { font-size: 46px; }
+  .wh-section-label { font-size: 18px; }
+}
+
+/* ── Desktop: BMI left (big, full), form + Next right, Next visible ─ */
+@media (min-width: 769px) {
+  .wh-page {
+    max-width: none;
+    height: 100vh;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  /* Wrappers don’t create boxes so header, content, bmi, next participate in grid */
+  .wh-scroll-body,
+  .wh-next-wrap {
+    display: contents;
+  }
+
+  .wh-header {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 10px 20px;
+  }
+
+  .wh-content {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 0 24px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .wh-title {
+    font-size: clamp(18px, 2.2vw, 22px);
+    margin-bottom: 2px;
+  }
+
+  .wh-subtitle {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .wh-section {
+    min-height: 120px;
+    padding: 8px 0 6px;
+    flex: 0 0 auto;
+  }
+
+  .wh-section-header {
+    padding: 0 16px 2px;
+  }
+
+  .wh-section-label {
+    font-size: 17px;
+  }
+
+  .wh-value-display {
+    margin-bottom: 2px;
+  }
+
+  .wh-value-number {
+    font-size: clamp(32px, 4vw, 42px);
+  }
+
+  .wh-value-unit,
+  .wh-value-unit-sm {
+    font-size: 14px;
+  }
+
+  .wh-tap-hint {
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+
+  .ruler-outer {
+    min-height: 52px;
+    flex: 0 0 auto;
+  }
+
+  .ruler-scroll {
+    min-height: 52px;
+    padding-bottom: 6px;
+  }
+
+  .ruler-indicator {
+    height: 36px;
+  }
+
+  /* BMI: left column, below progress bar, smaller so header is visible */
+  .wh-bmi-card {
+    grid-column: 1;
+    grid-row: 2 / -1;
+    align-self: stretch;
+    margin: 0;
+    padding: 16px;
+    border-radius: 0;
+    border: none;
+    border-right: 1px solid #2A2A3E;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 0;
+  }
+
+  .wh-bmi-value {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .wh-bmi-label {
+    font-size: clamp(12px, 1.5vw, 14px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #6666AA;
+  }
+
+  .wh-bmi-status {
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  /* Next: right column, bottom row, always visible */
+  .wh-next-btn {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: center;
+    width: calc(100% - 48px);
+    max-width: 360px;
+    padding: 14px 20px;
+    font-size: 16px;
+    margin: 12px 24px 24px;
+  }
+}

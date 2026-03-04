@@ -1,0 +1,467 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-width: none; /* Firefox: hide scrollbar */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge: hide scrollbar */
+}
+
+html {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0D0D1A;
+  color: #FFFFFF;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Mobile: allow horizontal swipe on options only; vertical scroll still works */
+@media (max-width: 1023px) {
+  .options-column,
+  .pal-options-grid,
+  .carb-options-grid,
+  .sl-options-grid,
+  .hs-options-grid,
+  .jff-options-grid,
+  .off-options-grid,
+  .sd-options-grid,
+  .sn-options-grid,
+  .wg-options-grid,
+  .sb-options-grid {
+    touch-action: pan-y;
+  }
+}
+
+/* Mobile: reduce gaps so NEXT button is visible on all pages */
+@media (max-width: 1023px) {
+  /* Character/image areas - reduce height */
+  .character-column,
+  .pal-character-area,
+  .carb-character-area,
+  .sd-character-area,
+  .sn-character-area,
+  .jff-character-area,
+  .off-character-area,
+  .sb-character-area,
+  .hs-character-area,
+  .sl-character-area,
+  .wg-character-area,
+  .fh-characters {
+    min-height: 38vh !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+  .character-column { max-height: 42vh !important; }
+  .pal-character-img,
+  .carb-character-img,
+  .sd-character-img,
+  .sn-character-img,
+  .jff-character-img,
+  .off-character-img,
+  .sb-character-img,
+  .hs-character-img,
+  .sl-character-img,
+  .wg-character-img {
+    max-height: 50vh !important;
+  }
+  .wg-character-img {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+  .fh-char-wrap { max-height: 52vh !important; }
+  .fh-char-img { max-height: 52vh !important; }
+
+  /* Titles - reduce margin */
+  .title,
+  .pal-title,
+  .carb-title,
+  .sd-title,
+  .sn-title,
+  .jff-title,
+  .off-title,
+  .sb-title,
+  .hs-title,
+  .sl-title,
+  .wg-title,
+  .fh-title,
+  .gd-title,
+  .hab-title,
+  .sym-title,
+  .mc-title {
+    margin-bottom: 4px !important;
+  }
+
+  /* Options grids - small gap between options on mobile */
+  .options-column,
+  .pal-options-grid,
+  .carb-options-grid,
+  .sd-options-grid,
+  .sn-options-grid,
+  .jff-options-grid,
+  .off-options-grid,
+  .sb-options-grid,
+  .hs-options-grid,
+  .sl-options-grid,
+  .wg-options-grid,
+  .fh-options-grid {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    gap: 6px !important;
+    row-gap: 6px !important;
+  }
+
+  /* Option buttons - slightly smaller */
+  .age-card,
+  .pal-option-btn,
+  .carb-option-btn,
+  .sd-option-btn,
+  .sn-option-btn,
+  .jff-option-btn,
+  .off-option-btn,
+  .sb-option-btn,
+  .hs-option-btn,
+  .sl-option-btn,
+  .wg-option-btn,
+  .fh-option-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+
+  /* Footers - reduce padding */
+  .bottom-section,
+  .pal-footer,
+  .carb-footer,
+  .sd-footer,
+  .sn-footer,
+  .jff-footer,
+  .off-footer,
+  .sb-footer,
+  .hs-footer,
+  .sl-footer,
+  .wg-footer,
+  .fh-footer,
+  .gd-footer,
+  .hab-footer,
+  .sym-footer,
+  .mc-footer {
+    padding-top: 4px !important;
+    padding-bottom: 8px !important;
+  }
+
+  /* Content areas (option-only pages) */
+  .gd-content-area,
+  .hab-content-area,
+  .sym-content-area,
+  .mc-content-area {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+  .gd-options-grid,
+  .hab-options-grid,
+  .sym-options-grid,
+  .mc-options-grid {
+    gap: 6px !important;
+    row-gap: 6px !important;
+  }
+  .gd-option-btn,
+  .hab-option-btn,
+  .sym-option-btn,
+  .mc-option-btn {
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
+
+/* Very short screens: extra compact so NEXT is always visible */
+@media (max-width: 1023px) and (max-height: 700px) {
+  .character-column,
+  .pal-character-area,
+  .carb-character-area,
+  .sd-character-area,
+  .sn-character-area,
+  .jff-character-area,
+  .off-character-area,
+  .sb-character-area,
+  .hs-character-area,
+  .sl-character-area,
+  .wg-character-area,
+  .fh-characters {
+    min-height: 30vh !important;
+  }
+  .character-column { max-height: 34vh !important; }
+  .pal-character-img,
+  .carb-character-img,
+  .sd-character-img,
+  .sn-character-img,
+  .jff-character-img,
+  .off-character-img,
+  .sb-character-img,
+  .hs-character-img,
+  .sl-character-img,
+  .wg-character-img {
+    max-height: 40vh !important;
+  }
+  .fh-char-wrap { max-height: 42vh !important; }
+  .fh-char-img { max-height: 42vh !important; }
+  .age-card,
+  .pal-option-btn,
+  .carb-option-btn,
+  .sd-option-btn,
+  .sn-option-btn,
+  .jff-option-btn,
+  .off-option-btn,
+  .sb-option-btn,
+  .hs-option-btn,
+  .sl-option-btn,
+  .wg-option-btn,
+  .fh-option-btn,
+  .gd-option-btn,
+  .hab-option-btn,
+  .sym-option-btn,
+  .mc-option-btn {
+    height: 36px !important;
+    min-height: 36px !important;
+  }
+  .pal-header,
+  .carb-header,
+  .sd-header,
+  .sn-header,
+  .jff-header,
+  .off-header,
+  .sb-header,
+  .hs-header,
+  .sl-header,
+  .wg-header,
+  .fh-header,
+  .gd-header,
+  .hab-header,
+  .sym-header,
+  .mc-header,
+  .header {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+}
+
+/* Desktop: progress bar full width at top on all pages */
+@media (min-width: 1024px) {
+  .wh-header,
+  .pal-header,
+  .carb-header,
+  .sd-header,
+  .sn-header,
+  .jff-header,
+  .off-header,
+  .sb-header,
+  .hs-header,
+  .sl-header,
+  .wg-header,
+  .fh-header,
+  .gd-header,
+  .hab-header,
+  .sym-header,
+  .mc-header,
+  .header,
+  .result-header-bar {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+
+  .wh-progress-track,
+  .pal-progress-track,
+  .carb-progress-track,
+  .sd-progress-track,
+  .sn-progress-track,
+  .jff-progress-track,
+  .off-progress-track,
+  .sb-progress-track,
+  .hs-progress-track,
+  .sl-progress-track,
+  .wg-progress-track,
+  .fh-progress-track,
+  .gd-progress-track,
+  .hab-progress-track,
+  .sym-progress-track,
+  .mc-progress-track,
+  .progress-track,
+  .result-progress-track {
+    margin-left: 16px !important;
+    margin-right: 0 !important;
+  }
+
+  /* Images / character areas start below the progress bar (row 2) */
+  .pal-character-area,
+  .carb-character-area,
+  .sd-character-area,
+  .sn-character-area,
+  .jff-character-area,
+  .off-character-area,
+  .sb-character-area,
+  .hs-character-area,
+  .sl-character-area,
+  .wg-character-area,
+  .fh-characters,
+  .character-column {
+    grid-row: 2 / -1 !important;
+  }
+}
+
+/* Desktop: proper spacing for all question pages (title, options, footer) */
+@media (min-width: 1024px) {
+  /* Titles – less gap below so options sit closer */
+  .pal-title,
+  .carb-title,
+  .sd-title,
+  .sn-title,
+  .jff-title,
+  .off-title,
+  .sb-title,
+  .hs-title,
+  .sl-title,
+  .wg-title,
+  .fh-title,
+  .gd-title,
+  .hab-title,
+  .sym-title,
+  .mc-title {
+    margin-bottom: 2px !important;
+    margin-top: 0 !important;
+  }
+
+  /* Option grids – minimal spacing between option buttons in desktop view */
+  .options-column,
+  .pal-options-grid,
+  .carb-options-grid,
+  .sd-options-grid,
+  .sn-options-grid,
+  .jff-options-grid,
+  .off-options-grid,
+  .sb-options-grid,
+  .hs-options-grid,
+  .sl-options-grid,
+  .wg-options-grid,
+  .fh-options-grid,
+  .gd-options-grid,
+  .hab-options-grid,
+  .sym-options-grid,
+  .mc-options-grid {
+    gap: 4px !important;
+    row-gap: 4px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  /* Footers – minimal gap above NEXT button in desktop */
+  .pal-footer,
+  .carb-footer,
+  .sd-footer,
+  .sn-footer,
+  .jff-footer,
+  .off-footer,
+  .sb-footer,
+  .hs-footer,
+  .sl-footer,
+  .wg-footer,
+  .fh-footer,
+  .gd-footer,
+  .hab-footer,
+  .sym-footer,
+  .mc-footer {
+    padding-top: 4px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+/* ── Global option button UI (dark pill, subtle purple border, light text) ── */
+.age-card,
+.pal-option-btn,
+.carb-option-btn,
+.sd-option-btn,
+.sn-option-btn,
+.jff-option-btn,
+.off-option-btn,
+.sb-option-btn,
+.hs-option-btn,
+.sl-option-btn,
+.wg-option-btn,
+.fh-option-btn,
+.gd-option-btn,
+.hab-option-btn,
+.sym-option-btn,
+.mc-option-btn {
+  border-radius: 50px !important;
+  border: 1px solid rgba(139, 92, 246, 0.35) !important;
+  background: rgba(38, 38, 55, 0.9) !important;
+  color: rgba(230, 230, 245, 0.95) !important;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.age-card:hover,
+.pal-option-btn:hover,
+.carb-option-btn:hover,
+.sd-option-btn:hover,
+.sn-option-btn:hover,
+.jff-option-btn:hover,
+.off-option-btn:hover,
+.sb-option-btn:hover,
+.hs-option-btn:hover,
+.sl-option-btn:hover,
+.wg-option-btn:hover,
+.fh-option-btn:hover,
+.gd-option-btn:hover,
+.hab-option-btn:hover,
+.sym-option-btn:hover,
+.mc-option-btn:hover {
+  border-color: rgba(139, 92, 246, 0.55) !important;
+  background: rgba(48, 48, 68, 0.95) !important;
+  color: #fff !important;
+}
+
+.age-card.selected,
+.pal-option-btn.selected,
+.carb-option-btn.selected,
+.sd-option-btn.selected,
+.sn-option-btn.selected,
+.jff-option-btn.selected,
+.off-option-btn.selected,
+.sb-option-btn.selected,
+.hs-option-btn.selected,
+.sl-option-btn.selected,
+.wg-option-btn.selected,
+.fh-option-btn.selected,
+.gd-option-btn.selected,
+.hab-option-btn.selected,
+.sym-option-btn.selected,
+.mc-option-btn.selected {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #7B2FFF, #E040FB) !important;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(123, 47, 255, 0.4);
+}
+
+/* Desktop: full width for two-column layout (image left, Q&A right) */
+@media (min-width: 1024px) {
+  #root {
+    display: block;
+  }
+}

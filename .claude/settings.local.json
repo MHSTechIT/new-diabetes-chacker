@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(command -v npm)",
+      "Bash(where npm)",
+      "Bash(npm run dev)",
+      "Bash(timeout 5 curl -s http://localhost:5174/)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(dir \"C:\\\\new diabetes chacker\\\\src\\\\assets\\\\physical-activity\"\")",
+      "Bash(find \"/c/new diabetes chacker/src/assets/physical-activity\" -type f -exec ls -lh {} ;)",
+      "Bash(pkill -f \"vite|node\")",
+      "Bash(where node)",
+      "Bash(xargs grep -l \"junk-food-frequency\\\\|outside-food-frequency\\\\|carbohydrate-type\")",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npm --version)",
+      "Bash(curl -s http://localhost:5175/)"
+    ]
+  }
+}

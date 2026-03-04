@@ -1,0 +1,2 @@
+/* AgeSelection: entry point – imports mobile and desktop (see JSX for direct imports) */
+/* Kept for reference; component imports AgeSelection.mobile.css + AgeSelection.desktop.css directly to avoid Vite @import path resolution issues. */

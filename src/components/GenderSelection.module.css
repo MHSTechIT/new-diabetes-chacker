@@ -1,0 +1,317 @@
+/* ---- Page: dark frame, no scroll ---- */
+.page {
+  background: #0D0D1A;
+  height: 100%;
+  max-height: 100%;
+  max-width: 430px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+  padding: 6px 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ---- Progress bar ---- */
+.progressBarTrack {
+  width: 70%;
+  height: 4px;
+  background: #2A2A3E;
+  border-radius: 2px;
+  margin: 16px auto 0;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  width: 20%;
+  height: 100%;
+  background: linear-gradient(90deg, #7B2FFF, #E040FB);
+  border-radius: 2px;
+  transition: width 0.35s ease;
+}
+
+.skipBtn {
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #6666AA;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  letter-spacing: 0.3px;
+}
+
+.skipBtn:hover {
+  color: #A0A0CC;
+}
+
+.heading {
+  color: #FFFFFF;
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 800;
+  margin-top: 8px;
+  margin-bottom: 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.subtext {
+  color: #6666AA;
+  font-size: 13px;
+  margin-bottom: 4px;
+  text-align: center;
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+/* ---- Cards container: fills remaining space, no fixed height ---- */
+.cardsContainer {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Card wrapper: ABSOLUTE positioning, smooth transition */
+.cardWrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.default {
+}
+
+/* Male default - left side */
+.cardWrapper.maleCard.default {
+  left: 25%;
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* Female default - right side */
+.cardWrapper.femaleCard.default {
+  left: 75%;
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* SELECTED - centered on screen */
+.cardWrapper.selected {
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(1) !important;
+  z-index: 10;
+}
+
+/* Unselected male - far left edge */
+.cardWrapper.maleCard.unselected {
+  left: 18% !important;
+  transform: translate(-50%, -50%) scale(0.45) !important;
+  z-index: 5;
+  opacity: 0.4;
+}
+
+/* Unselected female - far right edge */
+.cardWrapper.femaleCard.unselected {
+  left: 82% !important;
+  transform: translate(-50%, -50%) scale(0.45) !important;
+  z-index: 5;
+  opacity: 0.4;
+}
+
+/* ---- Card ---- */
+.genderCard {
+  position: relative;
+  width: 180px;
+  height: min(380px, 52vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow-x: hidden;
+  overflow-y: visible;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Backdrop: dark card behind character ---- */
+.backdrop {
+  position: absolute;
+  width: 170px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 28px;
+  z-index: 1;
+  pointer-events: none;
+  transition: all 0.35s ease;
+  box-sizing: border-box;
+  visibility: visible;
+  opacity: 1;
+}
+
+.backdrop.blue {
+  background: linear-gradient(145deg, #1E1A3E, #2A1A5E) !important;
+  border: 1px solid rgba(123, 47, 255, 0.3);
+}
+
+.backdrop.pink {
+  background: linear-gradient(145deg, #2A1A2E, #3E1A35) !important;
+  border: 1px solid rgba(224, 64, 251, 0.25);
+}
+
+/* ---- Character image ---- */
+.characterImg {
+  position: absolute;
+  z-index: 2;
+  height: min(320px, 48vh);
+  width: auto;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  object-position: center bottom;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Default: both large, no backdrop ---- */
+.cardWrapper.default .genderCard {
+  width: 180px;
+  height: min(380px, 52vh);
+}
+
+.cardWrapper.default .backdrop {
+  display: none;
+}
+
+.cardWrapper.default .characterImg {
+  height: min(380px, 52vh);
+  filter: none;
+  opacity: 1;
+}
+
+/* ---- Selected: full size ---- */
+.cardWrapper.selected .genderCard {
+  width: 180px;
+  height: min(480px, 62vh);
+}
+
+.cardWrapper.selected .backdrop {
+  width: 160px;
+  height: 200px;
+  border-radius: 24px;
+}
+
+.cardWrapper.selected .characterImg {
+  height: min(420px, 56vh);
+  filter: none;
+  opacity: 1;
+}
+
+/* ---- Unselected: grayscale ---- */
+.cardWrapper.unselected .characterImg {
+  filter: grayscale(100%);
+  opacity: 0.35;
+}
+
+.cardWrapper.unselected .backdrop {
+  display: none;
+}
+
+/* ---- Gender label row: sits above NEXT button ---- */
+.genderLabelRow {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  width: 88%;
+  max-width: 340px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.genderLabelBtn {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 50px;
+  border: 2px solid #2A2A3E;
+  background: #161625;
+  font-size: 15px;
+  font-weight: 700;
+  color: #6666AA;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.genderLabelBtn:hover {
+  border-color: #7B2FFF;
+  background: #1E1A3E;
+  color: #CCAAFF;
+}
+
+.genderLabelBtn.genderLabelSelected {
+  border-color: transparent;
+  background: linear-gradient(135deg, #7B2FFF, #E040FB);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(123, 47, 255, 0.5);
+}
+
+/* ---- NEXT button: large, rounded, bottom ---- */
+.nextBtn {
+  width: 88%;
+  max-width: 340px;
+  padding: 14px 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.nextBtn.inactive {
+  background: #1E1E30;
+  color: #44447A;
+  cursor: not-allowed;
+  border: 1px solid #2A2A3E;
+}
+
+.nextBtn.active {
+  background: linear-gradient(135deg, #7B2FFF, #E040FB);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(123, 47, 255, 0.5);
+  cursor: pointer;
+}
+
+.nextBtn.active:hover {
+  box-shadow: 0 8px 30px rgba(123, 47, 255, 0.65);
+  transform: translateY(-1px);
+}
+
+.nextBtn.active:active {
+  transform: scale(0.98);
+}
