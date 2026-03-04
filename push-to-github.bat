@@ -1,6 +1,6 @@
 @echo off
 cd /d "%~dp0"
-set REPO=github.com/MHSTechIT/new-diabetes-checker-.git
+set REPO=github.com/MHSTechIT/new-diabetes-chacker.git
 
 if defined GITHUB_TOKEN (
   echo Pushing to GitHub using GITHUB_TOKEN...
