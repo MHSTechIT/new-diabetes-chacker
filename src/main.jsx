@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
 import App from './App.jsx'
-import { preloadAllImages } from './lib/preloadImages'
 import './index.css'
 
-// Preload all images when the app starts
-preloadAllImages()
+// Images load on-demand as users navigate (not preloaded to improve app startup)
 
 const rootEl = document.getElementById('root')
 if (!rootEl) {
