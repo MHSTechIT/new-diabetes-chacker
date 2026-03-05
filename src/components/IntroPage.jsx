@@ -19,15 +19,15 @@ export default function IntroPage() {
         {/* Logo/Branding */}
         <div className="intro-logo">
           <img src={logo} alt="My Health School" className="logo-icon" />
-          <p className="logo-text">My Health School</p>
         </div>
 
         {/* Main Content */}
         <div className="intro-content">
           <h1 className="intro-title">Diabetes Risk Assessment</h1>
           <p className="intro-description">
-            Answer 19 quick questions about your lifestyle, body, and health history. Get your personalised
-            diabetes risk score in under 3 minutes.
+            This assessment is a screening tool only and does not replace a medical diagnosis. Results are based on
+            self-reported information. Please consult a qualified doctor for confirmation and treatment.
+            MYHEALTHSCHOOL is not liable for decisions made based solely on this screening result.
           </p>
 
           {/* Call to Action Button */}
