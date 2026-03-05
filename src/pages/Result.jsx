@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
-import { getProfile } from '../lib/profileStorage'
+import { getProfile, clearProfile } from '../lib/profileStorage'
 import { calculateRisk } from '../utils/scoring'
 import { apiAnalyzeReport } from '../lib/api'
 import BodyOutline from '../components/BodyOutline'
@@ -274,7 +274,8 @@ export default function Result() {
   }, [analyzing])
 
   const handleRetake = () => {
-    navigate('/', { state: userId ? { userId, gender } : undefined })
+    clearProfile()
+    navigate('/')
   }
 
   const openBoostModal = () => {
@@ -602,7 +603,7 @@ export default function Result() {
 
             <div className="result-footer-btns">
               <button type="button" className="result-btn-ghost" onClick={handleRetake}>
-                Retake test
+                Retest
               </button>
               <button type="button" className="result-btn-primary" onClick={handleShare}>
                 Share

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { preloadAllImages } from './lib/preloadImages'
+import { getProfile, clearProfile } from './lib/profileStorage'
 import ConfirmModal from './components/ConfirmModal'
+import IntroPage from './components/IntroPage'
 import GenderSelection from './components/GenderSelection'
 import AgeSelection from './pages/AgeSelection'
 import GestationalDiabetes from './pages/GestationalDiabetes'
@@ -31,6 +33,7 @@ export default function App() {
   const prevPathRef = useRef(location.pathname)
   const resultStateRef = useRef(null)
   const [showBackConfirm, setShowBackConfirm] = useState(false)
+  const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
   if (location.pathname === '/result' && location.state) {
     const { playAnimation, ...rest } = location.state
@@ -54,6 +57,18 @@ export default function App() {
     })
   }, [])
 
+  // Handle page reload detection - if user already started test but reloads mid-test
+  useEffect(() => {
+    const hasProfile = !!getProfile()
+    const isOnIntroPage = location.pathname === '/'
+
+    // If user has started test (has profile) but reloads on a non-intro page
+    // ask if they want to start from the beginning
+    if (hasProfile && !isOnIntroPage) {
+      setShowStartOverConfirm(true)
+    }
+  }, []) // Run only on mount
+
   const handleBackConfirmYes = () => {
     setShowBackConfirm(false)
     navigate('/', { replace: true })
@@ -61,6 +76,15 @@ export default function App() {
   const handleBackConfirmNo = () => {
     setShowBackConfirm(false)
     navigate('/result', { replace: true, state: resultStateRef.current ?? undefined })
+  }
+
+  const handleStartOverYes = () => {
+    setShowStartOverConfirm(false)
+    clearProfile()
+    navigate('/', { replace: true })
+  }
+  const handleStartOverNo = () => {
+    setShowStartOverConfirm(false)
   }
 
   return (
@@ -74,8 +98,18 @@ export default function App() {
           onCancel={handleBackConfirmNo}
         />
       )}
+      {showStartOverConfirm && (
+        <ConfirmModal
+          message="Do you want to start the test from the beginning?"
+          confirmLabel="Yes"
+          cancelLabel="No"
+          onConfirm={handleStartOverYes}
+          onCancel={handleStartOverNo}
+        />
+      )}
       <Routes>
-      <Route path="/" element={<GenderSelection />} />
+      <Route path="/" element={<IntroPage />} />
+      <Route path="/gender-selection" element={<GenderSelection />} />
       <Route path="/age-selection" element={<AgeSelection />} />
       <Route path="/gestational-diabetes" element={<GestationalDiabetes />} />
       <Route path="/weight-height" element={<WeightHeight />} />

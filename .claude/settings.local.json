@@ -18,7 +18,11 @@
       "Bash(cd /c/new diabetes chacker)",
       "Bash(git commit:*)",
       "Bash(npm install -D unplugin-imagemin)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(git add vercel.json)",
+      "Bash(git push origin main)",
+      "Bash(vercel list --prod)",
+      "Bash(git add src/App.jsx)"
     ]
   }
 }
