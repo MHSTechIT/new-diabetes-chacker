@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
+import { preloadAllImages } from './lib/preloadImages'
 import ConfirmModal from './components/ConfirmModal'
 import GenderSelection from './components/GenderSelection'
 import AgeSelection from './pages/AgeSelection'
@@ -44,6 +45,14 @@ export default function App() {
     }
     prevPathRef.current = location.pathname
   }, [location.pathname, navigationType])
+
+  // Preload all images on app mount for smooth navigation (no lag when switching pages)
+  useEffect(() => {
+    preloadAllImages().catch((err) => {
+      console.error('Image preloading failed:', err)
+      // Continue silently - app still works even if preloading fails
+    })
+  }, [])
 
   const handleBackConfirmYes = () => {
     setShowBackConfirm(false)
