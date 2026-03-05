@@ -14,7 +14,11 @@
       "Bash(xargs grep -l \"junk-food-frequency\\\\|outside-food-frequency\\\\|carbohydrate-type\")",
       "Bash(curl -s http://localhost:5173)",
       "Bash(npm --version)",
-      "Bash(curl -s http://localhost:5175/)"
+      "Bash(curl -s http://localhost:5175/)",
+      "Bash(cd /c/new diabetes chacker)",
+      "Bash(git commit:*)",
+      "Bash(npm install -D unplugin-imagemin)",
+      "Bash(git add -A)"
     ]
   }
 }
