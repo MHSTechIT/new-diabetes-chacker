@@ -1,15 +1,5 @@
 {
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ],
-  "images": {
-    "remotePatterns": [
-      {
-        "protocol": "https",
-        "hostname": "**"
-      }
-    ],
-    "formats": ["image/webp", "image/avif"],
-    "minimumCacheTTL": 60
-  }
+  ]
 }
