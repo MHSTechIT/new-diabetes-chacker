@@ -22,7 +22,10 @@
       "Bash(git add vercel.json)",
       "Bash(git push origin main)",
       "Bash(vercel list --prod)",
-      "Bash(git add src/App.jsx)"
+      "Bash(git add src/App.jsx)",
+      "Bash(ls -la \"C:\\\\new diabetes chacker\\\\src\"\" | grep -E \"assets)",
+      "Bash(images)",
+      "Bash(public \")"
     ]
   }
 }
