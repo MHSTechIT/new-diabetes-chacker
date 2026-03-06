@@ -209,13 +209,8 @@ export default function AgeSelection() {
         />
       )}
 
-      {/* Bottom: label + NEXT */}
+      {/* Bottom: NEXT */}
       <div className="bottom-section">
-        <div className={`selected-age-display ${!selectedAge ? 'placeholder' : ''}`}>
-          {selectedAge
-            ? ageOptions.find((a) => a.id === selectedAge)?.label
-            : 'Select your age group'}
-        </div>
         <button
           type="button"
           className={`next-btn ${selectedAge ? 'active' : 'inactive'}`}

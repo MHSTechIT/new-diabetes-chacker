@@ -6,7 +6,7 @@
   height: 100vh;
   height: 100dvh;
   max-height: 100%;
-  background: #0D0D1A;
+  background: transparent;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -252,30 +252,7 @@
   width: 100%;
   padding: 6px 16px 10px;
   box-sizing: border-box;
-  border-top: 1px solid #1E1E30;
-  background: #0D0D1A;
-}
-
-.selected-age-display {
-  text-align: center;
-  font-size: clamp(14px, 3.5vw, 17px);
-  font-weight: 700;
-  margin-bottom: 8px;
-  min-height: 22px;
-  transition: all 0.2s ease;
-}
-
-.selected-age-display.placeholder {
-  color: #A78BFA;
-  background: none;
-  -webkit-text-fill-color: #A78BFA;
-}
-
-.selected-age-display:not(.placeholder) {
-  background: linear-gradient(135deg, #A855F7, #E040FB);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: transparent;
 }
 
 /* ── NEXT button ──────────────────────────────────────────────── */
@@ -294,7 +271,7 @@
 }
 
 .next-btn.inactive {
-  background: #2A1F4E;
+  background: transparent;
   color: #C4B5FD;
   cursor: not-allowed;
   border: 1px solid #3B2E6B;

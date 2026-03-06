@@ -85,32 +85,6 @@
   transform: translateY(0);
 }
 
-/* Info Badges */
-.intro-badges {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.badge-icon {
-  font-size: 28px;
-  display: block;
-}
-
-.badge-text {
-  font-size: 14px;
-  color: #9ca3af;
-  font-weight: 500;
-}
-
 /* Animations */
 @keyframes fadeInDown {
   from {
@@ -167,17 +141,5 @@
     padding: 16px 24px;
     font-size: 16px;
     margin-bottom: 40px;
-  }
-
-  .intro-badges {
-    gap: 20px;
-  }
-
-  .badge-icon {
-    font-size: 24px;
-  }
-
-  .badge-text {
-    font-size: 12px;
   }
 }

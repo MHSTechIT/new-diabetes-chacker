@@ -34,22 +34,6 @@ export default function IntroPage() {
           <button className="intro-button" onClick={handleStartTest}>
             Start Risk Assessment →
           </button>
-
-          {/* Info Badges */}
-          <div className="intro-badges">
-            <div className="badge">
-              <span className="badge-icon">⏱️</span>
-              <span className="badge-text">3 min</span>
-            </div>
-            <div className="badge">
-              <span className="badge-icon">🔒</span>
-              <span className="badge-text">Private</span>
-            </div>
-            <div className="badge">
-              <span className="badge-icon">📋</span>
-              <span className="badge-text">19 Questions</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

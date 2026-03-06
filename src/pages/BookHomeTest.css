@@ -3,7 +3,7 @@
   height: 100%;
   min-height: 100%;
   max-height: 100%;
-  background: #0D0D1A;
+  background: transparent;
   color: #fff;
   display: flex;
   flex-direction: column;

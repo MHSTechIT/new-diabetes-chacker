@@ -1,6 +1,6 @@
 .result-loader-page {
   min-height: 100vh;
-  background: #0D0D1A;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;

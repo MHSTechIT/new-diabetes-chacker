@@ -91,8 +91,8 @@ export default function WeightHeight() {
   const location  = useLocation()
   const userId    = location.state?.userId
 
-  const [weightUnit, setWeightUnit] = useState('lbs')
-  const [heightUnit, setHeightUnit] = useState('ft')
+  const [weightUnit, setWeightUnit] = useState('kg')
+  const [heightUnit, setHeightUnit] = useState('cm')
   const [weightKg,   setWeightKg]   = useState(75)   // ~165 lbs
   const [heightCm,   setHeightCm]   = useState(175)  // ~5 ft 9 in
   const [editingWeight, setEditingWeight] = useState(false)

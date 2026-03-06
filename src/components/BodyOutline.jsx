@@ -34,6 +34,7 @@ export default function BodyOutline({
 }) {
   const clipId = useId().replace(/:/g, '') || 'bodyClip'
   const gradId = useId().replace(/:/g, '') || 'waterGrad'
+  const glossId = useId().replace(/:/g, '') || 'bodyGloss'
   const pct = Math.max(0, Math.min(1, waterLevel))
   const translateY = H * (1 - pct)
   const darkColor = darkenHex(waterColor, 0.55)
@@ -55,6 +56,13 @@ export default function BodyOutline({
           <clipPath id={clipId}>
             <path d={BODY_PATH} />
           </clipPath>
+          {/* Glossy background: soft highlight at top, dark at bottom */}
+          <linearGradient id={glossId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#2a3548" stopOpacity="0.5" />
+            <stop offset="4%" stopColor="#1a2332" stopOpacity="1" />
+            <stop offset="18%" stopColor="#0f1620" stopOpacity="1" />
+            <stop offset="100%" stopColor="#080f18" stopOpacity="1" />
+          </linearGradient>
           <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={waterColor} stopOpacity="0.92" />
             <stop offset="45%" stopColor={waterColor} stopOpacity="0.85" />
@@ -68,7 +76,7 @@ export default function BodyOutline({
         </defs>
 
         <g clipPath={`url(#${clipId})`}>
-          <rect x="0" y="0" width="820" height={H} fill="#080f18" />
+          <rect x="0" y="0" width="820" height={H} fill={`url(#${glossId})`} />
         </g>
 
         <g clipPath={`url(#${clipId})`}>

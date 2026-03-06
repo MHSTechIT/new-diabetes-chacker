@@ -6,7 +6,7 @@
   max-height: 100vh;
   max-height: 100dvh;
   min-height: 0;
-  background: #0D0D1A;
+  background: transparent;
   display: flex;
   flex-direction: column;
   max-width: 430px;
@@ -51,11 +51,13 @@
   font-size: 14px;
 }
 
-/* ── Body water animation overlay ─────────────────────────────── */
+/* ── Body water animation overlay (glossy) ─────────────────────── */
 .result-animation-overlay {
   position: fixed;
   inset: 0;
-  background: #0D0D1A;
+  background: rgba(26, 0, 51, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,15 +214,17 @@
   min-height: 0;
 }
 
-/* ── Accuracy banner (app-style card) ──────────────────────────── */
+/* ── Accuracy banner (glossy) ──────────────────────────────────── */
 .result-accuracy-banner {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 16px;
   padding: 12px 14px;
-  background: #161625;
-  border: 2px solid #2A2A3E;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
 }
 
@@ -348,10 +352,12 @@
   margin: 0;
 }
 
-/* ── Cards (app-style: #161625, #2A2A3E) ───────────────────────── */
+/* ── Cards (glossy) ───────────────────────────────────────────── */
 .result-card {
-  background: #161625;
-  border: 2px solid #2A2A3E;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 12px;
@@ -440,8 +446,10 @@
   flex: 1;
   padding: 14px 20px;
   border-radius: 50px;
-  border: 2px solid #2A2A3E;
-  background: #161625;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #CCAAFF;
   font-size: 14px;
   font-weight: 600;
@@ -676,8 +684,10 @@
 .boost-modal {
   width: 100%;
   max-width: 380px;
-  background: #161625;
-  border: 2px solid #2A2A3E;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 20px;
   padding: 24px;
   box-sizing: border-box;
@@ -698,8 +708,10 @@
   width: 100%;
   padding: 14px 16px;
   margin-bottom: 12px;
-  background: #0D0D1A;
-  border: 2px solid #2A2A3E;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   color: #fff;
   cursor: pointer;
@@ -819,8 +831,10 @@
   justify-content: center;
   min-height: 120px;
   padding: 20px;
-  background: #0D0D1A;
-  border: 2px dashed #2A2A3E;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px dashed rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
@@ -954,9 +968,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
-  background: #0D0D1A;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 12px;
-  border: 1px solid #2A2A3E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .result-blood-report-label {
