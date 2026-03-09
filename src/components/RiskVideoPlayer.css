@@ -1,0 +1,195 @@
+/* Risk video player – 4:5 on mobile, fits result page layout */
+.risk-video-player {
+  --risk-color: #6b7280;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1rem;
+  border-color: var(--risk-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* 4:5 aspect ratio for mobile (default) */
+.risk-video-player--4-5 .risk-video-player__container,
+.risk-video-player.risk-video-player--4-5 .risk-video-player__container {
+  aspect-ratio: 4 / 5;
+}
+
+.risk-video-player__container {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.risk-video-player__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.risk-video-player__play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--risk-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+  z-index: 2;
+}
+
+.risk-video-player__play-btn:hover {
+  background: #fff;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.risk-video-player__error-msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  color: #A0A0CC;
+  font-size: 0.875rem;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.risk-video-player__error-msg p {
+  margin: 0 0 0.5rem;
+}
+
+.risk-video-player__error-hint {
+  font-size: 0.75rem;
+  color: #8888AA;
+}
+
+.risk-video-player__error-hint code {
+  background: rgba(255,255,255,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.risk-video-player__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.risk-video-player__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--risk-color);
+  line-height: 1.3;
+}
+
+.risk-video-player__progress-wrap {
+  position: relative;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.risk-video-player__progress-bar {
+  height: 100%;
+  background: var(--risk-color);
+  border-radius: 3px;
+  transition: width 0.1s linear;
+  pointer-events: none;
+}
+
+.risk-video-player__progress-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+  margin: 0;
+}
+
+.risk-video-player__time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  color: #8888AA;
+  font-variant-numeric: tabular-nums;
+}
+
+.risk-video-player__time span:first-child {
+  color: var(--risk-color);
+  font-weight: 600;
+}
+
+/* Error state */
+.risk-video-player--error {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: #f43f5e;
+  color: #f43f5e;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Responsive: smaller play button on narrow screens */
+@media (max-width: 430px) {
+  .risk-video-player {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .risk-video-player__play-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .risk-video-player__play-btn svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .risk-video-player__title {
+    font-size: 0.875rem;
+  }
+}
+
+/* When used inside result page: desktop places video on the left via Result.css grid */
+.result-video-wrap {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .result-video-wrap {
+    /* 16:9 or 4:5 on desktop left column – keep 4:5 for consistency if desired */
+    max-width: 360px;
+  }
+
+  .result-video-wrap .risk-video-player__container {
+    /* Optional: desktop can keep 4:5 or use 16:9; keeping 4:5 as per requirement */
+    aspect-ratio: 4 / 5;
+  }
+}

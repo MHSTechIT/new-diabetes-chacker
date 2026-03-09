@@ -1,22 +1,40 @@
 .intro-page {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   min-height: 100vh;
   background: linear-gradient(135deg, #1a0033 0%, #2d0052 100%);
   padding: 20px;
 }
 
+/* Top header – logo always at top */
+.intro-header {
+  flex-shrink: 0;
+  padding-top: 20px;
+  padding-bottom: 16px;
+  text-align: center;
+  animation: fadeInDown 0.8s ease-out;
+}
+
 .intro-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   max-width: 600px;
   width: 100%;
+  margin: 0 auto;
   text-align: center;
 }
 
 /* Logo Section */
 .intro-logo {
-  margin-bottom: 60px;
-  animation: fadeInDown 0.8s ease-out;
+  margin-bottom: 0;
+  animation: none;
+}
+
+.intro-header .intro-logo {
+  display: inline-block;
 }
 
 .logo-icon {
@@ -119,8 +137,9 @@
     padding: 0 20px;
   }
 
-  .intro-logo {
-    margin-bottom: 40px;
+  .intro-header {
+    padding-top: 16px;
+    padding-bottom: 12px;
   }
 
   .logo-icon {

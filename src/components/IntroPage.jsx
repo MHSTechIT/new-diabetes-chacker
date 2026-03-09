@@ -15,12 +15,14 @@ export default function IntroPage() {
 
   return (
     <div className="intro-page">
-      <div className="intro-container">
-        {/* Logo/Branding */}
+      {/* Top logo – always visible at top of viewport */}
+      <header className="intro-header">
         <div className="intro-logo">
           <img src={logo} alt="My Health School" className="logo-icon" />
         </div>
+      </header>
 
+      <div className="intro-container">
         {/* Main Content */}
         <div className="intro-content">
           <h1 className="intro-title">Diabetes Risk Assessment</h1>

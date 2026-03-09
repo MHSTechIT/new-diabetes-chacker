@@ -6,6 +6,7 @@ import { calculateRisk } from '../utils/scoring'
 import { apiAnalyzeReport } from '../lib/api'
 import BodyOutline from '../components/BodyOutline'
 import ConfirmModal from '../components/ConfirmModal'
+import RiskVideoPlayer from '../components/RiskVideoPlayer'
 import './Result.css'
 
 const WATER_COLORS = {
@@ -428,47 +429,22 @@ export default function Result() {
     <>
       <h1 className="result-title">Your Result</h1>
       <div className="result-body">
-        {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) && (
-          <div className="result-accuracy-banner">
-            <div className="result-accuracy-message">
-              <span className="result-accuracy-icon" aria-hidden>⚠</span>
-              <span>This result is 50–60% accurate. Based on your answers only. Upload your blood report to get AI-powered precision.</span>
+        {/* Score section only during shrink so targetSlotRef is in DOM for animation */}
+        {animationPhase === 'shrink' && (
+          <div className="result-score-section">
+            <div className="result-score-ring-wrap">
+              {scoreSlotContent()}
             </div>
-            <button
-              type="button"
-              className="result-accuracy-cta"
-              onClick={openBoostModal}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBoostModal(); } }}
-            >
-              Get 90%+ Accuracy →
-            </button>
           </div>
         )}
 
-        <div className="result-score-section">
-          <div className="result-score-ring-wrap">
-            {scoreSlotContent()}
+        {/* Video at top on mobile, left column on desktop; 4:5 aspect ratio */}
+        {animationPhase === 'done' && level && (
+          <div className="result-video-wrap">
+            <h2 className="result-video-heading">Watch: Your risk level</h2>
+            <RiskVideoPlayer riskLevel={level} autoPlay={false} aspectRatio="4/5" />
           </div>
-          {animationPhase === 'done' && (
-            <>
-              <div
-                className="result-badge"
-                style={{ background: colors.bg, borderColor: colors.border }}
-              >
-                <span className="result-badge-dot" style={{ background: colors.dot }} />
-                <span className="result-badge-label" style={{ color: colors.text }}>
-                  {BADGE_LABEL[level]}
-                </span>
-              </div>
-              <p className="result-status-line" style={{ color: colors.text }}>
-                {STATUS_LINE[level]}
-              </p>
-              <p className="result-probability">
-                Probability: {result.probabilityRangeText}
-              </p>
-            </>
-          )}
-        </div>
+        )}
 
         {animationPhase === 'done' && enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null) && (
           <div className="result-card result-combined-report-card">
@@ -519,63 +495,8 @@ export default function Result() {
           </div>
         )}
 
-        {animationPhase === 'done' && Object.keys(groupedFactors.grouped).length > 0 && (
-          <>
-            <div className="result-card result-factors-section">
-              <h3 className="result-factors-title">Contributing Factors</h3>
-              {Object.entries(groupedFactors.grouped).map(([category, factors]) => (
-                <div key={category} className="result-category-group">
-                  <div className="result-category-header">
-                    <span
-                      className="result-category-badge"
-                      style={{
-                        background: CATEGORY_COLORS[category]?.bg,
-                        borderColor: CATEGORY_COLORS[category]?.border,
-                        color: CATEGORY_COLORS[category]?.text,
-                      }}
-                    >
-                      {CATEGORY_COLORS[category]?.label || category}
-                    </span>
-                  </div>
-                  <div className="result-factor-chips">
-                    {factors.map((f, i) => (
-                      <span
-                        key={i}
-                        className="result-factor-chip"
-                        style={{
-                          borderColor: CATEGORY_COLORS[category]?.border,
-                          color: CATEGORY_COLORS[category]?.text,
-                          background: CATEGORY_COLORS[category]?.bg,
-                        }}
-                      >
-                        <span className="result-factor-chip-icon">▲</span>
-                        <span className="result-factor-name">{truncate(f.factor)}</span>
-                        <span className="result-factor-points">+{f.points}</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
-
         {animationPhase === 'done' && (
           <>
-            <div className="result-card">
-              <h2 className="result-card-title">Your Report Summary</h2>
-              <p className="result-summary-text">{summary}</p>
-            </div>
-
-            <div className="result-card">
-              <h2 className="result-card-title">What To Do Next</h2>
-              <ul className="result-actions-list">
-                {RECOMMENDED_ACTIONS[level].map((action, i) => (
-                  <li key={i}><span className="result-actions-arrow">→</span> {action}</li>
-                ))}
-              </ul>
-            </div>
-
             {enhancedResult?.riskExplanation && (
               <div className="result-card result-risk-explanation">
                 <h2 className="result-card-title">Risk in context</h2>
@@ -600,6 +521,118 @@ export default function Result() {
                 </p>
               </div>
             )}
+
+            {/* End-of-page format: Visual and result → Your report summary → What to do next → Contribution factor */}
+            <div className="result-format-block">
+              <h2 className="result-format-block-title">Your Result</h2>
+
+              <section className="result-format-section" aria-labelledby="result-visual-heading">
+                <h3 id="result-visual-heading" className="result-format-section-title">Visual and result</h3>
+                <div className="result-format-visual">
+                  <BodyOutline
+                    gender={resolvedGender}
+                    width={80}
+                    height={80}
+                    waterLevel={(result?.totalScore ?? 0) / 100}
+                    waterColor={waterColor}
+                    centerContent={
+                      <span className="result-format-score">{scoreDisplay}%</span>
+                    }
+                  />
+                  <div className="result-format-visual-right">
+                    <div
+                      className="result-badge result-format-badge"
+                      style={{ background: colors.bg, borderColor: colors.border }}
+                    >
+                      <span className="result-badge-dot" style={{ background: colors.dot }} />
+                      <span className="result-badge-label" style={{ color: colors.text }}>
+                        {BADGE_LABEL[level]}
+                      </span>
+                    </div>
+                    <p className="result-format-status" style={{ color: colors.text }}>
+                      {STATUS_LINE[level]}
+                    </p>
+                    <p className="result-format-probability">Probability: {result.probabilityRangeText}</p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="result-format-section" aria-labelledby="result-summary-heading">
+                <h3 id="result-summary-heading" className="result-format-section-title">Your report summary</h3>
+                {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) ? (
+                  <div className="result-format-accuracy-note">
+                    <span className="result-accuracy-icon" aria-hidden>⚠</span>
+                    <span>This result is 50–60% accurate. Based on your answers only.</span>
+                  </div>
+                ) : null}
+                <p className="result-summary-text">{summary}</p>
+              </section>
+
+              <section className="result-format-section" aria-labelledby="result-next-heading">
+                <h3 id="result-next-heading" className="result-format-section-title">What to do next</h3>
+                {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) && (
+                  <div className="result-format-upload-cta">
+                    <p className="result-format-upload-text">Upload your blood report to get AI-powered precision.</p>
+                    <button
+                      type="button"
+                      className="result-accuracy-cta"
+                      onClick={openBoostModal}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBoostModal(); } }}
+                    >
+                      Get 90%+ Accuracy →
+                    </button>
+                  </div>
+                )}
+                <ul className="result-actions-list">
+                  {RECOMMENDED_ACTIONS[level].map((action, i) => (
+                    <li key={i}><span className="result-actions-arrow">→</span> {action}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <section className="result-format-section" aria-labelledby="result-factors-heading">
+                <h3 id="result-factors-heading" className="result-format-section-title">Contribution factor</h3>
+                {Object.keys(groupedFactors.grouped).length > 0 ? (
+                  <div className="result-format-factors">
+                    {Object.entries(groupedFactors.grouped).map(([category, factors]) => (
+                      <div key={category} className="result-category-group">
+                        <div className="result-category-header">
+                          <span
+                            className="result-category-badge"
+                            style={{
+                              background: CATEGORY_COLORS[category]?.bg,
+                              borderColor: CATEGORY_COLORS[category]?.border,
+                              color: CATEGORY_COLORS[category]?.text,
+                            }}
+                          >
+                            {CATEGORY_COLORS[category]?.label || category}
+                          </span>
+                        </div>
+                        <div className="result-factor-chips">
+                          {factors.map((f, i) => (
+                            <span
+                              key={i}
+                              className="result-factor-chip"
+                              style={{
+                                borderColor: CATEGORY_COLORS[category]?.border,
+                                color: CATEGORY_COLORS[category]?.text,
+                                background: CATEGORY_COLORS[category]?.bg,
+                              }}
+                            >
+                              <span className="result-factor-chip-icon">▲</span>
+                              <span className="result-factor-name">{truncate(f.factor)}</span>
+                              <span className="result-factor-points">+{f.points}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="result-format-no-factors">No specific contributing factors identified. Result is based on your overall profile.</p>
+                )}
+              </section>
+            </div>
 
             <div className="result-footer-btns">
               <button type="button" className="result-btn-ghost" onClick={handleRetake}>
