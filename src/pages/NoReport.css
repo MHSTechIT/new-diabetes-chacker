@@ -1,0 +1,109 @@
+.no-report-page {
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  background: transparent;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.no-report-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.no-report-back {
+  background: #1a1a2e;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #A0A0CC;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.no-report-back:hover {
+  background: #2A2A3E;
+  color: #CCAAFF;
+}
+
+.no-report-title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  padding-right: 40px;
+}
+
+.no-report-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 24px 20px 32px;
+  max-width: 430px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-report-message {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.no-report-btn-primary {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: linear-gradient(135deg, #7B2FFF, #E040FB);
+  box-shadow: 0 6px 20px rgba(123, 47, 255, 0.4);
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  margin-top: 8px;
+}
+
+.no-report-btn-primary:hover {
+  box-shadow: 0 8px 24px rgba(123, 47, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.no-report-btn-ghost {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  font-weight: 600;
+  color: #C4B5FD;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.no-report-btn-ghost:hover {
+  border-color: #7B2FFF;
+  background: rgba(123, 47, 255, 0.1);
+}

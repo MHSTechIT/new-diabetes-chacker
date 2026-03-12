@@ -8,11 +8,11 @@ import fatherImg from '../assets/family/father.png'
 import './FamilyHistory.css'
 
 const options = [
-  { id: 'none',         label: 'None' },
-  { id: 'not-sure',     label: 'Not sure' },
-  { id: 'siblings',     label: 'Siblings' },
-  { id: 'one-parent',   label: 'One parent' },
-  { id: 'both-parents', label: 'Both parents' },
+  { id: 'none',         label: 'No, nobody in my family has it.' },
+  { id: 'not-sure',     label: "I'm not sure about my family history." },
+  { id: 'siblings',     label: 'Yes, my brother or sister has it.' },
+  { id: 'one-parent',   label: 'Yes, one of my parents has it.' },
+  { id: 'both-parents', label: 'Yes, both my parents have it.' },
 ]
 
 /**

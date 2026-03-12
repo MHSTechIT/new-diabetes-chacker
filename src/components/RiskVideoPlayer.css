@@ -1,4 +1,4 @@
-/* Risk video player – 4:5 on mobile, fits result page layout */
+/* Risk video player – 16:9 aspect ratio */
 .risk-video-player {
   --risk-color: #6b7280;
   display: flex;
@@ -15,10 +15,10 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* 4:5 aspect ratio for mobile (default) */
-.risk-video-player--4-5 .risk-video-player__container,
-.risk-video-player.risk-video-player--4-5 .risk-video-player__container {
-  aspect-ratio: 4 / 5;
+/* 16:9 aspect ratio */
+.risk-video-player--16-9 .risk-video-player__container,
+.risk-video-player.risk-video-player--16-9 .risk-video-player__container {
+  aspect-ratio: 16 / 9;
 }
 
 .risk-video-player__container {
@@ -184,12 +184,11 @@
 
 @media (min-width: 1024px) {
   .result-video-wrap {
-    /* 16:9 or 4:5 on desktop left column – keep 4:5 for consistency if desired */
+    /* 16:9 on desktop left column */
     max-width: 360px;
   }
 
   .result-video-wrap .risk-video-player__container {
-    /* Optional: desktop can keep 4:5 or use 16:9; keeping 4:5 as per requirement */
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 16 / 9;
   }
 }

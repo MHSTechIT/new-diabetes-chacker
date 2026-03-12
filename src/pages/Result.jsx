@@ -1,32 +1,13 @@
-import { useEffect, useState, useMemo, useRef } from 'react'
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { getProfile, clearProfile } from '../lib/profileStorage'
 import { calculateRisk } from '../utils/scoring'
 import { apiAnalyzeReport } from '../lib/api'
-import BodyOutline from '../components/BodyOutline'
 import ConfirmModal from '../components/ConfirmModal'
 import RiskVideoPlayer from '../components/RiskVideoPlayer'
+import RiskGauge from '../components/RiskGauge'
 import './Result.css'
-
-const WATER_COLORS = {
-  LOW: '#10b981',
-  LOW_MODERATE: '#22c55e',
-  MODERATE: '#f59e0b',
-  MODERATE_HIGH: '#f97316',
-  HIGH: '#f43f5e',
-}
-
-const INTRO_DURATION_MS = 8000
-const SHRINK_DURATION_MS = 1500
-
-const AURORA_BY_LEVEL = {
-  LOW: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(16,185,129,0.12), transparent)',
-  LOW_MODERATE: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(34,197,94,0.12), transparent)',
-  MODERATE: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(245,158,11,0.15), transparent)',
-  MODERATE_HIGH: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(249,115,22,0.15), transparent)',
-  HIGH: 'radial-gradient(ellipse 100% 60% at 50% 0%, rgba(244,63,94,0.15), transparent), radial-gradient(ellipse 80% 40% at 50% 20%, rgba(139,92,246,0.1), transparent)',
-}
 
 const RISK_COLORS = {
   LOW: { bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.3)', text: '#10b981', dot: '#10b981' },
@@ -74,40 +55,26 @@ const RECOMMENDED_ACTIONS = {
   HIGH: ['See doctor immediately', 'Blood tests', 'Follow medical advice'],
 }
 
-const DURATION_MS = 1200
-
-function easeOutQuad(t) {
-  return 1 - (1 - t) ** 2
-}
-
 export default function Result() {
   const navigate = useNavigate()
   const location = useLocation()
   const resultFromState = location.state?.result
   const userId = location.state?.userId
-  const gender = location.state?.gender
 
   const [resultData, setResultData] = useState(null)
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(!resultFromState && !!userId)
   const [loadError, setLoadError] = useState(null)
-  const [scoreDisplay, setScoreDisplay] = useState(0)
   const [animationPhase, setAnimationPhase] = useState(() => (location.state?.playAnimation === true ? 'intro' : 'done'))
-  const [introWaterLevel, setIntroWaterLevel] = useState(0)
-  const [introPercentage, setIntroPercentage] = useState(0)
-  const [shrinkTransform, setShrinkTransform] = useState(null)
   const [showBoostModal, setShowBoostModal] = useState(false)
   const [boostStep, setBoostStep] = useState('options')
   const [analyzing, setAnalyzing] = useState(false)
-  const [analyzeWaterLevel, setAnalyzeWaterLevel] = useState(0)
   const [analysisError, setAnalysisError] = useState(null)
   const [enhancedResult, setEnhancedResult] = useState(null)
   const [showBackConfirm, setShowBackConfirm] = useState(false)
-  const bodyWrapRef = useRef(null)
-  const targetSlotRef = useRef(null)
+  const [showRetestConfirm, setShowRetestConfirm] = useState(false)
 
   const result = enhancedResult?.result ?? resultFromState ?? resultData
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
     if (!resultFromState && !userId) {
@@ -156,18 +123,22 @@ export default function Result() {
   const colors = RISK_COLORS[level] ?? RISK_COLORS.LOW
   const truncate = (str, max = 24) => (str?.length > max ? `${str.slice(0, max)}...` : str)
 
+  /* Only show very high risk factors in Contribution factor (points >= 5) */
+  const VERY_HIGH_RISK_POINTS = 5
   const groupedFactors = useMemo(() => {
     const grouped = {}
     const categoryTotals = {}
 
     result?.riskyFactors?.forEach((factor) => {
+      const points = factor.points || 0
+      if (points < VERY_HIGH_RISK_POINTS) return
       const category = factor.category || 'Other'
       if (!grouped[category]) {
         grouped[category] = []
         categoryTotals[category] = 0
       }
       grouped[category].push(factor)
-      categoryTotals[category] += factor.points || 0
+      categoryTotals[category] += points
     })
 
     return { grouped, categoryTotals }
@@ -191,88 +162,38 @@ export default function Result() {
     return `Multiple risk factors including ${first.factor} indicate high risk. See a doctor as soon as possible.`
   }, [result?.riskyFactors, level])
 
-  useEffect(() => {
-    if (result?.totalScore == null) return
-    const target = result.totalScore
-    const start = 0
-    const startTime = performance.now()
+  const [gaugeShrinking, setGaugeShrinking] = useState(false)
+  const [loadingTextLen, setLoadingTextLen] = useState(0)
+  const gaugeHoldTimerRef = useRef(null)
+  const GAUGE_HOLD_MS = 5000   /* show gauge for 5 sec after needle animation */
+  const SHRINK_GAUGE_MS = 800   /* fade-out duration */
+  const LOADING_TEXT = 'your result is loading......'
 
-    function tick(now) {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / DURATION_MS, 1)
-      const eased = easeOutQuad(progress)
-      setScoreDisplay(Math.round(start + (target - start) * eased))
-      if (progress < 1) requestAnimationFrame(tick)
-    }
-
-    requestAnimationFrame(tick)
-  }, [result?.totalScore])
+  const handleGaugeDone = useCallback(() => {
+    gaugeHoldTimerRef.current = setTimeout(() => setGaugeShrinking(true), GAUGE_HOLD_MS)
+  }, [])
 
   useEffect(() => {
-    if (!result || animationPhase !== 'intro') return
-    if (prefersReducedMotion) {
-      setIntroWaterLevel((result.totalScore ?? 0) / 100)
-      setIntroPercentage(result.totalScore ?? 0)
-      setAnimationPhase('done')
-      return
+    return () => {
+      if (gaugeHoldTimerRef.current) clearTimeout(gaugeHoldTimerRef.current)
     }
-    const totalScore = result.totalScore ?? 0
-    const targetWater = totalScore / 100
-    const startTime = performance.now()
-
-    function tick(now) {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / INTRO_DURATION_MS, 1)
-      const eased = easeOutQuad(progress)
-      setIntroWaterLevel(targetWater * eased)
-      setIntroPercentage(Math.round(totalScore * eased))
-      if (progress < 1) {
-        requestAnimationFrame(tick)
-      } else {
-        setAnimationPhase('shrink')
-      }
-    }
-    requestAnimationFrame(tick)
-  }, [result, animationPhase, prefersReducedMotion])
+  }, [])
 
   useEffect(() => {
-    if (animationPhase !== 'shrink' || !bodyWrapRef.current || !targetSlotRef.current) return
-    const bodyEl = bodyWrapRef.current
-    const targetEl = targetSlotRef.current
-    let rafId
-    const run = () => {
-      const bodyRect = bodyEl.getBoundingClientRect()
-      const targetRect = targetEl.getBoundingClientRect()
-      const scale = targetRect.width / bodyRect.width
-      const translateX = targetRect.left + targetRect.width / 2 - (bodyRect.left + bodyRect.width / 2)
-      const translateY = targetRect.top + targetRect.height / 2 - (bodyRect.top + bodyRect.height / 2)
-      setShrinkTransform({ scale, translateX, translateY })
-    }
-    rafId = requestAnimationFrame(() => requestAnimationFrame(run))
-    return () => { if (rafId) cancelAnimationFrame(rafId) }
-  }, [animationPhase])
-
-  useEffect(() => {
-    if (animationPhase !== 'shrink' || !shrinkTransform) return
-    const t = setTimeout(() => setAnimationPhase('done'), SHRINK_DURATION_MS)
+    if (!gaugeShrinking) return
+    const t = setTimeout(() => setAnimationPhase('done'), SHRINK_GAUGE_MS)
     return () => clearTimeout(t)
-  }, [animationPhase, shrinkTransform])
+  }, [gaugeShrinking])
 
+  /* Typewriter: "your result is loading......" during intro */
   useEffect(() => {
-    if (!analyzing) return
-    const startTime = performance.now()
-    const duration = 2500
-    let rafId
-    const tick = (now) => {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - (1 - progress) ** 2
-      setAnalyzeWaterLevel(0.15 + eased * 0.45)
-      if (analyzing) rafId = requestAnimationFrame(tick)
-    }
-    rafId = requestAnimationFrame(tick)
-    return () => { if (rafId) cancelAnimationFrame(rafId) }
-  }, [analyzing])
+    if (animationPhase !== 'intro') return
+    setLoadingTextLen(0)
+    const t = setInterval(() => {
+      setLoadingTextLen((n) => Math.min(n + 1, LOADING_TEXT.length))
+    }, 90)
+    return () => clearInterval(t)
+  }, [animationPhase])
 
   const handleRetake = () => {
     clearProfile()
@@ -401,48 +322,15 @@ export default function Result() {
     )
   }
 
-  const waterColor = WATER_COLORS[level] ?? WATER_COLORS.LOW
-  const resolvedGender = gender === 'female' ? 'female' : 'male'
-
-  const scoreSlotContent = () => {
-    if (animationPhase === 'shrink') {
-      return <div ref={targetSlotRef} className="result-animation-slot" aria-hidden />
-    }
-    if (animationPhase === 'done') {
-      return (
-        <BodyOutline
-          gender={resolvedGender}
-          width={120}
-          height={120}
-          waterLevel={(result?.totalScore ?? 0) / 100}
-          waterColor={waterColor}
-          centerContent={
-            <span className="result-score-value result-score-percent">{scoreDisplay}%</span>
-          }
-        />
-      )
-    }
-    return null
-  }
-
   const mainContent = (
     <>
       <h1 className="result-title">Your Result</h1>
       <div className="result-body">
-        {/* Score section only during shrink so targetSlotRef is in DOM for animation */}
-        {animationPhase === 'shrink' && (
-          <div className="result-score-section">
-            <div className="result-score-ring-wrap">
-              {scoreSlotContent()}
-            </div>
-          </div>
-        )}
-
-        {/* Video at top on mobile, left column on desktop; 4:5 aspect ratio */}
+        {/* Video at top on mobile, left column on desktop; 16:9 aspect ratio */}
         {animationPhase === 'done' && level && (
           <div className="result-video-wrap">
             <h2 className="result-video-heading">Watch: Your risk level</h2>
-            <RiskVideoPlayer riskLevel={level} autoPlay={false} aspectRatio="4/5" />
+            <RiskVideoPlayer riskLevel={level} autoPlay={false} aspectRatio="16/9" />
           </div>
         )}
 
@@ -528,32 +416,23 @@ export default function Result() {
 
               <section className="result-format-section" aria-labelledby="result-visual-heading">
                 <h3 id="result-visual-heading" className="result-format-section-title">Visual and result</h3>
-                <div className="result-format-visual">
-                  <BodyOutline
-                    gender={resolvedGender}
-                    width={80}
-                    height={80}
-                    waterLevel={(result?.totalScore ?? 0) / 100}
-                    waterColor={waterColor}
-                    centerContent={
-                      <span className="result-format-score">{scoreDisplay}%</span>
-                    }
-                  />
-                  <div className="result-format-visual-right">
-                    <div
-                      className="result-badge result-format-badge"
-                      style={{ background: colors.bg, borderColor: colors.border }}
-                    >
-                      <span className="result-badge-dot" style={{ background: colors.dot }} />
-                      <span className="result-badge-label" style={{ color: colors.text }}>
-                        {BADGE_LABEL[level]}
-                      </span>
-                    </div>
-                    <p className="result-format-status" style={{ color: colors.text }}>
-                      {STATUS_LINE[level]}
-                    </p>
-                    <p className="result-format-probability">Probability: {result.probabilityRangeText}</p>
+                <div className="result-format-gauge-wrap">
+                  <RiskGauge key={level} riskLevel={level} animate={false} compact />
+                </div>
+                <div className="result-format-visual-meta">
+                  <div
+                    className="result-badge result-format-badge"
+                    style={{ background: colors.bg, borderColor: colors.border }}
+                  >
+                    <span className="result-badge-dot" style={{ background: colors.dot }} />
+                    <span className="result-badge-label" style={{ color: colors.text }}>
+                      {BADGE_LABEL[level]}
+                    </span>
                   </div>
+                  <p className="result-format-status" style={{ color: colors.text }}>
+                    {STATUS_LINE[level]}
+                  </p>
+                  <p className="result-format-probability">Probability: {result.probabilityRangeText}</p>
                 </div>
               </section>
 
@@ -568,21 +447,27 @@ export default function Result() {
                 <p className="result-summary-text">{summary}</p>
               </section>
 
+              <section className="result-format-section result-format-section--book-cta" aria-labelledby="result-book-cta-heading">
+                <button
+                  type="button"
+                  id="result-book-cta-heading"
+                  className="result-book-blood-test-cta"
+                  onClick={() =>
+                    navigate('/book-home-test', {
+                      state: {
+                        ...location.state,
+                        name: profile?.name,
+                        phone: profile?.phone,
+                      },
+                    })
+                  }
+                >
+                  To get 100% Result book today for blood test
+                </button>
+              </section>
+
               <section className="result-format-section" aria-labelledby="result-next-heading">
                 <h3 id="result-next-heading" className="result-format-section-title">What to do next</h3>
-                {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) && (
-                  <div className="result-format-upload-cta">
-                    <p className="result-format-upload-text">Upload your blood report to get AI-powered precision.</p>
-                    <button
-                      type="button"
-                      className="result-accuracy-cta"
-                      onClick={openBoostModal}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openBoostModal(); } }}
-                    >
-                      Get 90%+ Accuracy →
-                    </button>
-                  </div>
-                )}
                 <ul className="result-actions-list">
                   {RECOMMENDED_ACTIONS[level].map((action, i) => (
                     <li key={i}><span className="result-actions-arrow">→</span> {action}</li>
@@ -593,49 +478,35 @@ export default function Result() {
               <section className="result-format-section" aria-labelledby="result-factors-heading">
                 <h3 id="result-factors-heading" className="result-format-section-title">Contribution factor</h3>
                 {Object.keys(groupedFactors.grouped).length > 0 ? (
-                  <div className="result-format-factors">
+                  <div className="result-format-factors result-format-factors--chips-only">
                     {Object.entries(groupedFactors.grouped).map(([category, factors]) => (
-                      <div key={category} className="result-category-group">
-                        <div className="result-category-header">
+                      <div key={category} className="result-factor-chips">
+                        {factors.map((f, i) => (
                           <span
-                            className="result-category-badge"
+                            key={`${category}-${i}`}
+                            className="result-factor-chip"
                             style={{
-                              background: CATEGORY_COLORS[category]?.bg,
                               borderColor: CATEGORY_COLORS[category]?.border,
                               color: CATEGORY_COLORS[category]?.text,
+                              background: CATEGORY_COLORS[category]?.bg,
                             }}
                           >
-                            {CATEGORY_COLORS[category]?.label || category}
+                            <span className="result-factor-chip-icon">▲</span>
+                            <span className="result-factor-name">{truncate(f.factor)}</span>
+                            <span className="result-factor-points">+{f.points}</span>
                           </span>
-                        </div>
-                        <div className="result-factor-chips">
-                          {factors.map((f, i) => (
-                            <span
-                              key={i}
-                              className="result-factor-chip"
-                              style={{
-                                borderColor: CATEGORY_COLORS[category]?.border,
-                                color: CATEGORY_COLORS[category]?.text,
-                                background: CATEGORY_COLORS[category]?.bg,
-                              }}
-                            >
-                              <span className="result-factor-chip-icon">▲</span>
-                              <span className="result-factor-name">{truncate(f.factor)}</span>
-                              <span className="result-factor-points">+{f.points}</span>
-                            </span>
-                          ))}
-                        </div>
+                        ))}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="result-format-no-factors">No specific contributing factors identified. Result is based on your overall profile.</p>
+                  <p className="result-format-no-factors">No very high risk contributing factors in this range. Result is based on your overall profile.</p>
                 )}
               </section>
             </div>
 
             <div className="result-footer-btns">
-              <button type="button" className="result-btn-ghost" onClick={handleRetake}>
+              <button type="button" className="result-btn-ghost" onClick={() => setShowRetestConfirm(true)}>
                 Retest
               </button>
               <button type="button" className="result-btn-primary" onClick={handleShare}>
@@ -651,56 +522,19 @@ export default function Result() {
   if (animationPhase === 'intro') {
     return (
       <div className="result-page">
-        <div className="result-animation-overlay" aria-hidden>
-          <div ref={bodyWrapRef} className="result-animation-body-wrap">
-            <BodyOutline
-              gender={resolvedGender}
-              width={200}
-              height={440}
-              waterLevel={introWaterLevel}
-              waterColor={waterColor}
-              centerContent={
-                <div className="result-intro-percentage">
-                  <span className="result-score-value result-score-percent">{introPercentage}%</span>
-                </div>
-              }
-            />
+        <div
+          className={`risk-gauge-intro-overlay ${gaugeShrinking ? 'risk-gauge-intro-overlay--shrinking' : ''}`}
+          aria-hidden
+        >
+          <div className="risk-gauge-intro-content">
+            <div className={`risk-gauge-intro-wrap ${gaugeShrinking ? 'risk-gauge-intro-wrap--shrinking' : ''}`}>
+              <RiskGauge riskLevel={level} animate={!gaugeShrinking} introDurationMs={5000} onAnimationDone={handleGaugeDone} />
+            </div>
+            <p className="result-loading-typewriter" aria-live="polite">
+              {LOADING_TEXT.slice(0, loadingTextLen)}
+              <span className="result-loading-cursor" aria-hidden>|</span>
+            </p>
           </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (animationPhase === 'shrink') {
-    return (
-      <div className="result-page">
-        <div className="result-animation-overlay" aria-hidden>
-          <div
-            ref={bodyWrapRef}
-            className="result-animation-body-wrap result-animation-body-shrinking"
-            style={{
-              transition: `transform ${SHRINK_DURATION_MS}ms ease-out`,
-              transform: shrinkTransform
-                ? `translate(${shrinkTransform.translateX}px, ${shrinkTransform.translateY}px) scale(${shrinkTransform.scale})`
-                : undefined,
-            }}
-          >
-            <BodyOutline
-              gender={resolvedGender}
-              width={200}
-              height={440}
-              waterLevel={(result?.totalScore ?? 0) / 100}
-              waterColor={waterColor}
-              centerContent={
-                <div className="result-intro-percentage">
-                  <span className="result-score-value result-score-percent">{result?.totalScore ?? 0}%</span>
-                </div>
-              }
-            />
-          </div>
-        </div>
-        <div className={`result-content ${animationPhase === 'shrink' ? 'result-content-hidden' : ''}`}>
-          {mainContent}
         </div>
       </div>
     )
@@ -711,22 +545,25 @@ export default function Result() {
       {mainContent}
 
       {analyzing && (
-        <div className="result-animation-overlay result-analyzing-overlay" aria-live="polite">
-          <div className="result-animation-body-wrap">
-            <BodyOutline
-              gender={resolvedGender}
-              width={200}
-              height={440}
-              waterLevel={analyzeWaterLevel}
-              waterColor={waterColor}
-              centerContent={
-                <div className="result-intro-percentage">
-                  <span className="result-analyzing-label">Analyzing your report…</span>
-                </div>
-              }
-            />
+        <div className="result-analyzing-overlay" aria-live="polite">
+          <div className="result-analyzing-spinner-wrap">
+            <div className="result-loader-spinner" aria-hidden />
+            <p className="result-analyzing-label">Analyzing your report…</p>
           </div>
         </div>
+      )}
+
+      {showRetestConfirm && (
+        <ConfirmModal
+          message="Start the assessment again from the beginning? Your current result will be cleared."
+          confirmLabel="Yes, retest"
+          cancelLabel="Cancel"
+          onConfirm={() => {
+            setShowRetestConfirm(false)
+            handleRetake()
+          }}
+          onCancel={() => setShowRetestConfirm(false)}
+        />
       )}
 
       {showBoostModal && (

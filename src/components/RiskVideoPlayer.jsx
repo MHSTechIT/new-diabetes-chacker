@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import VIDEO_CONFIG from '../config/videoConfig'
 import './RiskVideoPlayer.css'
 
-const RiskVideoPlayer = ({ riskLevel, autoPlay = true, aspectRatio = '4/5' }) => {
+const RiskVideoPlayer = ({ riskLevel, autoPlay = true, aspectRatio = '16/9' }) => {
   const videoRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -103,7 +103,7 @@ const RiskVideoPlayer = ({ riskLevel, autoPlay = true, aspectRatio = '4/5' }) =>
 
   return (
     <div
-      className={`risk-video-player ${aspectRatio === '4/5' ? 'risk-video-player--4-5' : ''}`}
+      className={`risk-video-player ${aspectRatio === '16/9' ? 'risk-video-player--16-9' : ''}`}
       style={{ '--risk-color': getRiskColor(riskLevel) }}
     >
       <div className="risk-video-player__container">

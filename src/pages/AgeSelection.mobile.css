@@ -291,3 +291,79 @@
 .next-btn.active:active {
   transform: scale(0.98);
 }
+
+/* ── Mobile only: full-screen background image, options on top ──── */
+@media (max-width: 768px) {
+  .page-container {
+    position: relative;
+  }
+
+  /* Full-screen image layer (behind everything) */
+  .character-column {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-height: none !important;
+    flex: none !important;
+    order: unset !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 0 !important;
+    overflow: hidden;
+  }
+
+  .character-column .character-img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    align-self: stretch !important;
+  }
+
+  .character-column .char-glow {
+    display: none;
+  }
+
+  /* Foreground: header, title, options, NEXT — in front of image */
+  .page-container > .header,
+  .page-container > .title,
+  .page-container > .main-content,
+  .page-container > .bottom-section {
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .options-column {
+    margin-top: auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .age-card {
+    position: relative;
+    z-index: 2;
+  }
+
+  .bottom-section,
+  .next-btn {
+    position: relative;
+    z-index: 2;
+  }
+}

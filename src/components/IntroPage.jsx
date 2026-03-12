@@ -28,13 +28,12 @@ export default function IntroPage() {
           <h1 className="intro-title">Diabetes Risk Assessment</h1>
           <p className="intro-description">
             This assessment is a screening tool only and does not replace a medical diagnosis. Results are based on
-            self-reported information. Please consult a qualified doctor for confirmation and treatment.
-            MYHEALTHSCHOOL is not liable for decisions made based solely on this screening result.
+            self-reported information.
           </p>
 
           {/* Call to Action Button */}
           <button className="intro-button" onClick={handleStartTest}>
-            Start Risk Assessment →
+            Start Assessment →
           </button>
         </div>
       </div>
