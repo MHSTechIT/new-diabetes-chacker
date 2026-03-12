@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
 import './GestationalDiabetes.css'
 
 const options = [
-  { id: 'not_applicable', label: 'Not applicable' },
-  { id: 'no', label: 'No' },
-  { id: 'yes', label: 'Yes' },
+  { id: 'not_applicable', labelKey: 'gestational.notApplicable' },
+  { id: 'no', labelKey: 'common.no' },
+  { id: 'yes', labelKey: 'common.yes' },
 ]
 
 export default function GestationalDiabetes() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
   const selectedAge = location.state?.selectedAge
@@ -36,7 +38,7 @@ export default function GestationalDiabetes() {
           type="button"
           className="gd-back-btn"
           onClick={() => navigate('/age-selection', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -45,7 +47,7 @@ export default function GestationalDiabetes() {
         </div>
       </div>
 
-      <h1 className="gd-title">History of gestational diabetes during pregnancy?</h1>
+      <h1 className="gd-title">{t('gestational.title')}</h1>
 
       <div className="gd-content-area">
         <div className="gd-options-grid">
@@ -56,7 +58,7 @@ export default function GestationalDiabetes() {
               className={`gd-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
               onClick={() => handleOptionSelect(opt.id)}
             >
-              {opt.label}
+              {t(opt.labelKey)}
             </button>
           ))}
         </div>
@@ -69,7 +71,7 @@ export default function GestationalDiabetes() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

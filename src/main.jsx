@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'
+import { LanguageProvider } from './context/LanguageContext'
 import App from './App.jsx'
 import './index.css'
 
@@ -15,7 +16,9 @@ if (!rootEl) {
     <React.StrictMode>
       <ErrorBoundary>
         <BrowserRouter>
-          <App />
+          <LanguageProvider>
+            <App />
+          </LanguageProvider>
         </BrowserRouter>
       </ErrorBoundary>
     </React.StrictMode>,

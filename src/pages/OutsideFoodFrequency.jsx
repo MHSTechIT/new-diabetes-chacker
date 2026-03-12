@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -8,15 +9,16 @@ import outsideFoodFemale from '../assets/outside-food/outside_food_female.png'
 import './OutsideFoodFrequency.css'
 
 const options = [
-  { id: 'rarely', label: 'Rarely' },
-  { id: 'weekly1_2', label: '1–2 times per week' },
-  { id: 'weekly3_4', label: '3–4 times per week' },
-  { id: 'weekly5plus', label: '5 or more times/week' },
+  { id: 'rarely', labelKey: 'junkFood.rarely' },
+  { id: 'weekly1_2', labelKey: 'junkFood.weekly1_2' },
+  { id: 'weekly3_4', labelKey: 'junkFood.weekly3_4' },
+  { id: 'weekly5plus', labelKey: 'junkFood.weekly5plus' },
 ]
 
 function OutsideFoodFrequency() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -54,7 +56,7 @@ function OutsideFoodFrequency() {
           type="button"
           className="off-back-btn"
           onClick={() => navigate('/junk-food-frequency', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -64,7 +66,7 @@ function OutsideFoodFrequency() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="off-title">How often do you eat outside food (restaurant/takeaway)?</h1>
+      <h1 className="off-title">{t('outsideFood.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="off-character-area">
@@ -86,7 +88,7 @@ function OutsideFoodFrequency() {
             className={`off-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -99,7 +101,7 @@ function OutsideFoodFrequency() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

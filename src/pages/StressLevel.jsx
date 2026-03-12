@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -12,9 +13,9 @@ import highFemaleImg from '../assets/stress-level/high_female.png'
 import './StressLevel.css'
 
 const options = [
-  { id: 'low', label: 'Low' },
-  { id: 'moderate', label: 'Moderate' },
-  { id: 'high', label: 'High' },
+  { id: 'low', labelKey: 'stressLevel.low' },
+  { id: 'moderate', labelKey: 'stressLevel.moderate' },
+  { id: 'high', labelKey: 'stressLevel.high' },
 ]
 
 const imageMap = {
@@ -26,6 +27,7 @@ const imageMap = {
 export default function StressLevel() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -67,7 +69,7 @@ export default function StressLevel() {
           type="button"
           className="sl-back-btn"
           onClick={() => navigate('/weight-gain', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -77,7 +79,7 @@ export default function StressLevel() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="sl-title">What is your stress level?</h1>
+      <h1 className="sl-title">{t('stressLevel.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="sl-character-area">
@@ -115,7 +117,7 @@ export default function StressLevel() {
             className={`sl-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -128,7 +130,7 @@ export default function StressLevel() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

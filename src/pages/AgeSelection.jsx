@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -23,13 +24,13 @@ import './AgeSelection.mobile.css'
 import './AgeSelection.desktop.css'
 
 const ageOptions = [
-  { id: 'below25', label: 'Below 25' },
-  { id: '26-30', label: 'Age 26 - 30' },
-  { id: '30-35', label: 'Age 30 - 35' },
-  { id: '35-40', label: 'Age 35 - 40' },
-  { id: '40-45', label: 'Age 40 - 45' },
-  { id: '45-50', label: 'Age 45 - 50' },
-  { id: 'above50', label: 'Above 50' },
+  { id: 'below25', labelKey: 'below25' },
+  { id: '26-30', labelKey: 'age26_30' },
+  { id: '30-35', labelKey: 'age30_35' },
+  { id: '35-40', labelKey: 'age35_40' },
+  { id: '40-45', labelKey: 'age40_45' },
+  { id: '45-50', labelKey: 'age45_50' },
+  { id: 'above50', labelKey: 'above50' },
 ]
 
 const maleImageMap = {
@@ -55,6 +56,7 @@ const femaleImageMap = {
 export default function AgeSelection() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
   const fromRect = location.state?.fromRect
@@ -146,7 +148,7 @@ export default function AgeSelection() {
     <div className="page-container">
       {/* Header */}
       <div className="header">
-        <button type="button" className="back-btn" onClick={() => navigate('/')} aria-label="Back">
+        <button type="button" className="back-btn" onClick={() => navigate('/')} aria-label={t('common.back')}>
           ←
         </button>
         <div className="progress-track">
@@ -154,7 +156,7 @@ export default function AgeSelection() {
         </div>
       </div>
 
-      <h1 className="title">Please choose your age</h1>
+      <h1 className="title">{t('age.title')}</h1>
 
       {/* Main content: image top, options bottom on mobile */}
       <div className="main-content">
@@ -186,7 +188,7 @@ export default function AgeSelection() {
                 }
               }}
             >
-              {option.label}
+              {t('age.' + option.labelKey)}
             </div>
           ))}
         </div>
@@ -217,7 +219,7 @@ export default function AgeSelection() {
           onClick={handleNext}
           disabled={!selectedAge}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

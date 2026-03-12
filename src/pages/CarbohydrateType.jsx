@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -9,9 +10,9 @@ import refinedImg from '../assets/carbohydrate-type/refined.png'
 import './CarbohydrateType.css'
 
 const options = [
-  { id: 'complex', label: 'Mostly complex (millets, brown rice, whole grains)' },
-  { id: 'mixed', label: 'Mixed'},
-  { id: 'refined', label: 'Mostly refined (white rice, maida, bakery items)'},
+  { id: 'complex', labelKey: 'carbohydrate.complex' },
+  { id: 'mixed', labelKey: 'carbohydrate.mixed' },
+  { id: 'refined', labelKey: 'carbohydrate.refined' },
 ]
 
 const imageMap = {
@@ -23,6 +24,7 @@ const imageMap = {
 function CarbohydrateType() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -60,7 +62,7 @@ function CarbohydrateType() {
           type="button"
           className="carb-back-btn"
           onClick={() => navigate('/outside-food-frequency', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -70,7 +72,7 @@ function CarbohydrateType() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="carb-title">What type of carbohydrates do you mostly consume?</h1>
+      <h1 className="carb-title">{t('carbohydrate.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="carb-character-area">
@@ -92,7 +94,7 @@ function CarbohydrateType() {
             className={`carb-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            <span className="carb-option-text">{opt.label}</span>
+            <span className="carb-option-text">{t(opt.labelKey)}</span>
            
           </button>
         ))}
@@ -106,7 +108,7 @@ function CarbohydrateType() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

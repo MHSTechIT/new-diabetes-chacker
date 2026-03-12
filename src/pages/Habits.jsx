@@ -1,19 +1,21 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
 import './Habits.css'
 
 const habits = [
-  { id: 'smoking', label: 'Smoking' },
-  { id: 'alcohol', label: 'Alcohol' },
-  { id: 'tobacco-chewing', label: 'Tobacco chewing' },
-  { id: 'none', label: 'None' },
+  { id: 'smoking', labelKey: 'habits.smoking' },
+  { id: 'alcohol', labelKey: 'habits.alcohol' },
+  { id: 'tobacco-chewing', labelKey: 'habits.tobaccoChewing' },
+  { id: 'none', labelKey: 'habits.none' },
 ]
 
 export default function Habits() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -75,7 +77,7 @@ export default function Habits() {
           type="button"
           className="hab-back-btn"
           onClick={() => navigate('/symptoms', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -84,7 +86,7 @@ export default function Habits() {
         </div>
       </div>
 
-      <h1 className="hab-title">Do you have any of these habits?</h1>
+      <h1 className="hab-title">{t('habits.title')}</h1>
 
       <div className="hab-content-area">
         <div className="hab-options-grid">
@@ -97,7 +99,7 @@ export default function Habits() {
                 className={`hab-option-btn ${isSelected ? 'selected' : ''}`}
                 onClick={() => handleHabitToggle(habit.id)}
               >
-                {habit.label}
+                {t(habit.labelKey)}
               </button>
             )
           })}
@@ -111,32 +113,32 @@ export default function Habits() {
           disabled={selectedHabits.size === 0}
           onClick={handleResultClick}
         >
-          RESULT
+          {t('common.result')}
         </button>
       </div>
 
       <div className={`hab-result-modal-overlay ${showResultModal ? 'visible' : ''}`} onClick={handleCancelModal}>
         <div className="hab-result-modal" onClick={(e) => e.stopPropagation()}>
-          <h2 className="hab-result-modal-title">Almost there!</h2>
-          <p className="hab-result-modal-subtitle">Enter your details to view your result.</p>
+          <h2 className="hab-result-modal-title">{t('habits.modalTitle')}</h2>
+          <p className="hab-result-modal-subtitle">{t('habits.modalSubtitle')}</p>
 
           <div className="hab-result-modal-field">
-            <label className="hab-result-modal-label">NAME</label>
+            <label className="hab-result-modal-label">{t('habits.nameLabel')}</label>
             <input
               type="text"
               className="hab-result-modal-input"
-              placeholder="Your full name"
+              placeholder={t('habits.namePlaceholder')}
               value={resultName}
               onChange={(e) => setResultName(e.target.value)}
             />
           </div>
 
           <div className="hab-result-modal-field">
-            <label className="hab-result-modal-label">PHONE NUMBER</label>
+            <label className="hab-result-modal-label">{t('habits.phoneLabel')}</label>
             <input
               type="text"
               className="hab-result-modal-input"
-              placeholder="e.g. 9876543210"
+              placeholder={t('habits.phonePlaceholder')}
               value={resultPhone}
               onChange={handlePhoneChange}
               maxLength={PHONE_MAX_DIGITS}
@@ -144,9 +146,9 @@ export default function Habits() {
               inputMode="numeric"
               pattern="[0-9]*"
               autoComplete="tel"
-              aria-label="Phone number (10 digits)"
+              aria-label={t('habits.phoneLabel')}
             />
-            <span className="hab-result-modal-hint">Enter exactly 10 digits</span>
+            <span className="hab-result-modal-hint">{t('habits.phoneHint')}</span>
           </div>
 
           <button
@@ -155,11 +157,11 @@ export default function Habits() {
             onClick={handleViewResult}
             disabled={!resultName.trim() || resultPhone.length !== 10}
           >
-            View my result
+            {t('habits.viewResult')}
           </button>
 
           <button type="button" className="hab-result-modal-cancel" onClick={handleCancelModal}>
-            Cancel
+            {t('common.cancel')}
           </button>
         </div>
       </div>

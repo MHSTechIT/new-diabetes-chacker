@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
+import { useLanguage } from './context/LanguageContext'
 import { preloadAllImages } from './lib/preloadImages'
 import { getProfile, clearProfile } from './lib/profileStorage'
 import ConfirmModal from './components/ConfirmModal'
@@ -30,6 +31,7 @@ export default function App() {
   const location = useLocation()
   const navigate = useNavigate()
   const navigationType = useNavigationType()
+  const { t } = useLanguage()
   const prevPathRef = useRef(location.pathname)
   const resultStateRef = useRef(null)
   const [showBackConfirm, setShowBackConfirm] = useState(false)
@@ -91,18 +93,18 @@ export default function App() {
     <>
       {showBackConfirm && (
         <ConfirmModal
-          message="Do you need to start from the beginning?"
-          confirmLabel="Yes"
-          cancelLabel="No"
+          message={t('confirm.backToStart')}
+          confirmLabel={t('common.yes')}
+          cancelLabel={t('common.no')}
           onConfirm={handleBackConfirmYes}
           onCancel={handleBackConfirmNo}
         />
       )}
       {showStartOverConfirm && (
         <ConfirmModal
-          message="Do you want to start the test from the beginning?"
-          confirmLabel="Yes"
-          cancelLabel="No"
+          message={t('confirm.startOver')}
+          confirmLabel={t('common.yes')}
+          cancelLabel={t('common.no')}
           onConfirm={handleStartOverYes}
           onCancel={handleStartOverNo}
         />

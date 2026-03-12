@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
 import siblingsImg from '../assets/family/siblings.png'
@@ -8,11 +9,11 @@ import fatherImg from '../assets/family/father.png'
 import './FamilyHistory.css'
 
 const options = [
-  { id: 'none',         label: 'No, nobody in my family has it.' },
-  { id: 'not-sure',     label: "I'm not sure about my family history." },
-  { id: 'siblings',     label: 'Yes, my brother or sister has it.' },
-  { id: 'one-parent',   label: 'Yes, one of my parents has it.' },
-  { id: 'both-parents', label: 'Yes, both my parents have it.' },
+  { id: 'none',         labelKey: 'familyHistory.none' },
+  { id: 'not-sure',     labelKey: 'familyHistory.notSure' },
+  { id: 'siblings',     labelKey: 'familyHistory.siblings' },
+  { id: 'one-parent',   labelKey: 'familyHistory.oneParent' },
+  { id: 'both-parents', labelKey: 'familyHistory.bothParents' },
 ]
 
 /**
@@ -39,6 +40,7 @@ function getCharState(selected, char) {
 export default function FamilyHistory() {
   const navigate  = useNavigate()
   const location  = useLocation()
+  const { t } = useLanguage()
   const userId    = location.state?.userId
   const [selected, setSelected] = useState(null)
 
@@ -61,7 +63,7 @@ export default function FamilyHistory() {
           type="button"
           className="fh-back-btn"
           onClick={() => navigate('/weight-height', { state: { userId } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -71,7 +73,7 @@ export default function FamilyHistory() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="fh-title">Do you have a family<br />history of diabetes?</h1>
+      <h1 className="fh-title">{t('familyHistory.title')}</h1>
 
       {/* ── Characters ── */}
       <div className="fh-characters">
@@ -103,7 +105,7 @@ export default function FamilyHistory() {
             className={`fh-option-btn ${selected === opt.id ? 'selected' : ''}`}
             onClick={() => setSelected(selected === opt.id ? null : opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -116,7 +118,7 @@ export default function FamilyHistory() {
           disabled={!selected}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
 

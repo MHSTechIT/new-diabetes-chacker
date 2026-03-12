@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { supabase } from '../lib/supabaseClient'
 import { getProfile } from '../lib/profileStorage'
 import { calculateRisk } from '../utils/scoring'
@@ -9,6 +10,7 @@ import './ResultLoader.css'
 export default function ResultLoader() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
   const [error, setError] = useState(null)
@@ -90,7 +92,7 @@ export default function ResultLoader() {
       <div className="result-loader-page">
         <p className="result-loader-error">{error}</p>
         <button type="button" className="result-loader-btn" onClick={() => navigate('/habits', { state: { userId, gender } })}>
-          Go back
+          {t('common.back')}
         </button>
       </div>
     )
@@ -99,7 +101,7 @@ export default function ResultLoader() {
   return (
     <div className="result-loader-page">
       <div className="result-loader-spinner" aria-hidden />
-      <p className="result-loader-text">Calculating your result…</p>
+      <p className="result-loader-text">{t('resultLoader.calculating')}</p>
     </div>
   )
 }

@@ -6,13 +6,77 @@
   padding: 20px;
 }
 
-/* Top header – logo always at top */
+/* Top header – logo centered, language button top right */
 .intro-header {
   flex-shrink: 0;
   padding-top: 20px;
   padding-bottom: 16px;
-  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   animation: fadeInDown 0.8s ease-out;
+}
+
+.intro-language-wrap {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.intro-language-btn {
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.intro-language-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.intro-language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  min-width: 140px;
+  background: rgba(30, 0, 50, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.intro-language-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.intro-language-option:hover {
+  background: rgba(236, 72, 153, 0.2);
+  color: #fff;
+}
+
+.intro-language-option.selected {
+  background: rgba(147, 51, 234, 0.3);
+  color: #fff;
+  font-weight: 600;
 }
 
 .intro-container {

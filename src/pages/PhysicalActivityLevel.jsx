@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -14,10 +15,10 @@ import sedentaryFemale from '../assets/physical-activity/sedentary_female.png'
 import './PhysicalActivityLevel.css'
 
 const options = [
-  { id: 'vigorous', label: 'Physically active job or regular exercise' },
-  { id: 'moderate', label: '30 minutes walking daily' },
-  { id: 'light', label: 'Light movement (household work / short walking)' },
-  { id: 'sedentary', label: 'Mostly sitting (desk job / minimal movement)' },
+  { id: 'vigorous', labelKey: 'physicalActivity.vigorous' },
+  { id: 'moderate', labelKey: 'physicalActivity.moderate' },
+  { id: 'light', labelKey: 'physicalActivity.light' },
+  { id: 'sedentary', labelKey: 'physicalActivity.sedentary' },
 ]
 
 const imageMap = {
@@ -30,6 +31,7 @@ const imageMap = {
 export default function PhysicalActivityLevel() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -73,7 +75,7 @@ export default function PhysicalActivityLevel() {
           type="button"
           className="pal-back-btn"
           onClick={() => navigate('/hip-size', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -83,7 +85,7 @@ export default function PhysicalActivityLevel() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="pal-title">What is your daily physical activity level?</h1>
+      <h1 className="pal-title">{t('physicalActivity.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="pal-character-area">
@@ -105,7 +107,7 @@ export default function PhysicalActivityLevel() {
             className={`pal-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -118,7 +120,7 @@ export default function PhysicalActivityLevel() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

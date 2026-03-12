@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { saveProfileData } from '../lib/saveProfile'
 import { getProgressPercent } from '../lib/progressSteps'
 import './WeightHeight.css'
@@ -89,6 +90,7 @@ function Ruler({ min, max, value, pixelsPerUnit, majorEvery, labelFormatter, onC
 export default function WeightHeight() {
   const navigate  = useNavigate()
   const location  = useLocation()
+  const { t } = useLanguage()
   const userId    = location.state?.userId
 
   const [weightUnit, setWeightUnit] = useState('kg')
@@ -207,29 +209,29 @@ export default function WeightHeight() {
       <div className="wh-scroll-body">
         {/* Header */}
         <div className="wh-header">
-          <button className="wh-back-btn" onClick={() => navigate('/age-selection', { state: { userId } })} aria-label="Back">←</button>
+          <button className="wh-back-btn" onClick={() => navigate('/age-selection', { state: { userId } })} aria-label={t('common.back')}>←</button>
           <div className="wh-progress-track">
             <div className="wh-progress-fill" style={{ width: `${getProgressPercent(location.pathname)}%` }} />
           </div>
         </div>
 
         <div className="wh-content">
-        <h1 className="wh-title">Let us know you better</h1>
-        <p className="wh-subtitle">Help us personalise your diabetes management plan</p>
+        <h1 className="wh-title">{t('weightHeight.title')}</h1>
+        <p className="wh-subtitle">{t('weightHeight.subtitle')}</p>
 
         {/* ── Weight ── */}
         <div className="wh-section">
           <div className="wh-section-header">
-            <span className="wh-section-label">Weight</span>
+            <span className="wh-section-label">{t('weightHeight.weight')}</span>
             <div className="wh-toggle">
               <button
                 className={`wh-toggle-btn ${weightUnit === 'kg' ? 'active' : ''}`}
                 onClick={() => setWeightUnit('kg')}
-              >kg</button>
+              >{t('weightHeight.kg')}</button>
               <button
                 className={`wh-toggle-btn ${weightUnit === 'lbs' ? 'active' : ''}`}
                 onClick={() => setWeightUnit('lbs')}
-              >lbs</button>
+              >{t('weightHeight.lbs')}</button>
             </div>
           </div>
 
@@ -269,16 +271,16 @@ export default function WeightHeight() {
         {/* ── Height ── */}
         <div className="wh-section">
           <div className="wh-section-header">
-            <span className="wh-section-label">Height</span>
+            <span className="wh-section-label">{t('weightHeight.height')}</span>
             <div className="wh-toggle">
               <button
                 className={`wh-toggle-btn ${heightUnit === 'cm' ? 'active' : ''}`}
                 onClick={() => setHeightUnit('cm')}
-              >cm</button>
+              >{t('weightHeight.cm')}</button>
               <button
                 className={`wh-toggle-btn ${heightUnit === 'ft' ? 'active' : ''}`}
                 onClick={() => setHeightUnit('ft')}
-              >ft</button>
+              >{t('weightHeight.ft')}</button>
             </div>
           </div>
 
@@ -333,7 +335,7 @@ export default function WeightHeight() {
           <div className="wh-bmi-value" style={{ color: bmiInfo.color }}>
             {bmi}
           </div>
-          <div className="wh-bmi-label">BMI</div>
+          <div className="wh-bmi-label">{t('weightHeight.bmi')}</div>
           <div className="wh-bmi-status" style={{ color: bmiInfo.color }}>
             {bmiInfo.category}
           </div>
@@ -342,7 +344,7 @@ export default function WeightHeight() {
 
       <div className="wh-next-wrap">
         <button className="wh-next-btn" onClick={handleNext}>
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

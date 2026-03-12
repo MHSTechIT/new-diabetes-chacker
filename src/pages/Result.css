@@ -1,11 +1,8 @@
 /* ── Result page: match app UI (max-width 430px, dark purple theme) ─── */
 .result-page {
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  max-height: 100vh;
-  max-height: 100dvh;
-  min-height: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: transparent;
   display: flex;
   flex-direction: column;

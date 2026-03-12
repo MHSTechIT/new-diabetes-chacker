@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -8,15 +9,16 @@ import sleepDurationFemaleImg from '../assets/sleep-duration/sleep_duration_fema
 import './SleepDuration.css'
 
 const options = [
-  { id: '7-8', label: '7–8 hours' },
-  { id: 'more8', label: 'More than 8 hours' },
-  { id: '6-7', label: '6–7 hours' },
-  { id: 'less6', label: 'Less than 6 hours' },
+  { id: '7-8', labelKey: 'sleepDuration.hours7_8' },
+  { id: 'more8', labelKey: 'sleepDuration.more8' },
+  { id: '6-7', labelKey: 'sleepDuration.hours6_7' },
+  { id: 'less6', labelKey: 'sleepDuration.less6' },
 ]
 
 export default function SleepDuration() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -55,7 +57,7 @@ export default function SleepDuration() {
           type="button"
           className="sd-back-btn"
           onClick={() => navigate('/sugary-beverages', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -65,7 +67,7 @@ export default function SleepDuration() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="sd-title">How many hours do you sleep daily?</h1>
+      <h1 className="sd-title">{t('sleepDuration.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="sd-character-area">
@@ -87,7 +89,7 @@ export default function SleepDuration() {
             className={`sd-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -100,7 +102,7 @@ export default function SleepDuration() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

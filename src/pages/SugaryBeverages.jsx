@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -7,13 +8,14 @@ import sugaryBeveragesImg from '../assets/sugary-beverages/sugary_beverages.png'
 import './SugaryBeverages.css'
 
 const options = [
-  { id: 'no', label: 'No' },
-  { id: 'yes', label: 'Yes' },
+  { id: 'no', labelKey: 'common.no' },
+  { id: 'yes', labelKey: 'common.yes' },
 ]
 
 export default function SugaryBeverages() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -51,7 +53,7 @@ export default function SugaryBeverages() {
           type="button"
           className="sb-back-btn"
           onClick={() => navigate('/carbohydrate-type', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -61,7 +63,7 @@ export default function SugaryBeverages() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="sb-title">Do you consume sugary beverages daily?<br />(tea, coffee or drinks)</h1>
+      <h1 className="sb-title">{t('sugaryBeverages.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="sb-character-area">
@@ -83,7 +85,7 @@ export default function SugaryBeverages() {
             className={`sb-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -96,7 +98,7 @@ export default function SugaryBeverages() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

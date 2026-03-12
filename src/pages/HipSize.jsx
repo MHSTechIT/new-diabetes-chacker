@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -12,20 +13,21 @@ import femaleMore90 from '../assets/hip-size/female_more90.png'
 import './HipSize.css'
 
 const maleOptions = [
-  { id: 'less90', label: 'Less than 90 cm', image: maleLess90 },
-  { id: '90-100', label: '90–100 cm', image: male90_100 },
-  { id: 'more100', label: 'More than 100 cm', image: maleMore100 },
+  { id: 'less90', labelKey: 'hipSize.maleLess90', image: maleLess90 },
+  { id: '90-100', labelKey: 'hipSize.male90_100', image: male90_100 },
+  { id: 'more100', labelKey: 'hipSize.maleMore100', image: maleMore100 },
 ]
 
 const femaleOptions = [
-  { id: 'less80', label: 'Less than 80 cm', image: femaleLess80 },
-  { id: '80-90', label: '80–90 cm', image: female80_90 },
-  { id: 'more90', label: 'More than 90 cm', image: femaleMore90 },
+  { id: 'less80', labelKey: 'hipSize.femaleLess80', image: femaleLess80 },
+  { id: '80-90', labelKey: 'hipSize.female80_90', image: female80_90 },
+  { id: 'more90', labelKey: 'hipSize.femaleMore90', image: femaleMore90 },
 ]
 
 export default function HipSize() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -65,7 +67,7 @@ export default function HipSize() {
           type="button"
           className="hs-back-btn"
           onClick={() => navigate('/family-history', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -75,7 +77,7 @@ export default function HipSize() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="hs-title">Hip size at navel level?</h1>
+      <h1 className="hs-title">{t('hipSize.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="hs-character-area">
@@ -97,7 +99,7 @@ export default function HipSize() {
             className={`hs-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -110,7 +112,7 @@ export default function HipSize() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

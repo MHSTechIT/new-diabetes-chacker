@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import maleImg from '../assets/men.png'
 import femaleImg from '../assets/women.png'
 import { supabase } from '../lib/supabaseClient'
@@ -12,6 +13,7 @@ export default function GenderSelection() {
   const [selected, setSelected] = useState(null)
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const maleImgRef = useRef(null)
   const femaleImgRef = useRef(null)
 
@@ -54,8 +56,8 @@ export default function GenderSelection() {
         <div className={styles.progressBarFill} style={{ width: `${getProgressPercent(location.pathname)}%` }} />
       </div>
 
-      <h1 className={styles.heading}>What&apos;s your gender?</h1>
-      <p className={styles.subtext}>Let us know you better</p>
+      <h1 className={styles.heading}>{t('gender.heading')}</h1>
+      <p className={styles.subtext}>{t('gender.subtext')}</p>
 
       <div className={styles.cardsContainer}>
         <div className={`${styles.cardWrapper} ${styles.maleCard} ${styles[getCardState('male')]}`}>
@@ -70,7 +72,7 @@ export default function GenderSelection() {
             {selected === 'male' && (
               <div className={`${styles.backdrop} ${styles.blue}`} aria-hidden />
             )}
-            <img ref={maleImgRef} src={maleImg} alt="Male" className={styles.characterImg} loading="lazy" />
+            <img ref={maleImgRef} src={maleImg} alt={t('gender.male')} className={styles.characterImg} loading="lazy" />
           </div>
         </div>
 
@@ -86,7 +88,7 @@ export default function GenderSelection() {
             {selected === 'female' && (
               <div className={`${styles.backdrop} ${styles.pink}`} aria-hidden />
             )}
-            <img ref={femaleImgRef} src={femaleImg} alt="Female" className={styles.characterImg} loading="lazy" />
+            <img ref={femaleImgRef} src={femaleImg} alt={t('gender.female')} className={styles.characterImg} loading="lazy" />
           </div>
         </div>
       </div>
@@ -98,14 +100,14 @@ export default function GenderSelection() {
           className={`${styles.genderLabelBtn} ${selected === 'male' ? styles.genderLabelSelected : ''}`}
           onClick={() => setSelected('male')}
         >
-          Male
+          {t('gender.male')}
         </button>
         <button
           type="button"
           className={`${styles.genderLabelBtn} ${selected === 'female' ? styles.genderLabelSelected : ''}`}
           onClick={() => setSelected('female')}
         >
-          Female
+          {t('gender.female')}
         </button>
       </div>
 
@@ -115,7 +117,7 @@ export default function GenderSelection() {
         disabled={!selected}
         onClick={saveGender}
       >
-        NEXT
+        {t('common.next')}
       </button>
     </div>
   )

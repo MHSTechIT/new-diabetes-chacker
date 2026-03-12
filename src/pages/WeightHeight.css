@@ -1,8 +1,6 @@
 /* ── Page shell: scrollable body, NEXT fixed at bottom ───────────── */
 .wh-page {
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
   min-height: 100vh;
   min-height: 100dvh;
   background: transparent;
@@ -12,7 +10,8 @@
   margin: 0 auto;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ── Header: back button + progress bar only, no panel background ── */

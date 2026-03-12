@@ -1,13 +1,14 @@
 .no-report-page {
-  height: 100%;
-  min-height: 100%;
-  max-height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: transparent;
   color: #fff;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .no-report-header {

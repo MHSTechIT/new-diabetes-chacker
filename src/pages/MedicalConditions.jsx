@@ -1,23 +1,25 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
 import './MedicalConditions.css'
 
 const conditions = [
-  { id: 'hypertension', label: 'Hypertension (High BP)' },
-  { id: 'high-cholesterol', label: 'High cholesterol' },
-  { id: 'pcos', label: 'PCOS' },
-  { id: 'thyroid-disorder', label: 'Thyroid disorder' },
-  { id: 'fatty-liver', label: 'Fatty liver' },
-  { id: 'heart-disease', label: 'Heart disease' },
-  { id: 'kidney-disease', label: 'Kidney disease' },
-  { id: 'none', label: 'None' },
+  { id: 'hypertension', labelKey: 'medicalConditions.hypertension' },
+  { id: 'high-cholesterol', labelKey: 'medicalConditions.highCholesterol' },
+  { id: 'pcos', labelKey: 'medicalConditions.pcos' },
+  { id: 'thyroid-disorder', labelKey: 'medicalConditions.thyroidDisorder' },
+  { id: 'fatty-liver', labelKey: 'medicalConditions.fattyLiver' },
+  { id: 'heart-disease', labelKey: 'medicalConditions.heartDisease' },
+  { id: 'kidney-disease', labelKey: 'medicalConditions.kidneyDisease' },
+  { id: 'none', labelKey: 'medicalConditions.none' },
 ]
 
 export default function MedicalConditions() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -59,7 +61,7 @@ export default function MedicalConditions() {
           type="button"
           className="mc-back-btn"
           onClick={() => navigate('/stress-level', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -69,7 +71,7 @@ export default function MedicalConditions() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="mc-title">Select any conditions you have?</h1>
+      <h1 className="mc-title">{t('medicalConditions.title')}</h1>
 
       {/* ── Content Area ── */}
       <div className="mc-content-area">
@@ -84,7 +86,7 @@ export default function MedicalConditions() {
                 className={`mc-option-btn ${isSelected ? 'selected' : ''}`}
                 onClick={() => handleConditionToggle(condition.id)}
               >
-                {condition.label}
+                {t(condition.labelKey)}
               </button>
             )
           })}
@@ -99,7 +101,7 @@ export default function MedicalConditions() {
           disabled={selectedConditions.size === 0}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

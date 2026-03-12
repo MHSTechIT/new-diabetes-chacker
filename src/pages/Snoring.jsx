@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { useSwipe } from '../hooks/useSwipe'
 import { saveProfileData } from '../lib/saveProfile'
@@ -8,14 +9,15 @@ import snoringFemaleImg from '../assets/sleep-duration/sleep_duration_female.png
 import './Snoring.css'
 
 const options = [
-  { id: 'no', label: 'No' },
-  { id: 'not-sure', label: 'Not sure' },
-  { id: 'yes', label: 'Yes' },
+  { id: 'no', labelKey: 'common.no' },
+  { id: 'not-sure', labelKey: 'common.notSure' },
+  { id: 'yes', labelKey: 'common.yes' },
 ]
 
 export default function Snoring() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -54,7 +56,7 @@ export default function Snoring() {
           type="button"
           className="sn-back-btn"
           onClick={() => navigate('/sleep-duration', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -64,7 +66,7 @@ export default function Snoring() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="sn-title">Do you snore regularly?</h1>
+      <h1 className="sn-title">{t('snoring.title')}</h1>
 
       {/* ── Character Image ── */}
       <div className="sn-character-area">
@@ -93,7 +95,7 @@ export default function Snoring() {
             className={`sn-option-btn ${selectedOption === opt.id ? 'selected' : ''}`}
             onClick={() => handleOptionSelect(opt.id)}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -106,7 +108,7 @@ export default function Snoring() {
           disabled={!selectedOption}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { supabase } from '../lib/supabaseClient'
 import { getProfile, clearProfile } from '../lib/profileStorage'
 import { calculateRisk } from '../utils/scoring'
@@ -17,12 +18,12 @@ const RISK_COLORS = {
   HIGH: { bg: 'rgba(244,63,94,0.15)', border: 'rgba(244,63,94,0.3)', text: '#f43f5e', dot: '#f43f5e' },
 }
 
-const STATUS_LINE = {
-  LOW: 'You are unlikely to be Diabetic',
-  LOW_MODERATE: 'Low chance of developing diabetes',
-  MODERATE: 'You may be Pre-Diabetic',
-  MODERATE_HIGH: 'You are likely Diabetic',
-  HIGH: 'You are likely Diabetic — act now',
+const STATUS_LINE_KEYS = {
+  LOW: 'resultPage.lowRisk',
+  LOW_MODERATE: 'resultPage.lowModerate',
+  MODERATE: 'resultPage.moderate',
+  MODERATE_HIGH: 'resultPage.moderateHigh',
+  HIGH: 'resultPage.high',
 }
 
 const CATEGORY_COLORS = {
@@ -39,25 +40,26 @@ const CATEGORY_COLORS = {
   'Waist/Hip': { bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.3)', text: '#3b82f6', label: 'Medical' },
 }
 
-const BADGE_LABEL = {
-  LOW: 'LOW RISK',
-  LOW_MODERATE: 'LOW TO MODERATE',
-  MODERATE: 'MODERATE RISK',
-  MODERATE_HIGH: 'MODERATE TO HIGH',
-  HIGH: 'HIGH RISK',
+const BADGE_LABEL_KEYS = {
+  LOW: 'resultPage.lowRiskBadge',
+  LOW_MODERATE: 'resultPage.lowModerateBadge',
+  MODERATE: 'resultPage.moderateBadge',
+  MODERATE_HIGH: 'resultPage.moderateHighBadge',
+  HIGH: 'resultPage.highRiskBadge',
 }
 
-const RECOMMENDED_ACTIONS = {
-  LOW: ['Maintain healthy weight', 'Stay active', 'Eat balanced diet'],
-  LOW_MODERATE: ['Reduce refined carbs and sugary drinks', 'Add 30 minutes daily walking', 'Get a blood sugar test within 6 months'],
-  MODERATE: ['See a doctor', 'HbA1c and fasting glucose', 'Lifestyle changes'],
-  MODERATE_HIGH: ['See doctor soon', 'Full blood panel', 'Strict lifestyle changes'],
-  HIGH: ['See doctor immediately', 'Blood tests', 'Follow medical advice'],
+const RECOMMENDED_ACTION_KEYS = {
+  LOW: ['resultPage.maintainWeight', 'resultPage.stayActive', 'resultPage.eatBalanced'],
+  LOW_MODERATE: ['resultPage.reduceCarbs', 'resultPage.addWalking', 'resultPage.bloodTest6mo'],
+  MODERATE: ['resultPage.seeDoctor', 'resultPage.hba1c', 'resultPage.lifestyleChanges'],
+  MODERATE_HIGH: ['resultPage.seeDoctorSoon', 'resultPage.fullBloodPanel', 'resultPage.strictLifestyle'],
+  HIGH: ['resultPage.seeDoctorNow', 'resultPage.bloodTests', 'resultPage.followAdvice'],
 }
 
 export default function Result() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const resultFromState = location.state?.result
   const userId = location.state?.userId
 
@@ -146,28 +148,28 @@ export default function Result() {
 
   const summary = useMemo(() => {
     if (!result?.riskyFactors?.length) {
-      if (level === 'LOW') return 'Your responses suggest a low diabetes risk. Keep up healthy habits.'
-      if (level === 'LOW_MODERATE') return 'You have a low but present risk. Targeted lifestyle changes can keep this risk from growing.'
-      if (level === 'MODERATE') return 'Your risk is moderate. We recommend speaking with a doctor.'
-      if (level === 'MODERATE_HIGH') return 'Your risk is elevated. Please consult a healthcare provider.'
-      return 'Your risk is high. Please see a doctor as soon as possible.'
+      if (level === 'LOW') return t('resultPage.summaryNoFactorsLow')
+      if (level === 'LOW_MODERATE') return t('resultPage.summaryNoFactorsLowModerate')
+      if (level === 'MODERATE') return t('resultPage.summaryNoFactorsModerate')
+      if (level === 'MODERATE_HIGH') return t('resultPage.summaryNoFactorsModerateHigh')
+      return t('resultPage.summaryHigh')
     }
     const first = result.riskyFactors[0]
     const second = result.riskyFactors[1]
     const rest = result.riskyFactors.length > 2 ? ` and ${result.riskyFactors.length - 2} other factor(s)` : ''
-    if (level === 'LOW') return `Your risk is low. Factors like ${first.factor} may contribute. Keep up healthy habits.`
-    if (level === 'LOW_MODERATE') return `You have a low but present risk. Factors like ${first.factor}${second ? `, ${second.factor}` : ''}${rest} are contributing. Targeted lifestyle changes can keep this risk from growing.`
-    if (level === 'MODERATE') return `Notable factors: ${first.factor}. A check-up is recommended.`
-    if (level === 'MODERATE_HIGH') return `Several factors (e.g. ${first.factor}) suggest elevated risk. Please consult a healthcare provider.`
-    return `Multiple risk factors including ${first.factor} indicate high risk. See a doctor as soon as possible.`
-  }, [result?.riskyFactors, level])
+    if (level === 'LOW') return t('resultPage.summaryLowPrefix') + first.factor + t('resultPage.summaryLowSuffix')
+    if (level === 'LOW_MODERATE') return t('resultPage.summaryLowModeratePrefix') + first.factor + (second ? `, ${second.factor}` : '') + rest + t('resultPage.summaryLowModerateSuffix')
+    if (level === 'MODERATE') return t('resultPage.summaryModeratePrefix') + first.factor + t('resultPage.summaryModerateSuffix')
+    if (level === 'MODERATE_HIGH') return t('resultPage.summaryModerateHighPrefix') + first.factor + t('resultPage.summaryModerateHighSuffix')
+    return t('resultPage.summaryHighMultiPrefix') + first.factor + t('resultPage.summaryHighMultiSuffix')
+  }, [result?.riskyFactors, level, t])
 
   const [gaugeShrinking, setGaugeShrinking] = useState(false)
   const [loadingTextLen, setLoadingTextLen] = useState(0)
   const gaugeHoldTimerRef = useRef(null)
   const GAUGE_HOLD_MS = 5000   /* show gauge for 5 sec after needle animation */
   const SHRINK_GAUGE_MS = 800   /* fade-out duration */
-  const LOADING_TEXT = 'your result is loading......'
+  const loadingText = t('resultPage.loadingText')
 
   const handleGaugeDone = useCallback(() => {
     gaugeHoldTimerRef.current = setTimeout(() => setGaugeShrinking(true), GAUGE_HOLD_MS)
@@ -185,15 +187,15 @@ export default function Result() {
     return () => clearTimeout(t)
   }, [gaugeShrinking])
 
-  /* Typewriter: "your result is loading......" during intro */
+  /* Typewriter: loading text during intro */
   useEffect(() => {
     if (animationPhase !== 'intro') return
     setLoadingTextLen(0)
-    const t = setInterval(() => {
-      setLoadingTextLen((n) => Math.min(n + 1, LOADING_TEXT.length))
+    const id = setInterval(() => {
+      setLoadingTextLen((n) => Math.min(n + 1, loadingText.length))
     }, 90)
-    return () => clearInterval(t)
-  }, [animationPhase])
+    return () => clearInterval(id)
+  }, [animationPhase, loadingText])
 
   const handleRetake = () => {
     clearProfile()
@@ -288,7 +290,7 @@ export default function Result() {
     return (
       <div className="result-page result-loading">
         <div className="result-loader-spinner" aria-hidden />
-        <p className="result-loader-text">Calculating your result…</p>
+        <p className="result-loader-text">{t('resultLoader.calculating')}</p>
       </div>
     )
   }
@@ -303,14 +305,14 @@ export default function Result() {
             className="result-btn-primary"
             onClick={() => setShowBackConfirm(true)}
           >
-            Go back
+            {t('resultPage.goBack')}
           </button>
         </div>
         {showBackConfirm && (
           <ConfirmModal
-            message="Do you need to start from the beginning?"
-            confirmLabel="Yes"
-            cancelLabel="No"
+            message={t('confirm.backToStart')}
+            confirmLabel={t('common.yes')}
+            cancelLabel={t('common.no')}
             onConfirm={() => {
               setShowBackConfirm(false)
               navigate('/', { replace: true })
@@ -324,12 +326,12 @@ export default function Result() {
 
   const mainContent = (
     <>
-      <h1 className="result-title">Your Result</h1>
+      <h1 className="result-title">{t('resultPage.yourResult')}</h1>
       <div className="result-body">
         {/* Video at top on mobile, left column on desktop; 16:9 aspect ratio */}
         {animationPhase === 'done' && level && (
           <div className="result-video-wrap">
-            <h2 className="result-video-heading">Watch: Your risk level</h2>
+            <h2 className="result-video-heading">{t('resultPage.watchRiskLevel')}</h2>
             <RiskVideoPlayer riskLevel={level} autoPlay={false} aspectRatio="16/9" />
           </div>
         )}
@@ -412,10 +414,10 @@ export default function Result() {
 
             {/* End-of-page format: Visual and result → Your report summary → What to do next → Contribution factor */}
             <div className="result-format-block">
-              <h2 className="result-format-block-title">Your Result</h2>
+              <h2 className="result-format-block-title">{t('resultPage.yourResult')}</h2>
 
               <section className="result-format-section" aria-labelledby="result-visual-heading">
-                <h3 id="result-visual-heading" className="result-format-section-title">Visual and result</h3>
+                <h3 id="result-visual-heading" className="result-format-section-title">{t('resultPage.visualAndResult')}</h3>
                 <div className="result-format-gauge-wrap">
                   <RiskGauge key={level} riskLevel={level} animate={false} compact />
                 </div>
@@ -426,22 +428,22 @@ export default function Result() {
                   >
                     <span className="result-badge-dot" style={{ background: colors.dot }} />
                     <span className="result-badge-label" style={{ color: colors.text }}>
-                      {BADGE_LABEL[level]}
+                      {t(BADGE_LABEL_KEYS[level])}
                     </span>
                   </div>
                   <p className="result-format-status" style={{ color: colors.text }}>
-                    {STATUS_LINE[level]}
+                    {t(STATUS_LINE_KEYS[level])}
                   </p>
-                  <p className="result-format-probability">Probability: {result.probabilityRangeText}</p>
+                  <p className="result-format-probability">{t('resultPage.probability')}: {result.probabilityRangeText}</p>
                 </div>
               </section>
 
               <section className="result-format-section" aria-labelledby="result-summary-heading">
-                <h3 id="result-summary-heading" className="result-format-section-title">Your report summary</h3>
+                <h3 id="result-summary-heading" className="result-format-section-title">{t('resultPage.yourReportSummary')}</h3>
                 {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) ? (
                   <div className="result-format-accuracy-note">
                     <span className="result-accuracy-icon" aria-hidden>⚠</span>
-                    <span>This result is 50–60% accurate. Based on your answers only.</span>
+                    <span>{t('resultPage.accuracyNote')}</span>
                   </div>
                 ) : null}
                 <p className="result-summary-text">{summary}</p>
@@ -462,21 +464,21 @@ export default function Result() {
                     })
                   }
                 >
-                  To get 100% Result book today for blood test
+                  {t('resultPage.bookBloodTestCta')}
                 </button>
               </section>
 
               <section className="result-format-section" aria-labelledby="result-next-heading">
-                <h3 id="result-next-heading" className="result-format-section-title">What to do next</h3>
+                <h3 id="result-next-heading" className="result-format-section-title">{t('resultPage.whatToDoNext')}</h3>
                 <ul className="result-actions-list">
-                  {RECOMMENDED_ACTIONS[level].map((action, i) => (
-                    <li key={i}><span className="result-actions-arrow">→</span> {action}</li>
+                  {(RECOMMENDED_ACTION_KEYS[level] || []).map((key, i) => (
+                    <li key={i}><span className="result-actions-arrow">→</span> {t(key)}</li>
                   ))}
                 </ul>
               </section>
 
               <section className="result-format-section" aria-labelledby="result-factors-heading">
-                <h3 id="result-factors-heading" className="result-format-section-title">Contribution factor</h3>
+                <h3 id="result-factors-heading" className="result-format-section-title">{t('resultPage.contributionFactor')}</h3>
                 {Object.keys(groupedFactors.grouped).length > 0 ? (
                   <div className="result-format-factors result-format-factors--chips-only">
                     {Object.entries(groupedFactors.grouped).map(([category, factors]) => (
@@ -500,17 +502,17 @@ export default function Result() {
                     ))}
                   </div>
                 ) : (
-                  <p className="result-format-no-factors">No very high risk contributing factors in this range. Result is based on your overall profile.</p>
+                  <p className="result-format-no-factors">{t('resultPage.noFactorsNote')}</p>
                 )}
               </section>
             </div>
 
             <div className="result-footer-btns">
               <button type="button" className="result-btn-ghost" onClick={() => setShowRetestConfirm(true)}>
-                Retest
+                {t('resultPage.retest')}
               </button>
               <button type="button" className="result-btn-primary" onClick={handleShare}>
-                Share
+                {t('resultPage.share')}
               </button>
             </div>
           </>
@@ -531,7 +533,7 @@ export default function Result() {
               <RiskGauge riskLevel={level} animate={!gaugeShrinking} introDurationMs={5000} onAnimationDone={handleGaugeDone} />
             </div>
             <p className="result-loading-typewriter" aria-live="polite">
-              {LOADING_TEXT.slice(0, loadingTextLen)}
+              {loadingText.slice(0, loadingTextLen)}
               <span className="result-loading-cursor" aria-hidden>|</span>
             </p>
           </div>
@@ -548,16 +550,16 @@ export default function Result() {
         <div className="result-analyzing-overlay" aria-live="polite">
           <div className="result-analyzing-spinner-wrap">
             <div className="result-loader-spinner" aria-hidden />
-            <p className="result-analyzing-label">Analyzing your report…</p>
+            <p className="result-analyzing-label">{t('resultPage.analyzingReport')}</p>
           </div>
         </div>
       )}
 
       {showRetestConfirm && (
         <ConfirmModal
-          message="Start the assessment again from the beginning? Your current result will be cleared."
-          confirmLabel="Yes, retest"
-          cancelLabel="Cancel"
+          message={t('resultPage.retestConfirmMessage')}
+          confirmLabel={t('resultPage.retestConfirmYes')}
+          cancelLabel={t('common.cancel')}
           onConfirm={() => {
             setShowRetestConfirm(false)
             handleRetake()

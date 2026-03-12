@@ -1,24 +1,26 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
 import './Symptoms.css'
 
 const symptoms = [
-  { id: 'frequent-urination', label: 'Frequent urination' },
-  { id: 'excessive-thirst', label: 'Excessive thirst' },
-  { id: 'increased-hunger', label: 'Increased hunger' },
-  { id: 'fatigue', label: 'Fatigue' },
-  { id: 'blurred-vision', label: 'Blurred vision' },
-  { id: 'slow-wound-healing', label: 'Slow wound healing' },
-  { id: 'tingling-numbness', label: 'Tingling or numbness in hands/feet' },
-  { id: 'dark-patches', label: 'Dark patches around neck' },
-  { id: 'none', label: 'None of the above' },
+  { id: 'frequent-urination', labelKey: 'symptoms.frequentUrination' },
+  { id: 'excessive-thirst', labelKey: 'symptoms.excessiveThirst' },
+  { id: 'increased-hunger', labelKey: 'symptoms.increasedHunger' },
+  { id: 'fatigue', labelKey: 'symptoms.fatigue' },
+  { id: 'blurred-vision', labelKey: 'symptoms.blurredVision' },
+  { id: 'slow-wound-healing', labelKey: 'symptoms.slowWoundHealing' },
+  { id: 'tingling-numbness', labelKey: 'symptoms.tinglingNumbness' },
+  { id: 'dark-patches', labelKey: 'symptoms.darkPatches' },
+  { id: 'none', labelKey: 'symptoms.noneAbove' },
 ]
 
 export default function Symptoms() {
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useLanguage()
   const userId = location.state?.userId
   const gender = location.state?.gender
 
@@ -60,7 +62,7 @@ export default function Symptoms() {
           type="button"
           className="sym-back-btn"
           onClick={() => navigate('/medical-conditions', { state: { userId, gender } })}
-          aria-label="Back"
+          aria-label={t('common.back')}
         >
           ←
         </button>
@@ -70,7 +72,7 @@ export default function Symptoms() {
       </div>
 
       {/* ── Title ── */}
-      <h1 className="sym-title">Are you experiencing any of these symptoms?</h1>
+      <h1 className="sym-title">{t('symptoms.title')}</h1>
 
       {/* ── Content Area ── */}
       <div className="sym-content-area">
@@ -85,7 +87,7 @@ export default function Symptoms() {
                 className={`sym-option-btn ${isSelected ? 'selected' : ''}`}
                 onClick={() => handleSymptomToggle(symptom.id)}
               >
-                {symptom.label}
+                {t(symptom.labelKey)}
               </button>
             )
           })}
@@ -100,7 +102,7 @@ export default function Symptoms() {
           disabled={selectedSymptoms.size === 0}
           onClick={handleNext}
         >
-          NEXT
+          {t('common.next')}
         </button>
       </div>
     </div>
