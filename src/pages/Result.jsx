@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
+import { getFactorLabel } from '../translations'
 import { supabase } from '../lib/supabaseClient'
 import { getProfile, clearProfile } from '../lib/profileStorage'
 import { calculateRisk } from '../utils/scoring'
@@ -59,7 +60,7 @@ const RECOMMENDED_ACTION_KEYS = {
 export default function Result() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const resultFromState = location.state?.result
   const userId = location.state?.userId
 
@@ -157,12 +158,14 @@ export default function Result() {
     const first = result.riskyFactors[0]
     const second = result.riskyFactors[1]
     const rest = result.riskyFactors.length > 2 ? ` and ${result.riskyFactors.length - 2} other factor(s)` : ''
-    if (level === 'LOW') return t('resultPage.summaryLowPrefix') + first.factor + t('resultPage.summaryLowSuffix')
-    if (level === 'LOW_MODERATE') return t('resultPage.summaryLowModeratePrefix') + first.factor + (second ? `, ${second.factor}` : '') + rest + t('resultPage.summaryLowModerateSuffix')
-    if (level === 'MODERATE') return t('resultPage.summaryModeratePrefix') + first.factor + t('resultPage.summaryModerateSuffix')
-    if (level === 'MODERATE_HIGH') return t('resultPage.summaryModerateHighPrefix') + first.factor + t('resultPage.summaryModerateHighSuffix')
-    return t('resultPage.summaryHighMultiPrefix') + first.factor + t('resultPage.summaryHighMultiSuffix')
-  }, [result?.riskyFactors, level, t])
+    const f1 = getFactorLabel(first.factor, language)
+    const f2 = second ? getFactorLabel(second.factor, language) : ''
+    if (level === 'LOW') return t('resultPage.summaryLowPrefix') + f1 + t('resultPage.summaryLowSuffix')
+    if (level === 'LOW_MODERATE') return t('resultPage.summaryLowModeratePrefix') + f1 + (f2 ? `, ${f2}` : '') + rest + t('resultPage.summaryLowModerateSuffix')
+    if (level === 'MODERATE') return t('resultPage.summaryModeratePrefix') + f1 + t('resultPage.summaryModerateSuffix')
+    if (level === 'MODERATE_HIGH') return t('resultPage.summaryModerateHighPrefix') + f1 + t('resultPage.summaryModerateHighSuffix')
+    return t('resultPage.summaryHighMultiPrefix') + f1 + t('resultPage.summaryHighMultiSuffix')
+  }, [result?.riskyFactors, level, t, language])
 
   const [gaugeShrinking, setGaugeShrinking] = useState(false)
   const [loadingTextLen, setLoadingTextLen] = useState(0)
@@ -494,7 +497,7 @@ export default function Result() {
                             }}
                           >
                             <span className="result-factor-chip-icon">▲</span>
-                            <span className="result-factor-name">{truncate(f.factor)}</span>
+                            <span className="result-factor-name">{truncate(getFactorLabel(f.factor, language))}</span>
                             <span className="result-factor-points">+{f.points}</span>
                           </span>
                         ))}

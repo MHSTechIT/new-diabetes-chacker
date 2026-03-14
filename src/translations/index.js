@@ -6,6 +6,7 @@
 const en = {
   // Language switcher
   language: 'Language',
+  selectYourLanguage: 'Select your language',
   english: 'English',
   tamil: 'Tamil',
 
@@ -269,6 +270,7 @@ const en = {
 
 const ta = {
   language: 'மொழி',
+  selectYourLanguage: 'உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்',
   english: 'English',
   tamil: 'தமிழ்',
 
@@ -522,4 +524,64 @@ export const translations = { en, ta }
 export function getTranslation(lang, key) {
   const val = getNested(translations[lang] || en, key)
   return val != null ? val : getNested(en, key) || key
+}
+
+/** Tamil labels for contribution factor chips (English key → Tamil text) */
+const RESULT_FACTOR_TA = {
+  'BMI under 18.5': 'பிஎம்ஐ 18.5க்கு கீழ்',
+  'BMI 18.5–22.9': 'பிஎம்ஐ 18.5–22.9',
+  'BMI 23–27.4': 'பிஎம்ஐ 23–27.4',
+  'BMI 27.5–32.4': 'பிஎம்ஐ 27.5–32.4',
+  'BMI over 32.4': 'பிஎம்ஐ 32.4க்கு மேல்',
+  'Age 25–34': 'வயது 25–34',
+  'Age 35–44': 'வயது 35–44',
+  'Age 45–54': 'வயது 45–54',
+  'Age 55+': 'வயது 55+',
+  'Family history not sure': 'குடும்ப வரலாறு உறுதியில்லை',
+  'Siblings with diabetes': 'சகோதரர்/சகோதரி நீரிழிவு',
+  'One parent with diabetes': 'ஒரு பெற்றோர் நீரிழிவு',
+  'Both parents with diabetes': 'இருவர் பெற்றோரும் நீரிழிவு',
+  'Hip size 90–100 cm': 'இடுப்பு 90–100 செ.மீ',
+  'Hip size over 100 cm': 'இடுப்பு 100 செ.மீக்கு மேல்',
+  'Hip size 80–90 cm': 'இடுப்பு 80–90 செ.மீ',
+  'Hip size over 90 cm': 'இடுப்பு 90 செ.மீக்கு மேல்',
+  '30 min walking daily': 'தினமும் 30 நிமிடம் நடைபயிற்சி',
+  'Light movement': 'இலகுவான இயக்கம்',
+  'Mostly sitting': 'பெரும்பாலும் உட்கார்ந்து',
+  'Hypertension (High BP)': 'உயர் இரத்த அழுத்தம்',
+  'PCOS': 'பிசிஓஎஸ்',
+  'High cholesterol': 'உயர் கொழுப்பு',
+  'Thyroid disorder': 'தைராய்டு சீர்கேடு',
+  'Fatty liver': 'கொழுப்பு கல்லீரல்',
+  'Heart disease': 'இதய நோய்',
+  'Kidney disease': 'சிறுநீரக நோய்',
+  'Frequent urination': 'அடிக்கடி சிறுநீர் கழித்தல்',
+  'Excessive thirst': 'அதிக தாகம்',
+  'Increased hunger': 'அதிக பசி',
+  'Fatigue': 'சோர்வு',
+  'Blurred vision': 'மங்கலான பார்வை',
+  'Slow wound healing': 'காயம் மெதுவாக ஆறுதல்',
+  'Tingling or numbness': 'சிலிர்ப்பு அல்லது மரப்பு',
+  'Dark patches around neck': 'கழுத்தைச் சுற்றி இருண்ட படைகள்',
+  'Junk food frequency': 'ஜங்க் உணவு அடிக்கடி',
+  'Outside food frequency': 'வெளி உணவு அடிக்கடி',
+  'Refined carbohydrates': 'சுத்திகரிக்கப்பட்ட கார்போஹைட்ரேட்டுகள்',
+  'Sugary beverages': 'சர்க்கரை பானங்கள்',
+  'Smoking': 'புகைப்பழக்கம்',
+  'Alcohol': 'மது',
+  'Tobacco chewing': 'புகையிலை மெல்லுதல்',
+  'Sleep 6–7 hours': 'தூக்கம் 6–7 மணி',
+  'Sleep under 6 hours': 'தூக்கம் 6 மணிக்கு கீழ்',
+  'Snoring not sure': 'குறட்டை உறுதியில்லை',
+  'Snoring': 'குறட்டை',
+  'Weight gain in last year': 'கடந்த வருடம் எடை அதிகரிப்பு',
+  'Moderate stress': 'மிதமான மன அழுத்தம்',
+  'High stress': 'அதிக மன அழுத்தம்',
+  'History of gestational diabetes': 'கர்ப்ப நீரிழிவு வரலாறு',
+}
+
+export function getFactorLabel(factor, lang) {
+  if (!factor) return factor
+  if (lang === 'ta') return RESULT_FACTOR_TA[factor] ?? factor
+  return factor
 }

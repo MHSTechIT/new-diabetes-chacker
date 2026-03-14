@@ -6,77 +6,13 @@
   padding: 20px;
 }
 
-/* Top header – logo centered, language button top right */
+/* Top header – logo centered */
 .intro-header {
   flex-shrink: 0;
   padding-top: 20px;
   padding-bottom: 16px;
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  text-align: center;
   animation: fadeInDown 0.8s ease-out;
-}
-
-.intro-language-wrap {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-.intro-language-btn {
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.intro-language-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.intro-language-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
-  min-width: 140px;
-  background: rgba(30, 0, 50, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  overflow: hidden;
-  z-index: 100;
-}
-
-.intro-language-option {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  text-align: left;
-  background: none;
-  border: none;
-  color: #e5e7eb;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.intro-language-option:hover {
-  background: rgba(236, 72, 153, 0.2);
-  color: #fff;
-}
-
-.intro-language-option.selected {
-  background: rgba(147, 51, 234, 0.3);
-  color: #fff;
-  font-weight: 600;
 }
 
 .intro-container {
@@ -164,6 +100,83 @@
 }
 
 .intro-button:active {
+  transform: translateY(0);
+}
+
+/* Language selection modal (alert) – shown when clicking Start Assessment */
+.intro-language-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: introModalFadeIn 0.25s ease-out;
+}
+
+@keyframes introModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.intro-language-modal {
+  background: linear-gradient(145deg, #2d0052 0%, #1a0033 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  animation: introModalSlideIn 0.3s ease-out;
+}
+
+@keyframes introModalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.intro-language-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 24px 0;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.intro-language-modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.intro-language-modal-option {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ec4899 0%, #d946ef 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.intro-language-modal-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.4);
+}
+
+.intro-language-modal-option:active {
   transform: translateY(0);
 }
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import logo from '../assets/logos/my-health-school-logo.png'
@@ -10,66 +10,23 @@ import './IntroPage.css'
  */
 export default function IntroPage() {
   const navigate = useNavigate()
-  const { t, language, setLanguage } = useLanguage()
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const dropdownRef = useRef(null)
+  const { t, setLanguage } = useLanguage()
+  const [showLanguageModal, setShowLanguageModal] = useState(true)
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  const handleSelectLanguageFirst = (lang) => {
+    setLanguage(lang)
+    setShowLanguageModal(false)
+  }
 
   const handleStartTest = () => {
     navigate('/gender-selection')
   }
 
-  const handleSelectLanguage = (lang) => {
-    setLanguage(lang)
-    setDropdownOpen(false)
-  }
-
   return (
     <div className="intro-page">
-      {/* Top header: logo centered, language button top right */}
       <header className="intro-header">
         <div className="intro-logo">
           <img src={logo} alt="My Health School" className="logo-icon" />
-        </div>
-        <div className="intro-language-wrap" ref={dropdownRef}>
-          <button
-            type="button"
-            className="intro-language-btn"
-            onClick={() => setDropdownOpen((o) => !o)}
-            aria-expanded={dropdownOpen}
-            aria-haspopup="true"
-          >
-            {t('language')}
-          </button>
-          {dropdownOpen && (
-            <div className="intro-language-dropdown" role="menu">
-              <button
-                type="button"
-                role="menuitem"
-                className={`intro-language-option ${language === 'en' ? 'selected' : ''}`}
-                onClick={() => handleSelectLanguage('en')}
-              >
-                {t('english')}
-              </button>
-              <button
-                type="button"
-                role="menuitem"
-                className={`intro-language-option ${language === 'ta' ? 'selected' : ''}`}
-                onClick={() => handleSelectLanguage('ta')}
-              >
-                {t('tamil')}
-              </button>
-            </div>
-          )}
         </div>
       </header>
 
@@ -82,6 +39,38 @@ export default function IntroPage() {
           </button>
         </div>
       </div>
+
+      {/* Language selection modal – shown before home page (on first load) */}
+      {showLanguageModal && (
+        <div
+          className="intro-language-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="intro-language-modal-title"
+        >
+          <div className="intro-language-modal">
+            <h2 id="intro-language-modal-title" className="intro-language-modal-title">
+              {t('selectYourLanguage')}
+            </h2>
+            <div className="intro-language-modal-options">
+              <button
+                type="button"
+                className="intro-language-modal-option"
+                onClick={() => handleSelectLanguageFirst('en')}
+              >
+                {t('english')}
+              </button>
+              <button
+                type="button"
+                className="intro-language-modal-option"
+                onClick={() => handleSelectLanguageFirst('ta')}
+              >
+                {t('tamil')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
