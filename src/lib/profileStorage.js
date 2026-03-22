@@ -4,6 +4,22 @@
  */
 
 const KEY = 'diabetes_checker_profile'
+const USER_ID_KEY = 'diabetes_checker_user_id'
+
+export function getUserId() {
+  try {
+    return sessionStorage.getItem(USER_ID_KEY) || null
+  } catch {
+    return null
+  }
+}
+
+export function setUserId(id) {
+  try {
+    if (id) sessionStorage.setItem(USER_ID_KEY, id)
+    else sessionStorage.removeItem(USER_ID_KEY)
+  } catch {}
+}
 
 export function getProfile() {
   try {
@@ -28,5 +44,6 @@ export function saveProfile(updates) {
 export function clearProfile() {
   try {
     sessionStorage.removeItem(KEY)
+    sessionStorage.removeItem(USER_ID_KEY)
   } catch {}
 }

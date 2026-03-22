@@ -23,6 +23,9 @@ export default function Habits() {
   const [showResultModal, setShowResultModal] = useState(false)
   const [resultName, setResultName] = useState('')
   const [resultPhone, setResultPhone] = useState('')
+  const [resultAge, setResultAge] = useState('')
+  const [resultLocation, setResultLocation] = useState('')
+  const [saveError, setSaveError] = useState(null)
 
   const PHONE_MAX_DIGITS = 10
   const handlePhoneChange = (e) => {
@@ -57,17 +60,26 @@ export default function Habits() {
     const phone = resultPhone.trim()
     if (!name || !phone) return
 
+    setSaveError(null)
     const habitsString = Array.from(selectedHabits).join(',')
-    await saveProfileData(userId, { habits: habitsString, name, phone })
-
-    setShowResultModal(false)
-    navigate('/next-step', { state: { userId, gender } })
+    const age = resultAge.trim() || null
+    const location = resultLocation.trim() || null
+    try {
+      await saveProfileData(userId, { habits: habitsString, name, phone, age, location })
+      setShowResultModal(false)
+      navigate('/next-step', { state: { userId, gender } })
+    } catch (err) {
+      setSaveError(err?.message || 'Failed to save. Please try again.')
+    }
   }
 
   const handleCancelModal = () => {
     setShowResultModal(false)
+    setSaveError(null)
     setResultName('')
     setResultPhone('')
+    setResultAge('')
+    setResultLocation('')
   }
 
   return (
@@ -151,6 +163,35 @@ export default function Habits() {
             <span className="hab-result-modal-hint">{t('habits.phoneHint')}</span>
           </div>
 
+          <div className="hab-result-modal-field">
+            <label className="hab-result-modal-label">{t('habits.ageLabel')}</label>
+            <input
+              type="number"
+              className="hab-result-modal-input"
+              placeholder={t('habits.agePlaceholder')}
+              value={resultAge}
+              onChange={(e) => setResultAge(e.target.value)}
+              min={1}
+              max={120}
+              autoComplete="off"
+              aria-label={t('habits.ageLabel')}
+            />
+          </div>
+
+          <div className="hab-result-modal-field">
+            <label className="hab-result-modal-label">{t('habits.locationLabel')}</label>
+            <input
+              type="text"
+              className="hab-result-modal-input"
+              placeholder={t('habits.locationPlaceholder')}
+              value={resultLocation}
+              onChange={(e) => setResultLocation(e.target.value)}
+              autoComplete="address-level2"
+              aria-label={t('habits.locationLabel')}
+            />
+          </div>
+
+          {saveError && <p className="hab-result-modal-error">{saveError}</p>}
           <button
             type="button"
             className="hab-result-modal-submit"

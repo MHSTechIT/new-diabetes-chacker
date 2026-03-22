@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 import maleImg from '../assets/men.png'
 import femaleImg from '../assets/women.png'
 import { supabase } from '../lib/supabaseClient'
-import { saveProfile, clearProfile } from '../lib/profileStorage'
+import { saveProfile, clearProfile, setUserId } from '../lib/profileStorage'
 import { hasApi, apiCreateProfile } from '../lib/api'
 import { getProgressPercent } from '../lib/progressSteps'
 import styles from './GenderSelection.module.css'
@@ -30,6 +30,7 @@ export default function GenderSelection() {
     if (hasApi()) {
       try {
         const id = await apiCreateProfile(selected)
+        setUserId(id)
         navigate('/age-selection', { state: { userId: id, gender: selected, fromRect } })
       } catch (err) {
         clearProfile()
@@ -42,7 +43,9 @@ export default function GenderSelection() {
         .insert({ gender: selected })
         .select('id')
         .single()
-      navigate('/age-selection', { state: { userId: data?.id, gender: selected, fromRect } })
+      const id = data?.id
+      if (id) setUserId(id)
+      navigate('/age-selection', { state: { userId: id, gender: selected, fromRect } })
     } else {
       clearProfile()
       saveProfile({ gender: selected })

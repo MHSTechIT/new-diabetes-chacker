@@ -255,6 +255,15 @@
   color: #8888AA;
 }
 
+.hab-result-modal-error {
+  margin-top: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.15);
+  border-radius: 8px;
+}
+
 .hab-result-modal-submit {
   width: 100%;
   padding: 14px 20px;

@@ -1,17 +1,26 @@
 /**
  * Unified profile save - uses API, Supabase, or profileStorage
+ * Always persists to Supabase when we have the client and userId.
  */
 import { supabase } from './supabaseClient'
-import { saveProfile } from './profileStorage'
+import { saveProfile, getUserId } from './profileStorage'
 import { hasApi, apiUpdateProfile } from './api'
 
 export async function saveProfileData(userId, updates) {
+  const effectiveUserId = userId || getUserId()
   saveProfile(updates)
-  if (hasApi() && userId) {
-    await apiUpdateProfile(userId, updates)
-    return
+
+  // Persist to Supabase when we have the client and userId
+  if (supabase && effectiveUserId) {
+    const { error } = await supabase
+      .from('user_profiles')
+      .update(updates)
+      .eq('id', effectiveUserId)
+    if (error) throw error
   }
-  if (supabase && userId) {
-    await supabase.from('user_profiles').update(updates).eq('id', userId)
+
+  // Also sync to backend API when enabled (for backend state consistency)
+  if (hasApi() && effectiveUserId) {
+    await apiUpdateProfile(effectiveUserId, updates)
   }
 }
