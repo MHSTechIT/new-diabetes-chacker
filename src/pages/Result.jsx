@@ -9,6 +9,7 @@ import { apiAnalyzeReport } from '../lib/api'
 import ConfirmModal from '../components/ConfirmModal'
 import RiskVideoPlayer from '../components/RiskVideoPlayer'
 import RiskGauge from '../components/RiskGauge'
+import ExpertCallModal from '../components/ExpertCallModal'
 import './Result.css'
 
 const RISK_COLORS = {
@@ -49,12 +50,65 @@ const BADGE_LABEL_KEYS = {
   HIGH: 'resultPage.highRiskBadge',
 }
 
-const RECOMMENDED_ACTION_KEYS = {
-  LOW: ['resultPage.maintainWeight', 'resultPage.stayActive', 'resultPage.eatBalanced'],
-  LOW_MODERATE: ['resultPage.reduceCarbs', 'resultPage.addWalking', 'resultPage.bloodTest6mo'],
-  MODERATE: ['resultPage.seeDoctor', 'resultPage.hba1c', 'resultPage.lifestyleChanges'],
-  MODERATE_HIGH: ['resultPage.seeDoctorSoon', 'resultPage.fullBloodPanel', 'resultPage.strictLifestyle'],
-  HIGH: ['resultPage.seeDoctorNow', 'resultPage.bloodTests', 'resultPage.followAdvice'],
+const UNIVERSAL_ACTION_KEYS = [
+  'resultPage.actionStep1',
+  'resultPage.actionStep2',
+  'resultPage.actionStep3',
+]
+
+const SIMPLE_EXPLANATION_KEYS = {
+  LOW: 'resultPage.explanationLow',
+  LOW_MODERATE: 'resultPage.explanationLowModerate',
+  MODERATE: 'resultPage.explanationModerate',
+  MODERATE_HIGH: 'resultPage.explanationModerateHigh',
+  HIGH: 'resultPage.explanationHigh',
+}
+
+const EMOTIONAL_MSG_KEYS = {
+  LOW: 'resultPage.emotionalLow',
+  LOW_MODERATE: 'resultPage.emotionalLowModerate',
+  MODERATE: 'resultPage.emotionalModerate',
+  MODERATE_HIGH: 'resultPage.emotionalModerateHigh',
+  HIGH: 'resultPage.emotionalHigh',
+}
+
+const DAILY_TIPS = [
+  'Walking after meals helps reduce blood sugar spikes naturally.',
+  'Start your meal with protein or vegetables to control sugar rise.',
+  'Drinking enough water supports better metabolism and sugar balance.',
+  'Early dinner can improve overnight blood sugar control.',
+  'Avoid sugary drinks — they increase blood sugar very quickly.',
+  'Eating slowly helps prevent overeating and sudden sugar spikes.',
+  'Good sleep (7–8 hours) improves insulin sensitivity.',
+  'Stress can increase sugar levels — take a few minutes to relax daily.',
+  'Whole foods are better than packaged foods for sugar control.',
+  'Adding fibre (vegetables, fruits) helps slow sugar absorption.',
+  'Skipping meals can lead to overeating later — eat balanced meals.',
+  'A short walk after dinner is better than sitting or lying down.',
+  'Avoid late-night snacking to support better metabolism.',
+  'Homemade meals are usually healthier than restaurant food.',
+  'Protein at every meal helps keep you full and stable.',
+  'Reducing white rice and refined flour helps manage sugar levels.',
+  'Healthy fats (nuts, seeds) can improve satiety and balance.',
+  'Eating at regular times supports better blood sugar control.',
+  'Limit bakery items — they often contain hidden sugars.',
+  'Fresh fruits are better than fruit juices for sugar control.',
+  'Small consistent changes give better results than sudden big changes.',
+  'Staying active throughout the day is as important as exercise.',
+  'Avoid long sitting hours — move every 30–60 minutes.',
+  'Hydration helps your body function more efficiently.',
+  'Chewing food properly improves digestion and sugar response.',
+  'Balanced meals (carbs + protein + fibre) are key for control.',
+  'Avoid emotional eating — check if you are really hungry.',
+  'Planning your meals reduces unhealthy food choices.',
+  'Consistency matters more than perfection in health habits.',
+  'Start today — even small steps can improve your health.',
+]
+
+function getDailyTip() {
+  const start = new Date(new Date().getFullYear(), 0, 0)
+  const dayOfYear = Math.floor((Date.now() - start) / 86400000)
+  return DAILY_TIPS[dayOfYear % DAILY_TIPS.length]
 }
 
 export default function Result() {
@@ -76,6 +130,9 @@ export default function Result() {
   const [enhancedResult, setEnhancedResult] = useState(null)
   const [showBackConfirm, setShowBackConfirm] = useState(false)
   const [showRetestConfirm, setShowRetestConfirm] = useState(false)
+  const [showExpertModal, setShowExpertModal] = useState(false)
+  const [callBooked, setCallBooked] = useState(false)
+  const [bloodTestBooked, setBloodTestBooked] = useState(() => !!location.state?.bloodTestBooked)
 
   const result = enhancedResult?.result ?? resultFromState ?? resultData
 
@@ -415,10 +472,11 @@ export default function Result() {
               </div>
             )}
 
-            {/* End-of-page format: Visual and result → Your report summary → What to do next → Contribution factor */}
+            {/* End-of-page format */}
             <div className="result-format-block">
               <h2 className="result-format-block-title">{t('resultPage.yourResult')}</h2>
 
+              {/* Visual & Result */}
               <section className="result-format-section" aria-labelledby="result-visual-heading">
                 <h3 id="result-visual-heading" className="result-format-section-title">{t('resultPage.visualAndResult')}</h3>
                 <div className="result-format-gauge-wrap">
@@ -439,8 +497,17 @@ export default function Result() {
                   </p>
                   <p className="result-format-probability">{t('resultPage.probability')}: {result.probabilityRangeText}</p>
                 </div>
+
+                {/* Simple human-friendly explanation */}
+                <p className="result-simple-explanation">{t(SIMPLE_EXPLANATION_KEYS[level])}</p>
+
+                {/* Emotional message */}
+                <p className="result-emotional-msg" style={{ color: colors.text }}>
+                  {t(EMOTIONAL_MSG_KEYS[level])}
+                </p>
               </section>
 
+              {/* Report summary */}
               <section className="result-format-section" aria-labelledby="result-summary-heading">
                 <h3 id="result-summary-heading" className="result-format-section-title">{t('resultPage.yourReportSummary')}</h3>
                 {!(enhancedResult?.extractedLabs && (enhancedResult.extractedLabs.hba1c != null || enhancedResult.extractedLabs.fastingGlucose != null)) ? (
@@ -450,14 +517,13 @@ export default function Result() {
                   </div>
                 ) : null}
                 <p className="result-summary-text">{summary}</p>
-              </section>
 
-              <section className="result-format-section result-format-section--book-cta" aria-labelledby="result-book-cta-heading">
+                {/* Blood test CTA */}
                 <button
                   type="button"
-                  id="result-book-cta-heading"
-                  className="result-book-blood-test-cta"
-                  onClick={() =>
+                  className={`result-blood-test-cta${bloodTestBooked ? ' booked' : ''}`}
+                  disabled={bloodTestBooked}
+                  onClick={bloodTestBooked ? undefined : () =>
                     navigate('/book-home-test', {
                       state: {
                         ...location.state,
@@ -467,19 +533,58 @@ export default function Result() {
                     })
                   }
                 >
-                  {t('resultPage.bookBloodTestCta')}
+                  {bloodTestBooked ? t('resultPage.bloodTestBooked') : t('resultPage.bloodTestCta299')}
                 </button>
               </section>
 
+              {/* 3 Universal Action Steps */}
               <section className="result-format-section" aria-labelledby="result-next-heading">
-                <h3 id="result-next-heading" className="result-format-section-title">{t('resultPage.whatToDoNext')}</h3>
+                <h3 id="result-next-heading" className="result-format-section-title">{t('resultPage.actionStepsTitle')}</h3>
                 <ul className="result-actions-list">
-                  {(RECOMMENDED_ACTION_KEYS[level] || []).map((key, i) => (
+                  {UNIVERSAL_ACTION_KEYS.map((key, i) => (
                     <li key={i}><span className="result-actions-arrow">→</span> {t(key)}</li>
                   ))}
                 </ul>
+                {/* Talk to Expert — below action steps */}
+                <button
+                  type="button"
+                  className={`result-talk-expert-btn${callBooked ? ' booked' : ''}`}
+                  disabled={callBooked}
+                  onClick={callBooked ? undefined : () => setShowExpertModal(true)}
+                >
+                  {callBooked ? t('resultPage.callBooked') : t('resultPage.talkToExpert')}
+                </button>
               </section>
 
+              {/* Food Guidance */}
+              <section className="result-format-section result-food-guidance" aria-labelledby="result-food-heading">
+                <h3 id="result-food-heading" className="result-format-section-title">{t('resultPage.foodGuidanceTitle')}</h3>
+                <div className="result-food-row result-food-row--eat">
+                  <span className="result-food-icon">✅</span>
+                  <div>
+                    <span className="result-food-label">{t('resultPage.foodEatMoreLabel')}: </span>
+                    <span className="result-food-items">{t('resultPage.foodEatMoreItems')}</span>
+                  </div>
+                </div>
+                <div className="result-food-row result-food-row--avoid">
+                  <span className="result-food-icon">❌</span>
+                  <div>
+                    <span className="result-food-label">{t('resultPage.foodAvoidLabel')}: </span>
+                    <span className="result-food-items">{t('resultPage.foodAvoidItems')}</span>
+                  </div>
+                </div>
+              </section>
+
+              {/* Rotating Daily Tip */}
+              <div className="result-daily-tip">
+                <span className="result-daily-tip-icon">💡</span>
+                <div>
+                  <span className="result-daily-tip-label">{t('resultPage.dailyTipLabel')} </span>
+                  <span className="result-daily-tip-text">{getDailyTip()}</span>
+                </div>
+              </div>
+
+              {/* Contribution Factors */}
               <section className="result-format-section" aria-labelledby="result-factors-heading">
                 <h3 id="result-factors-heading" className="result-format-section-title">{t('resultPage.contributionFactor')}</h3>
                 {Object.keys(groupedFactors.grouped).length > 0 ? (
@@ -508,12 +613,23 @@ export default function Result() {
                   <p className="result-format-no-factors">{t('resultPage.noFactorsNote')}</p>
                 )}
               </section>
+
+              {/* Disclaimer */}
+              <p className="result-disclaimer">{t('resultPage.disclaimer')}</p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="result-cta-btns">
+              <button
+                type="button"
+                className="result-cta-btn result-cta-btn--secondary"
+                onClick={() => setShowRetestConfirm(true)}
+              >
+                {t('resultPage.checkAgainLater')}
+              </button>
             </div>
 
             <div className="result-footer-btns">
-              <button type="button" className="result-btn-ghost" onClick={() => setShowRetestConfirm(true)}>
-                {t('resultPage.retest')}
-              </button>
               <button type="button" className="result-btn-primary" onClick={handleShare}>
                 {t('resultPage.share')}
               </button>
@@ -568,6 +684,17 @@ export default function Result() {
             handleRetake()
           }}
           onCancel={() => setShowRetestConfirm(false)}
+        />
+      )}
+
+      {showExpertModal && (
+        <ExpertCallModal
+          onClose={() => setShowExpertModal(false)}
+          onBookingSuccess={() => { setCallBooked(true); setShowExpertModal(false) }}
+          profileName={profile?.name}
+          profilePhone={profile?.phone}
+          riskLevel={level}
+          profileId={profile?.id || userId}
         />
       )}
 

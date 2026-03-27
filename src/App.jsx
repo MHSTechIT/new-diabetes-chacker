@@ -13,11 +13,8 @@ import FamilyHistory from './pages/FamilyHistory'
 import HipSize from './pages/HipSize'
 import PhysicalActivityLevel from './pages/PhysicalActivityLevel'
 import JunkFoodFrequency from './pages/JunkFoodFrequency'
-import OutsideFoodFrequency from './pages/OutsideFoodFrequency'
-import CarbohydrateType from './pages/CarbohydrateType'
 import SugaryBeverages from './pages/SugaryBeverages'
 import SleepDuration from './pages/SleepDuration'
-import Snoring from './pages/Snoring'
 import WeightGain from './pages/WeightGain'
 import StressLevel from './pages/StressLevel'
 import MedicalConditions from './pages/MedicalConditions'
@@ -119,11 +116,8 @@ export default function App() {
       <Route path="/hip-size" element={<HipSize />} />
       <Route path="/physical-activity" element={<PhysicalActivityLevel />} />
       <Route path="/junk-food-frequency" element={<JunkFoodFrequency />} />
-      <Route path="/outside-food-frequency" element={<OutsideFoodFrequency />} />
-      <Route path="/carbohydrate-type" element={<CarbohydrateType />} />
       <Route path="/sugary-beverages" element={<SugaryBeverages />} />
       <Route path="/sleep-duration" element={<SleepDuration />} />
-      <Route path="/snoring" element={<Snoring />} />
       <Route path="/weight-gain" element={<WeightGain />} />
       <Route path="/stress-level" element={<StressLevel />} />
       <Route path="/medical-conditions" element={<MedicalConditions />} />

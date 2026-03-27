@@ -103,8 +103,6 @@ const SYMPTOM_LABELS = {
 }
 
 const JUNK_POINTS = { rarely: 0, weekly1_2: 1, weekly3_4: 2, weekly5plus: 3 }
-const OUTSIDE_POINTS = { rarely: 0, weekly1_2: 1, weekly3_4: 2, weekly5plus: 3 }
-const CARB_POINTS = { complex: 0, mixed: 2, refined: 4 }
 const SUGARY_POINTS = { no: 0, yes: 3 }
 
 const HABIT_POINTS = 2
@@ -112,9 +110,6 @@ const HABIT_LABELS = { smoking: 'Smoking', alcohol: 'Alcohol', 'tobacco-chewing'
 
 const SLEEP_POINTS = { '7-8': 0, more8: 0, '6-7': 2, less6: 4 }
 const SLEEP_LABELS = { '7-8': null, more8: null, '6-7': 'Sleep 6–7 hours', less6: 'Sleep under 6 hours' }
-
-const SNORING_POINTS = { no: 0, 'not-sure': 1, yes: 3 }
-const SNORING_LABELS = { no: null, 'not-sure': 'Snoring not sure', yes: 'Snoring' }
 
 const WEIGHT_GAIN_POINTS = { no: 0, yes: 3 }
 const STRESS_POINTS = { low: 0, moderate: 2, high: 4 }
@@ -213,22 +208,12 @@ export function calculateRisk(answers) {
   }
   total += Math.min(symptomsPts, 16)
 
-  // Q10 Junk food
+  // Q10 Junk / outside food (combined)
   const junkPts = JUNK_POINTS[answers.junk_food_frequency] ?? 0
   total += junkPts
-  if (junkPts > 0) addFactor(factors, 'Junk food frequency', junkPts, 'Diet')
+  if (junkPts > 0) addFactor(factors, 'Junk/outside food frequency', junkPts, 'Diet')
 
-  // Q11 Outside food
-  const outsidePts = OUTSIDE_POINTS[answers.outside_food_frequency] ?? 0
-  total += outsidePts
-  if (outsidePts > 0) addFactor(factors, 'Outside food frequency', outsidePts, 'Diet')
-
-  // Q12 Carbs
-  const carbPts = CARB_POINTS[answers.carbohydrate_type] ?? 0
-  total += carbPts
-  if (carbPts > 0) addFactor(factors, 'Refined carbohydrates', carbPts, 'Diet')
-
-  // Q13 Sugary drinks
+  // Q11 Sugary drinks
   const sugaryPts = SUGARY_POINTS[answers.sugary_beverages] ?? 0
   total += sugaryPts
   if (sugaryPts > 0) addFactor(factors, 'Sugary beverages', sugaryPts, 'Diet')
@@ -247,12 +232,7 @@ export function calculateRisk(answers) {
   total += sleepPts
   addFactor(factors, SLEEP_LABELS[answers.sleep_duration], sleepPts, 'Sleep')
 
-  // Q16 Snoring
-  const snoringPts = SNORING_POINTS[answers.snoring] ?? 0
-  total += snoringPts
-  addFactor(factors, SNORING_LABELS[answers.snoring], snoringPts, 'Sleep')
-
-  // Q17 Weight gain
+  // Q16 Weight gain
   const wgPts = WEIGHT_GAIN_POINTS[answers.weight_gain] ?? 0
   total += wgPts
   if (wgPts > 0) addFactor(factors, 'Weight gain in last year', wgPts, 'Lifestyle')

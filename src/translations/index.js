@@ -103,9 +103,9 @@ const en = {
     sedentary: 'Mostly sitting (desk job / minimal movement)',
   },
 
-  // Junk food
+  // Junk food (combined with outside food)
   junkFood: {
-    title: 'How often do you consume junk food?',
+    title: 'How often do you eat junk or outside food?',
     rarely: 'Rarely',
     weekly1_2: '1–2 times per week',
     weekly3_4: '3–4 times per week',
@@ -144,9 +144,9 @@ const en = {
     title: 'Do you snore regularly?',
   },
 
-  // Weight gain
+  // Weight gain/loss
   weightGain: {
-    title: 'Have you had sudden weight gain in the last 1 year?',
+    title: 'Have you noticed any recent changes in your weight (gain or loss)?',
   },
 
   // Stress level
@@ -267,8 +267,106 @@ const en = {
     summaryNoFactorsLowModerate: 'You have a low but present risk. Targeted lifestyle changes can keep this risk from growing.',
     summaryNoFactorsModerate: 'Your risk is moderate. We recommend speaking with a doctor.',
     summaryNoFactorsModerateHigh: 'Your risk is elevated. Please consult a healthcare provider.',
+    bloodTestCta299: 'Get your 100% report on blood test for ₹299/-',
     goBack: 'Go back',
     watchRiskLevel: 'Watch: Your risk level',
+
+    // Simple explanation by risk level
+    explanationLow: 'Your blood sugar levels are within a healthy range. Maintain your current lifestyle to stay healthy.',
+    explanationLowModerate: 'Your blood sugar levels are slightly higher than normal. This is an early warning stage, but it can be reversed with simple lifestyle changes.',
+    explanationModerate: 'Your blood sugar levels are slightly higher than normal. This is an early warning stage, but it can be reversed with simple lifestyle changes.',
+    explanationModerateHigh: 'Your blood sugar levels are high. This indicates diabetes risk, and it is important to take action and consult a healthcare professional.',
+    explanationHigh: 'Your blood sugar levels are high. This indicates diabetes risk, and it is important to take action and consult a healthcare professional.',
+
+    // Emotional message by risk level
+    emotionalLow: 'Great job! Keep maintaining your healthy habits.',
+    emotionalLowModerate: 'Good news! You can still reverse this with simple changes. Start small, stay consistent.',
+    emotionalModerate: 'Good news! You can still reverse this with simple changes. Start small, stay consistent.',
+    emotionalModerateHigh: 'Take action now — small steps lead to big improvements. You are not alone in this.',
+    emotionalHigh: 'Take action now — small steps lead to big improvements. You are not alone in this.',
+
+    // 3 universal action steps
+    actionStepsTitle: 'What you should do now',
+    actionStep1: 'Reduce sugar, refined foods, and packaged snacks',
+    actionStep2: 'Walk for 10–15 minutes after every meal',
+    actionStep3: 'Sleep on time (before 11 PM) and avoid late-night eating',
+
+    // Food guidance
+    foodGuidanceTitle: 'Food Guide',
+    foodEatMoreLabel: 'Eat more',
+    foodEatMoreItems: 'Vegetables, protein, traditional foods',
+    foodAvoidLabel: 'Avoid',
+    foodAvoidItems: 'Sugary drinks, bakery items, packaged snacks',
+
+    // Daily tip
+    dailyTipLabel: 'Did you know?',
+
+    // CTA buttons
+    checkAgainLater: 'Check Again Later',
+    talkToExpert: 'Talk to Expert',
+    callBooked: '✅ Call Booked',
+    bloodTestBooked: '✅ Test Booked',
+
+    // Disclaimer
+    disclaimer: 'This is not a medical diagnosis. Consult a doctor for confirmation.',
+  },
+
+  // Book Home Test page
+  bookHomeTest: {
+    pageTitle: 'Book Home Test',
+    doorstepTag: 'DOORSTEP COLLECTION',
+    introTitle: 'When should we come?',
+    introDesc: 'Sample collected at home. Report in 24 hours.',
+    featurePanel: 'HbA1c + FBS Panel',
+    featurePanelSub: 'Auto-selected based on your risk',
+    featureReport: 'Report in 24 hours',
+    featureReportSub: 'Certified lab partner',
+    featureHome: 'Home collection',
+    featureHomeSub: 'No need to visit a lab',
+    formTitle: 'Personal & Appointment Details',
+    labelName: 'FULL NAME',
+    placeholderName: 'Full name',
+    labelMobile: 'MOBILE',
+    labelAddress: 'ADDRESS',
+    placeholderAddress: 'Enter full address...',
+    labelPincode: 'PINCODE',
+    placeholderPincode: 'e.g. 600001',
+    labelDate: 'PREFERRED DATE',
+    labelTimeSlot: 'TIME SLOT',
+    slotMorning: 'Morning',
+    slotAfternoon: 'Afternoon',
+    slotEvening: 'Evening',
+    panelName: 'HbA1c + Fasting Blood Sugar Panel',
+    panelSub: 'Auto-selected based on your risk score',
+    submit: 'Submit booking',
+    submitting: 'Saving…',
+    errorFill: 'Please fill all fields. Mobile must be 10 digits.',
+    successTitle: 'Booking request saved',
+    successText: "We'll contact you at +91 {mobile} to confirm your doorstep collection.",
+    backToResult: 'Back to result',
+  },
+
+  // Expert Call Modal
+  expertCall: {
+    title: 'Schedule a Call',
+    subtitle: 'Choose a date and time for your expert consultation',
+    timeHeading: 'Select time (10 AM – 5 PM)',
+    confirmSchedule: 'Confirm Schedule',
+    confirmHeading: 'Confirm Your Booking',
+    labelDate: 'Date',
+    labelTime: 'Time',
+    labelName: 'Name',
+    labelPhone: 'Phone',
+    confirmNote: 'Our expert will call you at the scheduled time.',
+    change: 'Change',
+    bookCall: 'Book Call',
+    booking: 'Booking your call…',
+    successHeading: 'Call Scheduled!',
+    successText: 'Your expert call is booked for',
+    successAt: 'at',
+    successNote: 'Our expert will call you on your registered number.',
+    done: 'Done',
+    tryAgain: 'Try Again',
   },
 }
 
@@ -279,7 +377,7 @@ const ta = {
   tamil: 'தமிழ்',
 
   intro: {
-    title: 'நீரிழிவு அபாய மதிப்பீடு',
+    title: 'சர்க்கரை நோய் அபாய மதிப்பீடு',
     description: 'இந்த மதிப்பீடு திரையிடல் கருவி மட்டுமே; மருத்துவ நோய் நிர்ணயத்தை மாற்றாது. முடிவுகள் சுய-அறிக்கை தகவல்களின் அடிப்படையில் உள்ளன.',
     startButton: 'மதிப்பீட்டைத் தொடங்கு →',
   },
@@ -318,13 +416,13 @@ const ta = {
   },
 
   gestational: {
-    title: 'கர்ப்ப காலத்தில் கர்ப்ப நீரிழிவு வரலாறு உண்டா?',
+    title: 'கர்ப்ப காலத்தில் சர்க்கரை நோய் வரலாறு உண்டா?',
     notApplicable: 'பொருந்தாது',
   },
 
   weightHeight: {
     title: 'உங்களை நன்றாக அறிந்து கொள்ளுங்கள்',
-    subtitle: 'உங்கள் நீரிழிவு மேலாண்மை திட்டத்தை தனிப்பயனாக்க உதவுங்கள்',
+    subtitle: 'உங்கள் சர்க்கரை நோய் மேலாண்மை திட்டத்தை தனிப்பயனாக்க உதவுங்கள்',
     weight: 'எடை',
     height: 'உயரம்',
     bmi: 'பிஎம்ஐ',
@@ -335,16 +433,16 @@ const ta = {
   },
 
   familyHistory: {
-    title: 'உங்கள் குடும்பத்தில் நீரிழிவு வரலாறு உள்ளதா?',
+    title: 'உங்கள் குடும்பத்தில் சர்க்கரை நோய் வரலாறு உள்ளதா?',
     none: 'இல்லை, எங்கள் குடும்பத்தில் யாருக்கும் இல்லை.',
     notSure: 'எங்கள் குடும்ப வரலாறு பற்றி உறுதியாக தெரியவில்லை.',
     siblings: 'ஆம், என் சகோதரன் அல்லது சகோதரிக்கு உள்ளது.',
     oneParent: 'ஆம், என் பெற்றோரில் ஒருவருக்கு உள்ளது.',
-    bothParents: 'ஆம், இருவர் பெற்றோருக்கும் உள்ளது.',
+    bothParents: 'ஆம், பெற்றோர் இருவருக்கும் உள்ளது.',
   },
 
   hipSize: {
-    title: 'நாபி மட்டத்தில் இடுப்பு அளவு?',
+    title: 'தொப்புள் பகுதியில் இடுப்பு அளவு?',
     maleLess90: '90 செ.மீக்கு குறைவு',
     male90_100: '90–100 செ.மீ',
     maleMore100: '100 செ.மீக்கு மேல்',
@@ -355,14 +453,14 @@ const ta = {
 
   physicalActivity: {
     title: 'உங்கள் தினசரி உடல் செயல்பாட்டு நிலை என்ன?',
-    vigorous: 'உடல் உழைப்பு வேலை அல்லது வழக்கமான உடற்பயிற்சி',
+    vigorous: 'உடல் உழைப்பு அதிகமான வேலை அல்லது வழக்கமான உடற்பயிற்சி',
     moderate: 'தினமும் 30 நிமிடம் நடைபயிற்சி',
     light: 'இலகுவான இயக்கம் (வீட்டு வேலை / குறுகிய நடை)',
     sedentary: 'பெரும்பாலும் உட்கார்ந்து (மேசை வேலை / குறைந்த இயக்கம்)',
   },
 
   junkFood: {
-    title: 'எத்தனை முறை ஜங்க் உணவு சாப்பிடுகிறீர்கள்?',
+    title: 'எத்தனை முறை ஜங்க் அல்லது வெளி உணவு சாப்பிடுகிறீர்கள்?',
     rarely: 'அரிதாக',
     weekly1_2: 'வாரத்திற்கு 1–2 முறை',
     weekly3_4: 'வாரத்திற்கு 3–4 முறை',
@@ -397,7 +495,7 @@ const ta = {
   },
 
   weightGain: {
-    title: 'கடந்த 1 வருடத்தில் திடீர் எடை அதிகரிப்பு ஏற்பட்டதா?',
+    title: 'சமீபத்தில் உங்கள் எடையில் ஏதேனும் மாற்றம் (அதிகரிப்பு அல்லது குறைப்பு) ஏற்பட்டதா?',
   },
 
   stressLevel: {
@@ -410,7 +508,7 @@ const ta = {
   medicalConditions: {
     title: 'உங்களுக்கு உள்ள நிலைமைகளைத் தேர்ந்தெடுக்கவும்?',
     hypertension: 'உயர் இரத்த அழுத்தம்',
-    highCholesterol: 'உயர் கொழுப்பு',
+    highCholesterol: 'கொலஸ்ட்ரால்',
     pcos: 'பிசிஓஎஸ்',
     thyroidDisorder: 'தைராய்டு சீர்கேடு',
     fattyLiver: 'கொழுப்பு கல்லீரல்',
@@ -457,11 +555,11 @@ const ta = {
   },
 
   resultPage: {
-    lowRisk: 'நீரிழிவு இருக்க வாய்ப்பு குறைவு',
-    lowModerate: 'நீரிழிவு வர வாய்ப்பு குறைவு',
-    moderate: 'நீங்கள் முன்-நீரிழிவு இருக்கலாம்',
-    moderateHigh: 'நீரிழிவு இருக்க வாய்ப்பு அதிகம்',
-    high: 'நீரிழிவு இருக்க வாய்ப்பு அதிகம் — உடனடியாக நடவடிக்கை எடுங்கள்',
+    lowRisk: 'சர்க்கரை நோய் இருக்க வாய்ப்பு குறைவு',
+    lowModerate: 'சர்க்கரை நோய் வர வாய்ப்பு குறைவு',
+    moderate: 'நீங்கள் முன் சர்க்கரை நோய் நிலையில் இருக்கலாம்',
+    moderateHigh: 'சர்க்கரை நோய் இருக்க வாய்ப்பு அதிகம்',
+    high: 'சர்க்கரை நோய் இருக்க வாய்ப்பு அதிகம் — உடனடியாக நடவடிக்கை எடுங்கள்',
     lowRiskBadge: 'குறைந்த அபாயம்',
     lowModerateBadge: 'குறைந்து முதல் மிதமான',
     moderateBadge: 'மிதமான அபாயம்',
@@ -474,13 +572,13 @@ const ta = {
     addWalking: 'தினமும் 30 நிமிடம் நடைபயிற்சி சேர்க்கவும்',
     bloodTest6mo: '6 மாதங்களுக்குள் இரத்த சர்க்கரை சோதனை செய்யுங்கள்',
     seeDoctor: 'மருத்துவரைப் பாருங்கள்',
-    hba1c: 'HbA1c மற்றும் fasting குளுக்கோஸ்',
+    hba1c: 'HbA1c மற்றும் fasting குளுக்கோஸ் சோதனை செய்யுங்கள்',
     lifestyleChanges: 'வாழ்க்கை முறை மாற்றங்கள்',
     seeDoctorSoon: 'விரைவில் மருத்துவரைப் பாருங்கள்',
-    fullBloodPanel: 'முழு இரத்த பேனல்',
-    strictLifestyle: 'கடுமையான வாழ்க்கை முறை மாற்றங்கள்',
+    fullBloodPanel: 'முழு இரத்த பேனல் எடுக்கவும்',
+    strictLifestyle: 'கடுமையான வாழ்க்கை முறை மாற்றங்கள் பின்பற்றவும்',
     seeDoctorNow: 'உடனடியாக மருத்துவரைப் பாருங்கள்',
-    bloodTests: 'இரத்த சோதனைகள்',
+    bloodTests: 'இரத்த சோதனைகள் செய்யவும்',
     followAdvice: 'மருத்துவ ஆலோசனையைப் பின்பற்றுங்கள்',
     yourResult: 'உங்கள் முடிவு',
     visualAndResult: 'காட்சி மற்றும் முடிவு',
@@ -505,15 +603,113 @@ const ta = {
     summaryModeratePrefix: 'குறிப்பிடத்தக்க காரணிகள்: ',
     summaryModerateSuffix: '. சோதனை பரிந்துரைக்கப்படுகிறது.',
     summaryModerateHighPrefix: 'பல காரணிகள் (எ.கா. ',
-    summaryModerateHighSuffix: ') அதிகரித்த அபாயத்தைக் குறிக்கின்றன. தயவுசெய்து சுகாதார சேவை வழங்குநரைக் கலந்தாலோசிக்கவும்.',
+    summaryModerateHighSuffix: ') அதிகரித்த அபாயத்தைக் குறிக்கின்றன. தயவுசெய்து ஆரோக்கிய ஆலோசகரைக் கலந்தாலோசிக்கவும்.',
     summaryHighMultiPrefix: 'பல அபாய காரணிகள் உட்பட ',
     summaryHighMultiSuffix: ' அதிக அபாயத்தைக் குறிக்கிறது. விரைவில் மருத்துவரைப் பாருங்கள்.',
-    summaryNoFactorsLow: 'உங்கள் பதில்கள் குறைந்த நீரிழிவு அபாயத்தைக் குறிக்கின்றன. ஆரோக்கியமான பழக்கங்களை பராமரிக்கவும்.',
+    summaryNoFactorsLow: 'உங்கள் பதில்கள் குறைந்த சர்க்கரை நோய் அபாயத்தைக் குறிக்கின்றன. ஆரோக்கியமான பழக்கங்களை பராமரிக்கவும்.',
     summaryNoFactorsLowModerate: 'உங்களுக்கு குறைந்த ஆனால் இருக்கும் அபாயம் உள்ளது. இலக்கு வாழ்க்கை முறை மாற்றங்கள் இந்த அபாயத்தை வளராமல் இருக்க செய்யும்.',
     summaryNoFactorsModerate: 'உங்கள் அபாயம் மிதமானது. மருத்துவருடன் பேச பரிந்துரைக்கிறோம்.',
-    summaryNoFactorsModerateHigh: 'உங்கள் அபாயம் அதிகரித்துள்ளது. தயவுசெய்து சுகாதார சேவை வழங்குநரைக் கலந்தாலோசிக்கவும்.',
+    summaryNoFactorsModerateHigh: 'உங்கள் அபாயம் அதிகரித்துள்ளது. தயவுசெய்து ஆரோக்கிய ஆலோசகரைக் கலந்தாலோசிக்கவும்.',
+    bloodTestCta299: 'இரத்த சோதனையில் 100% அறிக்கை பெறுங்கள் ₹299/-க்கு',
     goBack: 'பின்செல்',
     watchRiskLevel: 'பார்க்க: உங்கள் அபாய நிலை',
+
+    // Simple explanation by risk level
+    explanationLow: 'உங்கள் இரத்த சர்க்கரை அளவுகள் ஆரோக்கியமான வரம்பில் உள்ளன. ஆரோக்கியமாக இருக்க உங்கள் தற்போதைய வாழ்க்கை முறையை பராமரிக்கவும்.',
+    explanationLowModerate: 'உங்கள் இரத்த சர்க்கரை அளவுகள் சாதாரணத்தை விட சற்று அதிகமாக உள்ளன. இது ஒரு ஆரம்ப எச்சரிக்கை நிலை, ஆனால் எளிய வாழ்க்கை முறை மாற்றங்களால் இதை மாற்றலாம்.',
+    explanationModerate: 'உங்கள் இரத்த சர்க்கரை அளவுகள் சாதாரணத்தை விட சற்று அதிகமாக உள்ளன. இது ஒரு ஆரம்ப எச்சரிக்கை நிலை, ஆனால் எளிய வாழ்க்கை முறை மாற்றங்களால் இதை மாற்றலாம்.',
+    explanationModerateHigh: 'உங்கள் இரத்த சர்க்கரை அளவுகள் அதிகமாக உள்ளன. இது சர்க்கரை நோய் அபாயத்தைக் குறிக்கிறது, நடவடிக்கை எடுக்கவும் மற்றும் சுகாதார நிபுணரை அணுகவும்.',
+    explanationHigh: 'உங்கள் இரத்த சர்க்கரை அளவுகள் அதிகமாக உள்ளன. இது சர்க்கரை நோய் அபாயத்தைக் குறிக்கிறது, நடவடிக்கை எடுக்கவும் மற்றும் சுகாதார நிபுணரை அணுகவும்.',
+
+    // Emotional message
+    emotionalLow: 'அருமை! உங்கள் ஆரோக்கியமான பழக்கங்களை தொடர்ந்து பராமரிக்கவும்.',
+    emotionalLowModerate: 'நல்ல செய்தி! எளிய மாற்றங்களால் இதை மாற்றலாம். சிறியதாக தொடங்குங்கள், நிலையாக இருங்கள்.',
+    emotionalModerate: 'நல்ல செய்தி! எளிய மாற்றங்களால் இதை மாற்றலாம். சிறியதாக தொடங்குங்கள், நிலையாக இருங்கள்.',
+    emotionalModerateHigh: 'இப்போதே நடவடிக்கை எடுங்கள் — சிறிய படிகள் பெரிய முன்னேற்றத்திற்கு வழிவகுக்கும். நீங்கள் தனியாக இல்லை.',
+    emotionalHigh: 'இப்போதே நடவடிக்கை எடுங்கள் — சிறிய படிகள் பெரிய முன்னேற்றத்திற்கு வழிவகுக்கும். நீங்கள் தனியாக இல்லை.',
+
+    // 3 universal action steps
+    actionStepsTitle: 'இப்போது என்ன செய்ய வேண்டும்',
+    actionStep1: 'சர்க்கரை, சுத்திகரிக்கப்பட்ட உணவுகள் மற்றும் பேக்கேஜ் செய்யப்பட்ட சிற்றுண்டிகளை குறைக்கவும்',
+    actionStep2: 'ஒவ்வொரு உணவிற்கும் பிறகு 10–15 நிமிடங்கள் நடக்கவும்',
+    actionStep3: 'சரியான நேரத்தில் தூங்குங்கள் (இரவு 11 மணிக்கு முன்பு) மற்றும் இரவு சாப்பிடுவதை தவிர்க்கவும்',
+
+    // Food guidance
+    foodGuidanceTitle: 'உணவு வழிகாட்டி',
+    foodEatMoreLabel: 'அதிகமாக சாப்பிடுங்கள்',
+    foodEatMoreItems: 'காய்கறிகள், புரதம், பாரம்பரிய உணவுகள்',
+    foodAvoidLabel: 'தவிர்க்கவும்',
+    foodAvoidItems: 'சர்க்கரை பானங்கள், பேக்கரி பொருட்கள், பேக்கேஜ் சிற்றுண்டிகள்',
+
+    // Daily tip
+    dailyTipLabel: 'தெரியுமா?',
+
+    // CTA buttons
+    checkAgainLater: 'பின்னர் மீண்டும் சோதிக்கவும்',
+    talkToExpert: 'நிபுணரிடம் பேசுங்கள்',
+    callBooked: '✅ அழைப்பு முன்பதிவு செய்யப்பட்டது',
+    bloodTestBooked: '✅ சோதனை முன்பதிவு செய்யப்பட்டது',
+
+    // Disclaimer
+    disclaimer: 'இது மருத்துவ நோய் நிர்ணயம் அல்ல. உறுதிப்படுத்த மருத்துவரை அணுகவும்.',
+  },
+
+  // Book Home Test page
+  bookHomeTest: {
+    pageTitle: 'வீட்டு சோதனை முன்பதிவு',
+    doorstepTag: 'வீட்டு சேவை',
+    introTitle: 'எப்போது வரவேண்டும்?',
+    introDesc: 'வீட்டிலேயே மாதிரி சேகரிப்பு. 24 மணி நேரத்தில் அறிக்கை.',
+    featurePanel: 'HbA1c + FBS பரிசோதனை',
+    featurePanelSub: 'உங்கள் அபாய நிலையின் அடிப்படையில் தேர்ந்தெடுக்கப்பட்டது',
+    featureReport: '24 மணி நேரத்தில் அறிக்கை',
+    featureReportSub: 'சான்றளிக்கப்பட்ட ஆய்வக கூட்டாளர்',
+    featureHome: 'வீட்டு சேகரிப்பு',
+    featureHomeSub: 'ஆய்வகத்திற்கு செல்ல வேண்டியதில்லை',
+    formTitle: 'தனிப்பட்ட மற்றும் சந்திப்பு விவரங்கள்',
+    labelName: 'முழுப் பெயர்',
+    placeholderName: 'முழுப் பெயர்',
+    labelMobile: 'மொபைல்',
+    labelAddress: 'முகவரி',
+    placeholderAddress: 'முழு முகவரியை உள்ளிடவும்...',
+    labelPincode: 'பின்கோடு',
+    placeholderPincode: 'எ.கா. 600001',
+    labelDate: 'விருப்பமான தேதி',
+    labelTimeSlot: 'நேர இடைவெளி',
+    slotMorning: 'காலை',
+    slotAfternoon: 'மதியம்',
+    slotEvening: 'மாலை',
+    panelName: 'HbA1c + உண்ணாவிரத இரத்த சர்க்கரை பரிசோதனை',
+    panelSub: 'உங்கள் அபாய மதிப்பெண்ணின் அடிப்படையில் தேர்ந்தெடுக்கப்பட்டது',
+    submit: 'முன்பதிவு சமர்ப்பிக்கவும்',
+    submitting: 'சேமிக்கிறது…',
+    errorFill: 'அனைத்து தகவல்களையும் நிரப்பவும். மொபைல் 10 இலக்கங்கள் இருக்க வேண்டும்.',
+    successTitle: 'முன்பதிவு கோரிக்கை சேமிக்கப்பட்டது',
+    successText: 'உங்கள் வீட்டு சேகரிப்பை உறுதிப்படுத்த +91 {mobile} என்ற எண்ணில் தொடர்பு கொள்வோம்.',
+    backToResult: 'முடிவுக்கு திரும்பு',
+  },
+
+  // Expert Call Modal
+  expertCall: {
+    title: 'அழைப்பு திட்டமிடுங்கள்',
+    subtitle: 'உங்கள் நிபுணர் ஆலோசனைக்கு தேதி மற்றும் நேரத்தை தேர்ந்தெடுக்கவும்',
+    timeHeading: 'நேரத்தை தேர்ந்தெடுக்கவும் (காலை 10 – மாலை 5)',
+    confirmSchedule: 'திட்டத்தை உறுதிப்படுத்தவும்',
+    confirmHeading: 'முன்பதிவை உறுதிப்படுத்தவும்',
+    labelDate: 'தேதி',
+    labelTime: 'நேரம்',
+    labelName: 'பெயர்',
+    labelPhone: 'தொலைபேசி',
+    confirmNote: 'திட்டமிட்ட நேரத்தில் நிபுணர் உங்களை அழைப்பார்.',
+    change: 'மாற்றவும்',
+    bookCall: 'அழைப்பு முன்பதிவு',
+    booking: 'அழைப்பை முன்பதிவு செய்கிறது…',
+    successHeading: 'அழைப்பு திட்டமிடப்பட்டது!',
+    successText: 'உங்கள் நிபுணர் அழைப்பு முன்பதிவு செய்யப்பட்டுள்ளது',
+    successAt: 'நேரத்தில்',
+    successNote: 'உங்கள் பதிவு செய்யப்பட்ட எண்ணில் நிபுணர் அழைப்பார்.',
+    done: 'முடிந்தது',
+    tryAgain: 'மீண்டும் முயற்சிக்கவும்',
   },
 }
 
@@ -546,46 +742,44 @@ const RESULT_FACTOR_TA = {
   'Age 45–54': 'வயது 45–54',
   'Age 55+': 'வயது 55+',
   'Family history not sure': 'குடும்ப வரலாறு உறுதியில்லை',
-  'Siblings with diabetes': 'சகோதரர்/சகோதரி நீரிழிவு',
-  'One parent with diabetes': 'ஒரு பெற்றோர் நீரிழிவு',
-  'Both parents with diabetes': 'இருவர் பெற்றோரும் நீரிழிவு',
+  'Siblings with diabetes': 'சகோதரர்/சகோதரி சர்க்கரை நோய்',
+  'One parent with diabetes': 'ஒரு பெற்றோர் சர்க்கரை நோய்',
+  'Both parents with diabetes': 'பெற்றோர் இருவருக்கும் சர்க்கரை நோய்',
   'Hip size 90–100 cm': 'இடுப்பு 90–100 செ.மீ',
   'Hip size over 100 cm': 'இடுப்பு 100 செ.மீக்கு மேல்',
   'Hip size 80–90 cm': 'இடுப்பு 80–90 செ.மீ',
   'Hip size over 90 cm': 'இடுப்பு 90 செ.மீக்கு மேல்',
   '30 min walking daily': 'தினமும் 30 நிமிடம் நடைபயிற்சி',
-  'Light movement': 'இலகுவான இயக்கம்',
-  'Mostly sitting': 'பெரும்பாலும் உட்கார்ந்து',
+  'Light movement': 'சிறிய அளவு உடற்பயிற்சி',
+  'Mostly sitting': 'பெரும்பாலும் உட்கார்ந்தே இருப்பது',
   'Hypertension (High BP)': 'உயர் இரத்த அழுத்தம்',
   'PCOS': 'பிசிஓஎஸ்',
-  'High cholesterol': 'உயர் கொழுப்பு',
-  'Thyroid disorder': 'தைராய்டு சீர்கேடு',
-  'Fatty liver': 'கொழுப்பு கல்லீரல்',
+  'High cholesterol': 'ரத்தத்தில் கொழுப்பு அதிகமாக இருப்பது',
+  'Thyroid disorder': 'தைராய்டு சுரப்பி செயல்பாட்டு பிரச்சனை',
+  'Fatty liver': 'கல்லீரல் கொழுப்பு நோய்',
   'Heart disease': 'இதய நோய்',
   'Kidney disease': 'சிறுநீரக நோய்',
   'Frequent urination': 'அடிக்கடி சிறுநீர் கழித்தல்',
-  'Excessive thirst': 'அதிக தாகம்',
-  'Increased hunger': 'அதிக பசி',
+  'Excessive thirst': 'அடிக்கடி தாகம் எடுப்பது',
+  'Increased hunger': 'அடிக்கடி பசி எடுப்பது',
   'Fatigue': 'சோர்வு',
   'Blurred vision': 'மங்கலான பார்வை',
   'Slow wound healing': 'காயம் மெதுவாக ஆறுதல்',
-  'Tingling or numbness': 'சிலிர்ப்பு அல்லது மரப்பு',
-  'Dark patches around neck': 'கழுத்தைச் சுற்றி இருண்ட படைகள்',
-  'Junk food frequency': 'ஜங்க் உணவு அடிக்கடி',
-  'Outside food frequency': 'வெளி உணவு அடிக்கடி',
-  'Refined carbohydrates': 'சுத்திகரிக்கப்பட்ட கார்போஹைட்ரேட்டுகள்',
+  'Tingling or numbness': 'சிலிர்ப்பு அல்லது மரப்பு தன்மை',
+  'Dark patches around neck': 'கழுத்தைச் சுற்றி கருப்பு தழும்புகள்',
+  'Junk/outside food frequency': 'ஜங்க்/வெளி உணவு அடிக்கடி',
   'Sugary beverages': 'சர்க்கரை பானங்கள்',
   'Smoking': 'புகைப்பழக்கம்',
-  'Alcohol': 'மது',
+  'Alcohol': 'மது அருந்துதல்',
   'Tobacco chewing': 'புகையிலை மெல்லுதல்',
   'Sleep 6–7 hours': 'தூக்கம் 6–7 மணி',
   'Sleep under 6 hours': 'தூக்கம் 6 மணிக்கு கீழ்',
   'Snoring not sure': 'குறட்டை உறுதியில்லை',
   'Snoring': 'குறட்டை',
-  'Weight gain in last year': 'கடந்த வருடம் எடை அதிகரிப்பு',
+  'Weight gain in last year': 'கடந்த ஒரு வருடத்தில் எடை அதிகரிப்பு',
   'Moderate stress': 'மிதமான மன அழுத்தம்',
   'High stress': 'அதிக மன அழுத்தம்',
-  'History of gestational diabetes': 'கர்ப்ப நீரிழிவு வரலாறு',
+  'History of gestational diabetes': 'கர்ப்ப கால சர்க்கரை நோய் வரலாறு',
 }
 
 export function getFactorLabel(factor, lang) {

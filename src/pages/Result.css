@@ -1200,3 +1200,199 @@
   font-weight: 700;
   color: #CCAAFF;
 }
+
+/* ── Talk to Expert inline button ── */
+.result-talk-expert-btn {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.result-talk-expert-btn:active {
+  opacity: 0.8;
+}
+
+.result-talk-expert-btn.booked {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  cursor: default;
+  opacity: 1;
+}
+
+/* ── Blood test CTA (₹299) ── */
+.result-blood-test-cta {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: opacity 0.2s;
+}
+
+.result-blood-test-cta:active {
+  opacity: 0.8;
+}
+
+.result-blood-test-cta.booked {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  cursor: default;
+  opacity: 1;
+}
+
+/* ── Simple explanation ── */
+.result-simple-explanation {
+  font-size: 14px;
+  color: #D0D0F0;
+  line-height: 1.6;
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border-left: 3px solid rgba(124, 58, 237, 0.6);
+}
+
+/* ── Emotional message ── */
+.result-emotional-msg {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* ── Food guidance ── */
+.result-food-guidance {}
+
+.result-food-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.result-food-row--eat {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.result-food-row--avoid {
+  background: rgba(244, 63, 94, 0.08);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.result-food-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.result-food-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #E0E0FF;
+}
+
+.result-food-items {
+  font-size: 13px;
+  color: #B0B0D0;
+}
+
+/* ── Daily tip ── */
+.result-daily-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 12px;
+  margin: 0 0 4px;
+}
+
+.result-daily-tip-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.result-daily-tip-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f59e0b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-daily-tip-text {
+  display: block;
+  font-size: 13px;
+  color: #D0C090;
+  line-height: 1.5;
+  margin-top: 3px;
+}
+
+/* ── Disclaimer ── */
+.result-disclaimer {
+  font-size: 11px;
+  color: #8080A0;
+  text-align: center;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── CTA buttons ── */
+.result-cta-btns {
+  display: flex;
+  gap: 10px;
+  padding: 16px 16px 8px;
+  flex-wrap: wrap;
+}
+
+.result-cta-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 14px 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.result-cta-btn:active {
+  opacity: 0.8;
+}
+
+.result-cta-btn--primary {
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  color: #fff;
+}
+
+.result-cta-btn--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #CCAAFF;
+  border: 1px solid rgba(124, 58, 237, 0.4);
+}

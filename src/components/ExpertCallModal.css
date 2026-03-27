@@ -1,0 +1,347 @@
+/* ── Expert Call Modal ── */
+.ecm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0;
+}
+
+.ecm-modal {
+  background: #1A1A2E;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 430px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 20px 20px 32px;
+  border-top: 1px solid rgba(124, 58, 237, 0.3);
+  box-sizing: border-box;
+}
+
+/* Header */
+.ecm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.ecm-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.ecm-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #A0A0CC;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ecm-subtitle {
+  font-size: 13px;
+  color: #8080A0;
+  margin: 0 0 16px;
+}
+
+/* Calendar */
+.ecm-calendar {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ecm-cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ecm-cal-nav-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #CCAAFF;
+  font-size: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.ecm-cal-month-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #E0E0FF;
+}
+
+.ecm-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.ecm-cal-day-name {
+  font-size: 11px;
+  color: #6060A0;
+  text-align: center;
+  padding: 4px 0;
+  font-weight: 600;
+}
+
+.ecm-cal-empty {
+  /* empty cell */
+}
+
+.ecm-cal-day {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ecm-cal-day.past {
+  color: #3A3A5A;
+  background: transparent;
+  cursor: not-allowed;
+}
+
+.ecm-cal-day.available {
+  color: #C0C0E8;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ecm-cal-day.available:hover {
+  background: rgba(124, 58, 237, 0.3);
+  color: #fff;
+}
+
+.ecm-cal-day.today {
+  border: 1px solid rgba(124, 58, 237, 0.5);
+  color: #CCAAFF;
+}
+
+.ecm-cal-day.selected {
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Time slots */
+.ecm-time-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: #A0A0CC;
+  margin: 0 0 10px;
+}
+
+.ecm-time-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.ecm-time-slot {
+  padding: 10px 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #C0C0E8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: center;
+}
+
+.ecm-time-slot:hover {
+  background: rgba(124, 58, 237, 0.3);
+  color: #fff;
+}
+
+.ecm-time-slot.selected {
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Confirm button */
+.ecm-confirm-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.ecm-confirm-btn.active {
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  color: #fff;
+}
+
+.ecm-confirm-btn.inactive {
+  background: rgba(255, 255, 255, 0.06);
+  color: #4A4A7A;
+  cursor: not-allowed;
+}
+
+/* Confirm screen */
+.ecm-confirm-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 4px;
+}
+
+.ecm-confirm-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.ecm-confirm-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 16px;
+}
+
+.ecm-confirm-detail {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.ecm-confirm-label {
+  font-size: 12px;
+  color: #8080A0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ecm-confirm-value {
+  font-size: 14px;
+  color: #E0E0FF;
+  font-weight: 600;
+}
+
+.ecm-confirm-note {
+  font-size: 13px;
+  color: #6060A0;
+  text-align: center;
+  margin: 12px 0 16px;
+}
+
+.ecm-confirm-btns {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.ecm-back-btn {
+  flex: 1;
+  padding: 13px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #CCAAFF;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ecm-submit-btn {
+  flex: 2;
+  padding: 13px;
+  background: linear-gradient(135deg, #7B2FFF 0%, #4F46E5 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Status screens */
+.ecm-status-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 8px;
+  min-height: 200px;
+  justify-content: center;
+}
+
+.ecm-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(124, 58, 237, 0.2);
+  border-top-color: #7B2FFF;
+  border-radius: 50%;
+  animation: ecm-spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes ecm-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ecm-success-icon,
+.ecm-error-icon {
+  font-size: 44px;
+  margin-bottom: 12px;
+}
+
+.ecm-success-heading {
+  font-size: 18px;
+  font-weight: 700;
+  color: #10b981;
+  margin: 0 0 12px;
+}
+
+.ecm-status-text {
+  font-size: 14px;
+  color: #A0A0CC;
+  text-align: center;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+.ecm-status-text strong {
+  color: #E0E0FF;
+}
+
+.ecm-status-error {
+  color: #f43f5e;
+}

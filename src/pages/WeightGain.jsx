@@ -54,7 +54,7 @@ export default function WeightGain() {
         <button
           type="button"
           className="wg-back-btn"
-          onClick={() => navigate('/snoring', { state: { userId, gender } })}
+          onClick={() => navigate('/sleep-duration', { state: { userId, gender } })}
           aria-label={t('common.back')}
         >
           ←

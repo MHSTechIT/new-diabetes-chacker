@@ -45,7 +45,7 @@ export default function JunkFoodFrequency() {
   const handleNext = async () => {
     if (!selectedOption) return
     await saveProfileData(userId, { junk_food_frequency: selectedOption })
-    navigate('/outside-food-frequency', { state: { userId, gender } })
+    navigate('/sugary-beverages', { state: { userId, gender } })
   }
 
   return (

@@ -24,6 +24,7 @@ export default function Habits() {
   const [resultName, setResultName] = useState('')
   const [resultPhone, setResultPhone] = useState('')
   const [resultAge, setResultAge] = useState('')
+  const [ageError, setAgeError] = useState('')
   const [resultLocation, setResultLocation] = useState('')
   const [saveError, setSaveError] = useState(null)
 
@@ -59,6 +60,10 @@ export default function Habits() {
     const name = resultName.trim()
     const phone = resultPhone.trim()
     if (!name || !phone) return
+    if (resultAge && (Number(resultAge) < 1 || Number(resultAge) > 110)) {
+      setAgeError('Please enter a valid age between 1 and 110.')
+      return
+    }
 
     setSaveError(null)
     const habitsString = Array.from(selectedHabits).join(',')
@@ -170,12 +175,21 @@ export default function Habits() {
               className="hab-result-modal-input"
               placeholder={t('habits.agePlaceholder')}
               value={resultAge}
-              onChange={(e) => setResultAge(e.target.value)}
+              onChange={(e) => {
+                const val = e.target.value
+                setResultAge(val)
+                if (val && (Number(val) < 1 || Number(val) > 110)) {
+                  setAgeError('Please enter a valid age between 1 and 110.')
+                } else {
+                  setAgeError('')
+                }
+              }}
               min={1}
-              max={120}
+              max={110}
               autoComplete="off"
               aria-label={t('habits.ageLabel')}
             />
+            {ageError && <span className="hab-result-modal-hint" style={{color:'#f43f5e'}}>{ageError}</span>}
           </div>
 
           <div className="hab-result-modal-field">

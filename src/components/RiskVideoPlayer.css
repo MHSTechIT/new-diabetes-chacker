@@ -37,6 +37,44 @@
   display: block;
 }
 
+.risk-video-player__iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+.risk-video-player__gdrive-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.risk-video-player__play-btn--overlay {
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  cursor: default;
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+.risk-video-player__play-btn-hint {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  display: block;
+  text-align: center;
+  padding: 0.5rem;
+}
+
 .risk-video-player__play-btn {
   position: absolute;
   top: 50%;

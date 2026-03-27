@@ -46,7 +46,7 @@ export default function SleepDuration() {
   const handleNext = async () => {
     if (!selectedOption) return
     await saveProfileData(userId, { sleep_duration: selectedOption })
-    navigate('/snoring', { state: { userId, gender } })
+    navigate('/weight-gain', { state: { userId, gender } })
   }
 
   return (
