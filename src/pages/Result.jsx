@@ -525,6 +525,7 @@ export default function Result() {
                   disabled={bloodTestBooked}
                   onClick={bloodTestBooked ? undefined : () =>
                     navigate('/book-home-test', {
+                      replace: true,
                       state: {
                         ...location.state,
                         name: profile?.name,
@@ -717,6 +718,7 @@ export default function Result() {
                   onClick={() => {
                     closeBoostModal()
                     navigate('/book-home-test', {
+                      replace: true,
                       state: {
                         ...location.state,
                         name: profile?.name,

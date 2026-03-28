@@ -38,11 +38,18 @@ export default function GenderSelection() {
         navigate('/age-selection', { state: { gender: selected, fromRect } })
       }
     } else if (supabase) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('user_profiles')
         .insert({ gender: selected })
         .select('id')
         .single()
+      if (error) {
+        console.error('Supabase insert failed:', error.message)
+        clearProfile()
+        saveProfile({ gender: selected })
+        navigate('/age-selection', { state: { gender: selected, fromRect } })
+        return
+      }
       const id = data?.id
       if (id) setUserId(id)
       navigate('/age-selection', { state: { userId: id, gender: selected, fromRect } })

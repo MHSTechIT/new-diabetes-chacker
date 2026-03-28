@@ -78,6 +78,7 @@ export default function BookHomeTest() {
 
   const handleBack = (booked = false) => {
     navigate('/result', {
+      replace: true,
       state: location.state
         ? { ...location.state, playAnimation: false, ...(booked ? { bloodTestBooked: true } : {}) }
         : undefined,
@@ -202,30 +203,6 @@ export default function BookHomeTest() {
               min={new Date().toISOString().slice(0, 10)}
             />
           </label>
-          <div className="book-home-test-label">
-            {t('bookHomeTest.labelTimeSlot')}
-            <div className="book-home-test-slots">
-              {TIME_SLOTS.map((slot) => (
-                <button
-                  key={slot.id}
-                  type="button"
-                  className={`book-home-test-slot ${timeSlot === slot.id ? 'selected' : ''}`}
-                  onClick={() => setTimeSlot(slot.id)}
-                >
-                  <span className="book-home-test-slot-icon" aria-hidden>{slot.icon}</span>
-                  <span className="book-home-test-slot-label">{t(`bookHomeTest.slot${slot.id.charAt(0).toUpperCase() + slot.id.slice(1)}`)}</span>
-                  <span className="book-home-test-slot-range">{slot.range}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="book-home-test-panel-card">
-            <span className="book-home-test-panel-icon" aria-hidden>🩺</span>
-            <div>
-              <div className="book-home-test-panel-name">{t('bookHomeTest.panelName')}</div>
-              <div className="book-home-test-panel-sub">{t('bookHomeTest.panelSub')}</div>
-            </div>
-          </div>
           {submitError && <p className="book-home-test-error">{submitError}</p>}
           <button
             type="submit"
