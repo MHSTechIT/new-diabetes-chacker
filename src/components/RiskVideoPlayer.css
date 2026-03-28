@@ -1,232 +1,133 @@
-/* Risk video player – 16:9 aspect ratio */
-.risk-video-player {
-  --risk-color: #6b7280;
+/* ── Risk Video Player ──────────────────────────────────────── */
+.rvp {
+  --rc: #6b7280;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
   margin: 0 0 1rem;
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1.5px solid var(--rc);
   border-radius: 16px;
-  padding: 1rem;
-  border-color: var(--risk-color);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  padding: 0.875rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* 16:9 aspect ratio */
-.risk-video-player--16-9 .risk-video-player__container,
-.risk-video-player.risk-video-player--16-9 .risk-video-player__container {
+/* 16:9 stage */
+.rvp--16-9 .rvp__stage {
   aspect-ratio: 16 / 9;
 }
 
-.risk-video-player__container {
+/* Stage: clips the oversized iframe */
+.rvp__stage {
   position: relative;
   width: 100%;
-  min-height: 200px;
+  min-height: 180px;
   background: #000;
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
-.risk-video-player__video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.risk-video-player__iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 8px;
-}
-
-.risk-video-player__gdrive-overlay {
+/* YouTube div / iframe — enlarged to clip YouTube's top/bottom residual bars */
+.rvp__yt {
   position: absolute;
-  top: 0;
+  top: -45px;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: calc(100% + 90px);
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.risk-video-player__play-btn--overlay {
-  pointer-events: auto;
-  background: transparent;
+.rvp__yt iframe {
+  width: 100%;
+  height: 100%;
   border: none;
-  cursor: default;
-  width: auto;
-  height: auto;
-  transform: none;
-}
-
-.risk-video-player__play-btn-hint {
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 500;
   display: block;
-  text-align: center;
-  padding: 0.5rem;
 }
 
-.risk-video-player__play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 56px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  color: var(--risk-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease, background 0.2s ease;
-  z-index: 2;
-}
-
-.risk-video-player__play-btn:hover {
-  background: #fff;
-  transform: translate(-50%, -50%) scale(1.08);
-}
-
-.risk-video-player__error-msg {
+/* Full-size transparent overlay — captures all user interaction */
+.rvp__overlay {
   position: absolute;
   inset: 0;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  text-align: center;
-  color: #A0A0CC;
-  font-size: 0.875rem;
-  background: rgba(0, 0, 0, 0.7);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.risk-video-player__error-msg p {
-  margin: 0 0 0.5rem;
-}
-
-.risk-video-player__error-hint {
-  font-size: 0.75rem;
-  color: #8888AA;
-}
-
-.risk-video-player__error-hint code {
-  background: rgba(255,255,255,0.1);
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.risk-video-player__info {
+/* Custom play/pause button */
+.rvp__btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 2px solid rgba(255, 255, 255, 0.35);
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.risk-video-player__title {
-  margin: 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--risk-color);
-  line-height: 1.3;
-}
-
-.risk-video-player__progress-wrap {
-  position: relative;
-  height: 6px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
-  cursor: pointer;
-  overflow: visible;
-}
-
-.risk-video-player__progress-bar {
-  height: 100%;
-  background: var(--risk-color);
-  border-radius: 3px;
-  transition: width 0.1s linear;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.25s ease, transform 0.25s ease;
   pointer-events: none;
 }
 
-.risk-video-player__progress-input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 1;
+.rvp__btn--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.rvp__overlay:hover .rvp__btn,
+.rvp__overlay:focus-visible .rvp__btn {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Title */
+.rvp__title {
   margin: 0;
-}
-
-.risk-video-player__time {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8125rem;
-  color: #8888AA;
-  font-variant-numeric: tabular-nums;
-}
-
-.risk-video-player__time span:first-child {
-  color: var(--risk-color);
+  font-size: 0.9rem;
   font-weight: 600;
+  color: var(--rc);
+  line-height: 1.3;
+  padding: 0 0.25rem;
 }
 
-/* Error state */
-.risk-video-player--error {
-  background: rgba(244, 63, 94, 0.15);
-  border-color: #f43f5e;
-  color: #f43f5e;
-  padding: 1rem;
-  text-align: center;
-}
-
-/* Responsive: smaller play button on narrow screens */
+/* Mobile */
 @media (max-width: 430px) {
-  .risk-video-player {
-    padding: 0.75rem;
-    margin-bottom: 0.75rem;
+  .rvp {
+    padding: 0.65rem;
+    margin-bottom: 0.65rem;
+    border-radius: 12px;
   }
 
-  .risk-video-player__play-btn {
-    width: 48px;
-    height: 48px;
+  .rvp__btn {
+    width: 54px;
+    height: 54px;
   }
 
-  .risk-video-player__play-btn svg {
-    width: 28px;
-    height: 28px;
+  .rvp__btn svg {
+    width: 26px;
+    height: 26px;
   }
 
-  .risk-video-player__title {
-    font-size: 0.875rem;
+  .rvp__title {
+    font-size: 0.825rem;
   }
 }
 
-/* When used inside result page: desktop places video on the left via Result.css grid */
+/* Desktop left-column sizing */
 .result-video-wrap {
   width: 100%;
 }
 
 @media (min-width: 1024px) {
   .result-video-wrap {
-    /* 16:9 on desktop left column */
     max-width: 360px;
-  }
-
-  .result-video-wrap .risk-video-player__container {
-    aspect-ratio: 16 / 9;
   }
 }

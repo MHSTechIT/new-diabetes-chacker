@@ -196,11 +196,15 @@ export default function Habits() {
             <label className="hab-result-modal-label">{t('habits.locationLabel')}</label>
             <input
               type="text"
+              inputMode="text"
               className="hab-result-modal-input"
               placeholder={t('habits.locationPlaceholder')}
               value={resultLocation}
               onChange={(e) => setResultLocation(e.target.value)}
-              autoComplete="address-level2"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
               aria-label={t('habits.locationLabel')}
             />
           </div>
