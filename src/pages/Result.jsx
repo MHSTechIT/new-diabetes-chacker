@@ -131,7 +131,8 @@ export default function Result() {
   const [showBackConfirm, setShowBackConfirm] = useState(false)
   const [showRetestConfirm, setShowRetestConfirm] = useState(false)
   const [showExpertModal, setShowExpertModal] = useState(false)
-  const [callBooked, setCallBooked] = useState(false)
+  const callBookedKey = `expert_call_booked_${userId || 'local'}`
+  const [callBooked, setCallBooked] = useState(() => !!localStorage.getItem(callBookedKey))
   const [bloodTestBooked, setBloodTestBooked] = useState(() => !!location.state?.bloodTestBooked)
 
   const result = enhancedResult?.result ?? resultFromState ?? resultData
@@ -140,7 +141,6 @@ export default function Result() {
   useEffect(() => {
     const handlePageShow = (e) => {
       if (e.persisted) {
-        setCallBooked(false)
         setShowExpertModal(false)
       }
     }
@@ -271,6 +271,7 @@ export default function Result() {
 
   const handleRetake = () => {
     clearProfile()
+    localStorage.removeItem(callBookedKey)
     navigate('/')
   }
 
@@ -703,7 +704,7 @@ export default function Result() {
       {showExpertModal && (
         <ExpertCallModal
           onClose={() => setShowExpertModal(false)}
-          onBookingSuccess={() => { setCallBooked(true); setShowExpertModal(false) }}
+          onBookingSuccess={() => { localStorage.setItem(callBookedKey, '1'); setCallBooked(true); setShowExpertModal(false) }}
           profileName={profile?.name}
           profilePhone={profile?.phone}
           riskLevel={level}
