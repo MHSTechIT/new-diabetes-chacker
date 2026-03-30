@@ -136,6 +136,18 @@ export default function Result() {
 
   const result = enhancedResult?.result ?? resultFromState ?? resultData
 
+  // Reset transient UI state when page is restored from bfcache
+  useEffect(() => {
+    const handlePageShow = (e) => {
+      if (e.persisted) {
+        setCallBooked(false)
+        setShowExpertModal(false)
+      }
+    }
+    window.addEventListener('pageshow', handlePageShow)
+    return () => window.removeEventListener('pageshow', handlePageShow)
+  }, [])
+
   useEffect(() => {
     if (!resultFromState && !userId) {
       navigate('/', { replace: true })
