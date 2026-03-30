@@ -342,6 +342,14 @@
   margin: 0;
 }
 
+.book-home-test-pincode-error {
+  display: block;
+  font-size: 12px;
+  color: #f43f5e;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
 /* Success state ─────────────────────────────────────────────────── */
 .book-home-test-success {
   flex: 1;

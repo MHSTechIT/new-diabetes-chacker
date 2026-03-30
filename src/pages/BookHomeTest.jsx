@@ -13,6 +13,14 @@ const TIME_SLOTS = [
 const TEST_PANEL = 'HbA1c + Fasting Blood Sugar Panel'
 const MOBILE_MAX_DIGITS = 10
 
+const SERVICEABLE_PINCODES = new Set([
+  '600095','600106','600116','600026','600125','641035','600122','600114',
+  '600056','600033','600087','600077','600123','600042','600073','600023',
+  '600070','600102','600043','600107','600099','600024','600049','600083',
+  '600038','600089','600118','600014','600028','600066','600011','600012',
+  '600082','600007','600037','600002','600017','600094','600030',
+])
+
 function formatMobileInput(digits) {
   if (!digits || digits.length === 0) return ''
   const d = digits.slice(0, MOBILE_MAX_DIGITS)
@@ -33,6 +41,7 @@ export default function BookHomeTest() {
   const [pincode, setPincode] = useState('')
   const [preferredDate, setPreferredDate] = useState('')
   const [timeSlot, setTimeSlot] = useState('morning')
+  const [pincodeError, setPincodeError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
   const [submitted, setSubmitted] = useState(false)
@@ -50,6 +59,10 @@ export default function BookHomeTest() {
     const pin = pincode.trim()
     if (!name || mobile.length !== MOBILE_MAX_DIGITS || !addr || !pin || !preferredDate) {
       setSubmitError(t('bookHomeTest.errorFill'))
+      return
+    }
+    if (!SERVICEABLE_PINCODES.has(pin)) {
+      setSubmitError('We are not serviceable to your location.')
       return
     }
     setSubmitError(null)
@@ -188,10 +201,19 @@ export default function BookHomeTest() {
               className="book-home-test-input"
               placeholder={t('bookHomeTest.placeholderPincode')}
               value={pincode}
-              onChange={(e) => setPincode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\D/g, '').slice(0, 6)
+                setPincode(val)
+                if (val.length === 6) {
+                  setPincodeError(SERVICEABLE_PINCODES.has(val) ? '' : 'We are not serviceable to your location.')
+                } else {
+                  setPincodeError('')
+                }
+              }}
               maxLength={6}
               autoComplete="postal-code"
             />
+            {pincodeError && <span className="book-home-test-pincode-error">{pincodeError}</span>}
           </label>
           <label className="book-home-test-label">
             {t('bookHomeTest.labelDate')}
