@@ -32,10 +32,10 @@
 /* YouTube div / iframe — enlarged to clip YouTube's top/bottom residual bars */
 .rvp__yt {
   position: absolute;
-  top: -45px;
+  top: -60px;
   left: 0;
   width: 100%;
-  height: calc(100% + 90px);
+  height: calc(100% + 120px);
   pointer-events: none;
 }
 
