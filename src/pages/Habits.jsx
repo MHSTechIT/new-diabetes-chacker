@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import { getProgressPercent } from '../lib/progressSteps'
 import { saveProfileData } from '../lib/saveProfile'
+import { validatePhone } from '../utils/validatePhone'
 import './Habits.css'
 
 const habits = [
@@ -27,11 +28,13 @@ export default function Habits() {
   const [ageError, setAgeError] = useState('')
   const [resultLocation, setResultLocation] = useState('')
   const [saveError, setSaveError] = useState(null)
+  const [phoneError, setPhoneError] = useState('')
 
   const PHONE_MAX_DIGITS = 10
   const handlePhoneChange = (e) => {
     const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, PHONE_MAX_DIGITS)
     setResultPhone(digitsOnly)
+    if (phoneError) setPhoneError('')
   }
 
   const handleHabitToggle = (habitId) => {
@@ -60,6 +63,11 @@ export default function Habits() {
     const name = resultName.trim()
     const phone = resultPhone.trim()
     if (!name || !phone) return
+    const phoneCheck = validatePhone(phone)
+    if (!phoneCheck.valid) {
+      setPhoneError(phoneCheck.reason)
+      return
+    }
     if (resultAge && (Number(resultAge) < 1 || Number(resultAge) > 110)) {
       setAgeError('Please enter a valid age between 1 and 110.')
       return
@@ -165,7 +173,10 @@ export default function Habits() {
               autoComplete="tel"
               aria-label={t('habits.phoneLabel')}
             />
-            <span className="hab-result-modal-hint">{t('habits.phoneHint')}</span>
+            {phoneError
+              ? <span className="hab-result-modal-error">{phoneError}</span>
+              : <span className="hab-result-modal-hint">{t('habits.phoneHint')}</span>
+            }
           </div>
 
           <div className="hab-result-modal-field">

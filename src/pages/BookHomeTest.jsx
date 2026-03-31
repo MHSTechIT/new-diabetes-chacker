@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { useLanguage } from '../context/LanguageContext'
+import { validatePhone } from '../utils/validatePhone'
 import './BookHomeTest.css'
 
 const TIME_SLOTS = [
@@ -42,6 +43,7 @@ export default function BookHomeTest() {
   const [preferredDate, setPreferredDate] = useState('')
   const [timeSlot, setTimeSlot] = useState('morning')
   const [pincodeError, setPincodeError] = useState('')
+  const [mobileError, setMobileError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
   const [submitted, setSubmitted] = useState(false)
@@ -49,6 +51,7 @@ export default function BookHomeTest() {
   const handleMobileChange = (e) => {
     const digits = e.target.value.replace(/\D/g, '').slice(0, MOBILE_MAX_DIGITS)
     setMobileDigits(digits)
+    if (mobileError) setMobileError('')
   }
 
   const handleSubmit = async (e) => {
@@ -59,6 +62,11 @@ export default function BookHomeTest() {
     const pin = pincode.trim()
     if (!name || mobile.length !== MOBILE_MAX_DIGITS || !addr || !pin || !preferredDate) {
       setSubmitError(t('bookHomeTest.errorFill'))
+      return
+    }
+    const mobileCheck = validatePhone(mobile)
+    if (!mobileCheck.valid) {
+      setMobileError(mobileCheck.reason)
       return
     }
     if (!SERVICEABLE_PINCODES.has(pin)) {
@@ -187,6 +195,7 @@ export default function BookHomeTest() {
                 autoComplete="tel"
               />
             </div>
+            {mobileError && <span className="book-home-test-pincode-error">{mobileError}</span>}
           </label>
           <label className="book-home-test-label">
             {t('bookHomeTest.labelAddress')}
