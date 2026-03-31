@@ -90,14 +90,18 @@ export default function BookHomeTest() {
   }
 
   const handleBack = (booked = false) => {
-    navigate('/result', {
-      replace: true,
-      state: {
-        ...(location.state || {}),
-        playAnimation: false,
-        bloodTestBooked: booked,
-      },
-    })
+    if (booked) {
+      navigate('/result', {
+        replace: true,
+        state: {
+          ...(location.state || {}),
+          playAnimation: false,
+          bloodTestBooked: true,
+        },
+      })
+    } else {
+      navigate(-1)
+    }
   }
 
   if (submitted) {
