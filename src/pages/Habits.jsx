@@ -182,12 +182,14 @@ export default function Habits() {
           <div className="hab-result-modal-field">
             <label className="hab-result-modal-label">{t('habits.ageLabel')}</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
               className="hab-result-modal-input"
               placeholder={t('habits.agePlaceholder')}
               value={resultAge}
               onChange={(e) => {
-                const val = e.target.value
+                const val = e.target.value.replace(/\D/g, '').slice(0, 3)
                 setResultAge(val)
                 if (val && (Number(val) < 1 || Number(val) > 110)) {
                   setAgeError('Please enter a valid age between 1 and 110.')
@@ -195,8 +197,6 @@ export default function Habits() {
                   setAgeError('')
                 }
               }}
-              min={1}
-              max={110}
               autoComplete="off"
               aria-label={t('habits.ageLabel')}
             />
@@ -211,7 +211,7 @@ export default function Habits() {
               className="hab-result-modal-input"
               placeholder={t('habits.locationPlaceholder')}
               value={resultLocation}
-              onChange={(e) => setResultLocation(e.target.value)}
+              onChange={(e) => setResultLocation(e.target.value.replace(/[^a-zA-Z\u0B80-\u0BFF\s]/g, ''))}
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
