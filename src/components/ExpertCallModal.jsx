@@ -31,6 +31,7 @@ export default function ExpertCallModal({ onClose, onBookingSuccess, profileName
   const lang = language || 'en'
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  today.setDate(today.getDate() + 1) // minimum bookable date is tomorrow
 
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth())
