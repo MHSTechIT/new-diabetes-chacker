@@ -92,9 +92,11 @@ export default function BookHomeTest() {
   const handleBack = (booked = false) => {
     navigate('/result', {
       replace: true,
-      state: location.state
-        ? { ...location.state, playAnimation: false, ...(booked ? { bloodTestBooked: true } : {}) }
-        : undefined,
+      state: {
+        ...(location.state || {}),
+        playAnimation: false,
+        bloodTestBooked: booked,
+      },
     })
   }
 

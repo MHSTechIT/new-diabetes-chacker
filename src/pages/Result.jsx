@@ -137,6 +137,16 @@ export default function Result() {
 
   const result = enhancedResult?.result ?? resultFromState ?? resultData
 
+  // Prevent Chrome back button from going into quiz history
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href)
+    const handlePopState = () => {
+      window.history.pushState(null, '', window.location.href)
+    }
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
   // Reset transient UI state when page is restored from bfcache
   useEffect(() => {
     const handlePageShow = (e) => {
