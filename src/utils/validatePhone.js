@@ -6,9 +6,9 @@
 export function validatePhone(raw) {
   // Strip country code (+91 / 0091 / 091), spaces, dashes, dots, parens
   const cleaned = String(raw ?? '')
-    .replace(/^\+?91/, '')
-    .replace(/^0091/, '')
-    .replace(/^091/, '')
+    .replace(/^\+91/, '')    // strip +91 (international format)
+    .replace(/^0091/, '')    // strip 0091
+    .replace(/^091/, '')     // strip 091
     .replace(/[\s\-().]/g, '')
     .replace(/\D/g, '')
 
